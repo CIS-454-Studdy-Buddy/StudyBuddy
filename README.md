@@ -22,16 +22,16 @@ Go to Project Folder called StudyBuddy
 
 ## Do only one time
 
-Create virtual environment in the project folder
-name the venv "venv"
+Create virtual environment in the project folder  
+name the venv "venv"  
 
-python3 -m venv venv
-source venv/bin/activate // this activates the virtual environment
-pip3 install -r requirements.txt
+python3 -m venv venv  
+source venv/bin/activate // this activates the virtual environment  
+pip3 install -r requirements.txt  
 
-**command "deactivate" to close
+**command "deactivate" to close  
 
 ## Do the remaining steps everytime  
-source venv/bin/activate
-flask run
-copy and paste the url shown in the terminal to your web browser
+source venv/bin/activate  
+flask run  
+copy and paste the url shown in the terminal to your web browser  
