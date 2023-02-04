@@ -1,5 +1,6 @@
 import pytest
-from ..app import create_app, db
+from app import create_app, db
+from app.models import *
 
 @pytest.fixture()
 def app():
@@ -12,4 +13,4 @@ def app():
 
 @pytest.fixture()
 def client(app):
-    app.test_client()
+    return app.test_client()
