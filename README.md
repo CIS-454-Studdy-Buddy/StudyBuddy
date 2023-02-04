@@ -26,6 +26,18 @@ Create virtual environment
 
 pip3 install -r requirements.txt
 
+## Create db
+python3 
+
+```
+
+from app.utils import create_db
+
+create_db()
+
+```
+
+
 ## Do the remaining steps everytime  
 source venv/bin/activate // this activates the virtual environment
 flask run
