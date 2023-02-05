@@ -31,6 +31,18 @@ pip3 install -r requirements.txt
 
 **command "deactivate" to close  
 
+## Create db
+python3 
+
+```
+
+from app.utils import create_db
+
+create_db()
+
+```
+
+
 ## Do the remaining steps everytime  
 source venv/bin/activate  
 flask run  
