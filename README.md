@@ -47,3 +47,5 @@ create_db()
 source venv/bin/activate  
 flask run  
 copy and paste the url shown in the terminal to your web browser  
+
+https://github.com/git-guides/git-pull  
