@@ -14,9 +14,21 @@
         {{ form.username }}
         {{ form.password }}
         {{ form.submit }}
-        <p>{{msg}}</p>
-    </form>
 
+        <u1> 
+            {% for error in form.username.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </u1>
+        <ul>
+            {% for error in form.password.errors %}
+            <li>{{ error }}</li>
+
+            {% endfor %}
+        </ul>
+
+    </form>
+     
     <a href="{{url_for('auth.login')}}">Already have an account? Login</a>
 
 </body>
