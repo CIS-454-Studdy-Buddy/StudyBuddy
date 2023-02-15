@@ -1,11 +1,12 @@
 from flask import Blueprint, render_template, url_for, redirect, request, session 
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, EmailField, validators
 from wtforms.validators import InputRequired, Length, ValidationError, Email
 from flask_bcrypt import Bcrypt
 from app.models.user import User
-from app.extensions import db, bcrypt, login_manager
+from app.extensions import db, bcrypt, login_manager, email
+from flask_mail import Message 
 
 
 bp = Blueprint('auth', __name__, url_prefix='/')
@@ -45,6 +46,17 @@ class LoginForm(FlaskForm):
     submit = SubmitField("Login") 
 
 
+class ForgotForm(FlaskForm):
+     username = StringField(validators=[InputRequired(), Email(granular_message="invalid email address"), Length(
+        min=4, max=20)], render_kw={"placeholder": "Username"})
+     submit = SubmitField("Submit")
+
+class PasswordResetForm(FlaskForm):
+    current_password = PasswordField('Current Password',[validators.DataRequired(),validators.Length(
+        min=4, max=20)]) 
+
+class ForgotConfimation(FlaskForm):
+    msg = "Please check your email for a link to reset password"
 
 @bp.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -55,7 +67,6 @@ def signup():
         db.session.add(new_user)
         db.session.commit()
         return redirect(url_for('auth.login'))
-    
     return render_template('register.html', form=form)
 
 
@@ -88,3 +99,27 @@ def logout():
     logout_user()
     session.clear()
     return redirect(url_for('auth.login'))
+
+@bp.route('/forgot', methods=['GET', 'POST'])
+def forgot():
+    form = ForgotForm() 
+    if form.validate_on_submit():
+        send_email(email_address=form.username.data)
+        return redirect(url_for('auth.forgotconfirmation'))
+        
+    return render_template('forgot.html', form=form)
+
+@bp.route('/forgotconfirmation', methods=['GET'])
+def forgotconfirmation():
+    form = ForgotConfimation()
+    return render_template('forgotconfimation.html', form=form, msg=form.msg)
+
+def send_email(email_address):
+    msg = Message(
+                'Hello',
+                sender ='su.study.buddy@gmail.com',
+                recipients = [email_address]
+               )
+    msg.body = 'Hello Flask message sent from Flask-Mail'
+    email.send(msg)
+    return 'Sent'
