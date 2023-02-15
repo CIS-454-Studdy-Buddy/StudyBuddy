@@ -1,0 +1,26 @@
+.logo {
+    background-color: rgb(250, 104, 0);
+    color: white;
+    border: 1px;
+    min-height: 50px;
+    font-size: 2rem;
+    text-align: center;
+}
+
+.side {
+    background-color: brown;
+    border: 1px;
+    min-height: 50px;
+    font-size: 2rem;
+}
+
+.main {
+    background-color: rgb(225, 219, 219);
+    border: 1px;
+    min-height: 50px;
+    font-size: 2rem;
+}
+
+.bg {
+    background-color: rgb(231, 154, 101);
+}
