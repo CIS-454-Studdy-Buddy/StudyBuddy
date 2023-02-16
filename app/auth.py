@@ -6,7 +6,8 @@ from wtforms.validators import InputRequired, Length, ValidationError, Email
 from flask_bcrypt import Bcrypt
 from app.models.user import User
 from app.extensions import db, bcrypt, login_manager, email
-from flask_mail import Message 
+from flask_mail import Message
+import random  
 
 
 bp = Blueprint('auth', __name__, url_prefix='/')
@@ -104,7 +105,11 @@ def logout():
 def forgot():
     form = ForgotForm() 
     if form.validate_on_submit():
-        send_email(email_address=form.username.data)
+        html_msg = email_content_password_reset(email_address=form.username.data, 
+                                                reset_password_url=url_for('auth.reset_password'))
+        
+        send_email(email_address=form.username.data, html_msg=html_msg)
+        
         return redirect(url_for('auth.forgotconfirmation'))
         
     return render_template('forgot.html', form=form)
@@ -114,12 +119,21 @@ def forgotconfirmation():
     form = ForgotConfimation()
     return render_template('forgotconfimation.html', form=form, msg=form.msg)
 
-def send_email(email_address):
+def send_email(email_address, msg_html):
     msg = Message(
                 'Hello',
                 sender ='su.study.buddy@gmail.com',
                 recipients = [email_address]
                )
     msg.body = 'Hello Flask message sent from Flask-Mail'
+    msg.html = msg_html 
     email.send(msg)
     return 'Sent'
+
+def email_content_password_reset(username, reset_password_url):
+    msg_non_html = ""
+    #reset_password_url = url_for('auth.reset_password')
+    token =  random.randint(10**9,10**10)
+    url = f"{reset_password_url}?t={token}"
+    html_msg = f'<b>Hey {username}</b>, sending you this email from my <a href="{url}">Study Buddy App</a>'
+    return html_msg
