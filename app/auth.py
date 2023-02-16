@@ -1,11 +1,12 @@
 from flask import Blueprint, render_template, url_for, redirect, request, session 
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import InputRequired, Length, ValidationError
+from wtforms import StringField, PasswordField, SubmitField, EmailField, validators
+from wtforms.validators import InputRequired, Length, ValidationError, Email
 from flask_bcrypt import Bcrypt
 from app.models.user import User
-from app.extensions import db, bcrypt, login_manager
+from app.extensions import db, bcrypt, login_manager, email
+from flask_mail import Message 
 
 
 bp = Blueprint('auth', __name__, url_prefix='/')
@@ -14,19 +15,21 @@ bp = Blueprint('auth', __name__, url_prefix='/')
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+
 class RegisterForm(FlaskForm):
-    username = StringField(validators=[InputRequired(), Length(
+    username = StringField(validators=[InputRequired(), Email(granular_message="invalid email address"), Length(
         min=4, max=20)], render_kw={"placeholder": "Username"})
 
     password = PasswordField(validators=[InputRequired(), Length(
             min=4, max=20)], render_kw={"placeholder": "Password"})
 
     submit = SubmitField("SignUp")
-    
+
     def validate_username(self, username):
+        if not username.data.endswith("@syr.edu"):
+            raise ValidationError("email address must syracuse university email address")
         existing_user_username = User.query.filter_by(
             username=username.data).first()
-
 
         if existing_user_username:
             raise ValidationError(
@@ -43,10 +46,20 @@ class LoginForm(FlaskForm):
     submit = SubmitField("Login") 
 
 
+class ForgotForm(FlaskForm):
+     username = StringField(validators=[InputRequired(), Email(granular_message="invalid email address"), Length(
+        min=4, max=20)], render_kw={"placeholder": "Username"})
+     submit = SubmitField("Submit")
+
+class PasswordResetForm(FlaskForm):
+    current_password = PasswordField('Current Password',[validators.DataRequired(),validators.Length(
+        min=4, max=20)]) 
+
+class ForgotConfimation(FlaskForm):
+    msg = "Please check your email for a link to reset password"
 
 @bp.route('/signup', methods=['GET', 'POST'])
 def signup():
-    msg = ""
     form = RegisterForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data)
@@ -54,9 +67,7 @@ def signup():
         db.session.add(new_user)
         db.session.commit()
         return redirect(url_for('auth.login'))
-    elif request.method == 'POST':
-        msg = "Invalid SignUp"
-    return render_template('register.html', form=form, msg=msg)
+    return render_template('register.html', form=form)
 
 
 
@@ -88,3 +99,27 @@ def logout():
     logout_user()
     session.clear()
     return redirect(url_for('auth.login'))
+
+@bp.route('/forgot', methods=['GET', 'POST'])
+def forgot():
+    form = ForgotForm() 
+    if form.validate_on_submit():
+        send_email(email_address=form.username.data)
+        return redirect(url_for('auth.forgotconfirmation'))
+        
+    return render_template('forgot.html', form=form)
+
+@bp.route('/forgotconfirmation', methods=['GET'])
+def forgotconfirmation():
+    form = ForgotConfimation()
+    return render_template('forgotconfimation.html', form=form, msg=form.msg)
+
+def send_email(email_address):
+    msg = Message(
+                'Hello',
+                sender ='su.study.buddy@gmail.com',
+                recipients = [email_address]
+               )
+    msg.body = 'Hello Flask message sent from Flask-Mail'
+    email.send(msg)
+    return 'Sent'
