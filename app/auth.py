@@ -53,11 +53,40 @@ class ForgotForm(FlaskForm):
      submit = SubmitField("Submit")
 
 class PasswordResetForm(FlaskForm):
-    current_password = PasswordField('Current Password',[validators.DataRequired(),validators.Length(
-        min=4, max=20)]) 
+    username = StringField(validators=[InputRequired(), Email(granular_message="invalid email address"), Length(
+        min=4, max=20)], render_kw={"placeholder": "Username"})
+    password = PasswordField('New Password',[validators.DataRequired(),validators.Length(
+        min=4, max=20)], render_kw={"placeholder": "New Password"})
+    re_enter_password = PasswordField('Re-enter Password',[validators.DataRequired(),validators.Length(
+        min=4, max=20)], render_kw={"placeholder": "Re-enter New Password"})
+    submit = SubmitField("Submit")
+    
 
 class ForgotConfimation(FlaskForm):
     msg = "Please check your email for a link to reset password"
+
+@bp.route('/reset_password', methods=['GET', 'POST'])
+def reset_password():
+    msg = ""
+    form = PasswordResetForm()
+    if form.validate_on_submit():
+        if form.password.data == form.re_enter_password.data:
+            user = User.query.filter_by(username=form.username.data).first()
+            if user:
+                ## TODO replace old password with new password in database
+                hash_pass = bcrypt.generate_password_hash(form.password.data)
+                User.query.filter_by(username=form.username.data).update(dict (password=hash_pass))
+                db.session.commit()
+                msg = "Success, passwords match."
+                return redirect(url_for('auth.login'))
+            else:
+                msg = "Invalid username, try again."
+                
+        else:
+            msg = "Passwords do not match, try again."
+    return render_template('reset_password.html', form = form, msg = msg)
+            
+
 
 @bp.route('/signup', methods=['GET', 'POST'])
 def signup():
