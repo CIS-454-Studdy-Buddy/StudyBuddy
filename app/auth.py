@@ -60,7 +60,9 @@ class PasswordResetForm(FlaskForm):
     re_enter_password = PasswordField('Re-enter Password',[validators.DataRequired(),validators.Length(
         min=4, max=20)], render_kw={"placeholder": "Re-enter New Password"})
     submit = SubmitField("Submit")
-    
+
+class EmailConfimation(FlaskForm):
+    msg = "Please check your email to confirm validity"  
 
 class ForgotConfimation(FlaskForm):
     msg = "Please check your email for a link to reset password"
@@ -92,13 +94,20 @@ def reset_password():
 def signup():
     form = RegisterForm()
     if form.validate_on_submit():
+        html_msg = email_content_email_confirmation(username=form.username.data, 
+                                                email_confirmation=url_for('auth.login', _external=True))
+        send_email(email_address=form.username.data, msg_html=html_msg)
         hashed_password = bcrypt.generate_password_hash(form.password.data)
         new_user = User(username=form.username.data, password=hashed_password)
         db.session.add(new_user)
         db.session.commit()
-        return redirect(url_for('auth.login'))
+        return redirect(url_for('auth.emailconfirmation'))
     return render_template('register.html', form=form)
 
+@bp.route('/emailconfirmation', methods=['GET'])
+def emailconfirmation():
+    form = EmailConfimation()
+    return render_template('emailconfimation.html', form=form, msg=form.msg)
 
 
 @bp.route('/login', methods=['GET','POST'])
@@ -134,10 +143,10 @@ def logout():
 def forgot():
     form = ForgotForm() 
     if form.validate_on_submit():
-        html_msg = email_content_password_reset(email_address=form.username.data, 
-                                                reset_password_url=url_for('auth.reset_password'))
+        html_msg = email_content_password_reset(username=form.username.data, 
+                                                reset_password_url=url_for('auth.reset_password', _external=True))
         
-        send_email(email_address=form.username.data, html_msg=html_msg)
+        send_email(email_address=form.username.data, msg_html=html_msg)
         
         return redirect(url_for('auth.forgotconfirmation'))
         
@@ -164,5 +173,11 @@ def email_content_password_reset(username, reset_password_url):
     #reset_password_url = url_for('auth.reset_password')
     token =  random.randint(10**9,10**10)
     url = f"{reset_password_url}?t={token}"
+    html_msg = f'<b>Hey {username}</b>, sending you this email from my <a href="{url}">Study Buddy App</a>'
+    return html_msg
+
+def email_content_email_confirmation(username, email_confirmation):
+    token =  random.randint(10**9,10**10)
+    url = f"{email_confirmation}?t={token}"
     html_msg = f'<b>Hey {username}</b>, sending you this email from my <a href="{url}">Study Buddy App</a>'
     return html_msg

@@ -18,7 +18,6 @@ def test_signup_username_not_email(client):
     assert b"email address must syracuse university email address" in response.data
 
   
-
 def test_signup_existing_user(client):
 
     response = client.post("/signup", data={"username": "bobby@syr.edu", "password": "ge3456"})
@@ -31,6 +30,9 @@ def test_user_not_existing(client):
     assert response.status_code == 200
     print(response.data)
     assert b"Invalid Login" in response.data
+
+
+
 
 
 
