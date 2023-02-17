@@ -1,10 +1,11 @@
 import pytest
-from ..app import create_app, db
+from app import create_app, db
+from app.models import *
 
 @pytest.fixture()
 def app():
     app = create_app("sqlite://")
-
+    app.config["WTF_CSRF_ENABLED"] = False
     with app.app_context():
         db.create_all()
     
@@ -12,4 +13,4 @@ def app():
 
 @pytest.fixture()
 def client(app):
-    app.test_client()
+    return app.test_client()

@@ -1,7 +1,9 @@
 import os 
 from flask import Flask
-from app.extensions import db, bcrypt, login_manager
+from app.extensions import db, bcrypt, login_manager, email
 from flask_bcrypt import Bcrypt
+from flask_mail import Mail
+
 
 
 def create_app(test_config=None):
@@ -14,6 +16,8 @@ def create_app(test_config=None):
         login_manager.login_view = "login"
         login_manager.init_app(app)
         bcrypt = Bcrypt(app)
+        email = Mail(app)
+        
     
     
     from . import auth, dashboard
