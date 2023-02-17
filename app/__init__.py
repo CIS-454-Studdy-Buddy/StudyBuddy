@@ -7,7 +7,8 @@ from flask_bcrypt import Bcrypt
 def create_app(test_config=None):
     app = Flask(__name__)
     app.config.from_object("instance.config.Config")
-
+    app.static_folder = 'static'
+    
     with app.app_context():
         db.init_app(app)
         login_manager.login_view = "login"
