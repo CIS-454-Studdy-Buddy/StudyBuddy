@@ -18,11 +18,20 @@ def load_user(user_id):
 
 
 class RegisterForm(FlaskForm):
+    first_name = StringField(validators=[InputRequired(), Length(
+        min=4, max=20)], render_kw={"placeholder": "First Name"})
+    
+    last_name = StringField(validators=[InputRequired(), Length(
+        min=4, max=20)], render_kw={"placeholder": "Last Name"})
+                             
     username = StringField(validators=[InputRequired(), Email(granular_message="invalid email address"), Length(
         min=4, max=20)], render_kw={"placeholder": "Username"})
 
     password = PasswordField(validators=[InputRequired(), Length(
             min=4, max=20)], render_kw={"placeholder": "Password"})
+    
+    re_enter_password = PasswordField('Re-enter Password',[validators.DataRequired(),validators.Length(
+        min=4, max=20)], render_kw={"placeholder": "Re-enter New Password"})
 
     submit = SubmitField("SignUp")
 
@@ -93,16 +102,21 @@ def reset_password():
 @bp.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = RegisterForm()
+    msg = ""
     if form.validate_on_submit():
-        html_msg = email_content_email_confirmation(username=form.username.data, 
+        if form.password.data == form.re_enter_password.data:
+            html_msg = email_content_email_confirmation(username=form.username.data, 
                                                 email_confirmation=url_for('auth.login', _external=True))
-        send_email(email_address=form.username.data, msg_html=html_msg)
-        hashed_password = bcrypt.generate_password_hash(form.password.data)
-        new_user = User(username=form.username.data, password=hashed_password)
-        db.session.add(new_user)
-        db.session.commit()
-        return redirect(url_for('auth.emailconfirmation'))
-    return render_template('register.html', form=form)
+            send_email(email_address=form.username.data, msg_html=html_msg)
+            hashed_password = bcrypt.generate_password_hash(form.password.data)
+            new_user = User(first_name=form.first_name.data, last_name=form.last_name.data,  
+                            username=form.username.data, password=hashed_password)
+            db.session.add(new_user)
+            db.session.commit()
+            return redirect(url_for('auth.emailconfirmation'))
+        else:
+            msg = "Passwords do not match, try again."
+    return render_template('register.html', form=form, msg=msg)
 
 @bp.route('/emailconfirmation', methods=['GET'])
 def emailconfirmation():
