@@ -11,7 +11,7 @@
 
     <link rel="stylesheet" href="css/bootstrap.css">
     <script src="js/bootstrap.js"></script>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body class="bg">
@@ -20,7 +20,9 @@
 
         <!-- logo -->
         <div class="row">
-            <div class="logo">SU Study Buddy</div>
+            <div class="logo">
+                <img src="{{url_for('static', filename='logo-study-buddy.png')}}" , width="200" ,height="200">
+            </div>
         </div>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
         <div class="row">
@@ -40,7 +42,7 @@
                     <p></p>
                     <center><button type="submit" class="btn btn-primary">Sign In</button></center>
                     <div class="row">
-                        <center><a href="0-register.html">New User? Signup Here</a></center>
+                        <center><a href="{{url_for('auth.signup')}}">New User? Signup Here</a></center>
                     </div>
                 </form>
             </div>
