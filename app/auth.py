@@ -180,11 +180,10 @@ def send_email(email_address, msg_html):
     msg.body = 'Hello Flask message sent from Flask-Mail'
     msg.html = msg_html 
     email.send(msg)
-    return 'Sent'
+    return msg
 
 def email_content_password_reset(username, reset_password_url):
     msg_non_html = ""
-    #reset_password_url = url_for('auth.reset_password')
     token =  random.randint(10**9,10**10)
     url = f"{reset_password_url}?t={token}"
     html_msg = f'<b>Hey {username}</b>, sending you this email from my <a href="{url}">Study Buddy App</a>'
