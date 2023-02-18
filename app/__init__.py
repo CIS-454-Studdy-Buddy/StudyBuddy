@@ -16,6 +16,7 @@ def create_app(test_config=None):
         login_manager.init_app(app)
         bcrypt = Bcrypt(app)
         email = Mail(app)
+        
     
     
     from . import auth, dashboard
