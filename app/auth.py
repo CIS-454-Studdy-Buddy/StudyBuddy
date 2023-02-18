@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, url_for, redirect, request, session 
+from flask import Blueprint, render_template, url_for, redirect, request, session, flash
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, EmailField, validators
@@ -14,6 +14,9 @@ import app
 from flask import current_app
 from app import create_app
 from instance.config import Config
+from itsdangerous import URLSafeTimedSerializer as Serializer, SignatureExpired
+#from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+
 
 bp = Blueprint('auth', __name__, url_prefix='/')
 
@@ -81,18 +84,24 @@ class EmailConfirmation(FlaskForm):
 class ForgotConfirmation(FlaskForm):
     msg = "Please check your email for a link to reset password"
 
-@bp.route('/reset_password', methods=['GET', 'POST'])
-def reset_password():
+@bp.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
     msg = ""
+    user = User.verify_reset_token(token)
+    if user is None:
+        flash('That is an invalid or expired token', 'warning')
+        return redirect(url_for('forgot'))
     form = PasswordResetForm()
     if form.validate_on_submit():
         if form.password.data == form.re_enter_password.data:
-            user = User.query.filter_by(username=form.username.data).first()
+            #user = User.query.filter_by(username=form.username.data).first()
             if user:
                 ## TODO replace old password with new password in database
                 hash_pass = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+                #user.password = hash_pass
                 User.query.filter_by(username=form.username.data).update(dict (password=hash_pass))
                 db.session.commit()
+                flash('Your password has been updated! You are now able to log in', 'success')
                 msg = "Success, passwords match."
                 return redirect(url_for('auth.login'))
             else:
@@ -101,15 +110,17 @@ def reset_password():
         else:
             msg = "Passwords do not match, try again."
     return render_template('reset_password.html', form = form, msg = msg)
-            
+
 @bp.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = RegisterForm()
     msg = ""
     if form.validate_on_submit():
         if form.password.data == form.re_enter_password.data:
+            s = Serializer(current_app.config['SECRET_KEY'], 3600)
+            token = s.dumps(form.username.data, salt='email-confirm')
             html_msg = email_content_email_confirmation(username=form.username.data, 
-                                                email_confirmation=url_for('auth.login', _external=True))
+                                                email_confirmation_url=url_for('auth.logintoken', token = token, _external=True))
             send_email(email_address=form.username.data, msg_html=html_msg, subject="Email Confirmation")
             hashed_password = bcrypt.generate_password_hash(form.password.data)
             new_user = User(first_name=form.first_name.data, last_name=form.last_name.data,  
@@ -144,6 +155,30 @@ def login():
     return render_template('login.html', form=form, msg=msg)
 
 
+@bp.route('/login/<token>', methods=['GET','POST'])
+def logintoken(token):
+    msg = ""
+    user = User.verify_confirmation_token(token)
+    if user is None:
+        flash('That is an invalid or expired token', 'warning')
+        return redirect(url_for('home'))
+    form = LoginForm()
+    ## make user verified
+    User.query.filter_by(username=form.username.data).update(dict (isVerified=True))
+    db.session.commit()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user:
+            if bcrypt.check_password_hash(user.password, form.password.data):
+                login_user(user)
+                return redirect(url_for('dashboard.dashboard'))
+            else:
+                msg = "Invalid Login"
+        else:
+            msg = "Invalid Login" 
+    return render_template('login.html', form=form, msg=msg)
+
+
 @bp.route('/')
 def home():
     return render_template('home.html')
@@ -160,11 +195,13 @@ def logout():
 def forgot():
     form = ForgotForm() 
     if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        token = user.get_reset_token()
         html_msg = email_content_password_reset(username=form.username.data, 
-                                                reset_password_url=url_for('auth.reset_password', _external=True))
+                                                reset_password_url=url_for('auth.reset_password', token = token, _external=True))
         
         send_email(email_address=form.username.data, msg_html=html_msg, subject="Password Reset")
-        
+        flash('An email has been sent with instructions to reset your password.', 'info')
         return redirect(url_for('auth.forgotconfirmation'))
         
     return render_template('forgot.html', form=form)
@@ -190,20 +227,11 @@ def send_email(email_address, msg_html, subject):
     return msg
 
 def email_content_password_reset(username, reset_password_url):
-    msg_non_html = ""
-    token =  random.randint(10**9,10**10)
-    url = f"{reset_password_url}?t={token}"
-    html_msg = f'Hi <b>{username}</b>, please click the link to reset your Study Buddy password. <br> <a href="{url}">Reset Password</a>'
+    #msg_non_html = ""
+    #token =  random.randint(10**9,10**10)
+    #url = f"{reset_password_url}?t={token}"
+    html_msg = f'Hi <b>{username}</b>, please click the link to reset your Study Buddy password. <br> <a href="{reset_password_url}">Reset Password</a>'
     return html_msg
 
-def email_content_email_confirmation(username, email_confirmation):
-    token =  random.randint(10**9,10**10)
-    url = f"{email_confirmation}?t={token}"
-    return render_template('email.html', username=username, url=url)
-
-#**************NOTES****************
-# TODO trying to get app.config['SECRET_KEY'] to work
-# def get_reset_token(reset_token, expires_sec=86400):
-#     s = Serializer(current_app.config['SECRET_KEY'], expires_sec)
-#     return s.dumps({'user_id': reset_token}).decode('utf-8')
-
+def email_content_email_confirmation(username, email_confirmation_url):
+    return render_template('email.html', username=username, url=email_confirmation_url)
