@@ -9,13 +9,13 @@ def test_signup_new_user(client):
 def test_signup_failed_email_syr_new_user(client):
     response = client.post("/signup", data={"username": "bobby@gmail.com", "password": "ge3456"})
     assert response.status_code == 200
-    assert b"email address must syracuse university email address" in response.data
+    assert b"Your email address must be a valid Syracuse University email" in response.data
 
 def test_signup_username_not_email(client):
     response = client.post("/signup", data={"username": "bobby", "password": "ge3456"})
     assert response.status_code == 200
     assert b"The email address is not valid. It must have exactly one @-sign." in response.data
-    assert b"email address must syracuse university email address" in response.data
+    assert b"Your email address must be a valid Syracuse University email" in response.data
 
   
 

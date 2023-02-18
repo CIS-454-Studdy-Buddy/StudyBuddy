@@ -3,3 +3,4 @@ __pycache__
 instance/*
 !instance/config.py
 venv/*
+.vscode/*

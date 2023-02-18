@@ -4,11 +4,16 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, EmailField, validators
 from wtforms.validators import InputRequired, Length, ValidationError, Email
 from flask_bcrypt import Bcrypt
+import app
 from app.models.user import User
 from app.extensions import db, bcrypt, login_manager, email
 from flask_mail import Message
-import random  
+import random
 
+# matt imports
+from flask import current_app
+from app import create_app
+from instance.config import Config
 
 bp = Blueprint('auth', __name__, url_prefix='/')
 
@@ -28,7 +33,7 @@ class RegisterForm(FlaskForm):
 
     def validate_username(self, username):
         if not username.data.endswith("@syr.edu"):
-            raise ValidationError("email address must syracuse university email address")
+            raise ValidationError("Your email address must be a valid Syracuse University email")
         existing_user_username = User.query.filter_by(
             username=username.data).first()
 
@@ -61,6 +66,8 @@ class PasswordResetForm(FlaskForm):
         min=4, max=20)], render_kw={"placeholder": "Re-enter New Password"})
     submit = SubmitField("Submit")
     
+class EmailConfimation(FlaskForm):
+    msg = "Please check your email to confirm validity"
 
 class ForgotConfimation(FlaskForm):
     msg = "Please check your email for a link to reset password"
@@ -74,7 +81,7 @@ def reset_password():
             user = User.query.filter_by(username=form.username.data).first()
             if user:
                 ## TODO replace old password with new password in database
-                hash_pass = bcrypt.generate_password_hash(form.password.data)
+                hash_pass = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
                 User.query.filter_by(username=form.username.data).update(dict (password=hash_pass))
                 db.session.commit()
                 msg = "Success, passwords match."
@@ -92,13 +99,20 @@ def reset_password():
 def signup():
     form = RegisterForm()
     if form.validate_on_submit():
+        html_msg = email_content_email_confirmation(username=form.username.data, 
+                                                email_confirmation=url_for('auth.login', _external=True))
+        send_email(email_address=form.username.data, msg_html=html_msg, subject="Email Confirmation")
         hashed_password = bcrypt.generate_password_hash(form.password.data)
-        new_user = User(username=form.username.data, password=hashed_password)
+        new_user = User(username=form.username.data, password=hashed_password, isVerified=False)
         db.session.add(new_user)
         db.session.commit()
-        return redirect(url_for('auth.login'))
+        return redirect(url_for('auth.emailconfirmation'))
     return render_template('register.html', form=form)
 
+@bp.route('/emailconfirmation', methods=['GET'])
+def emailconfirmation():
+    form = EmailConfimation()
+    return render_template('emailconfirmation.html', form=form, msg=form.msg)
 
 
 @bp.route('/login', methods=['GET','POST'])
@@ -134,10 +148,10 @@ def logout():
 def forgot():
     form = ForgotForm() 
     if form.validate_on_submit():
-        html_msg = email_content_password_reset(email_address=form.username.data, 
-                                                reset_password_url=url_for('auth.reset_password'))
+        html_msg = email_content_password_reset(username=form.username.data, 
+                                                reset_password_url=url_for('auth.reset_password', _external=True))
         
-        send_email(email_address=form.username.data, html_msg=html_msg)
+        send_email(email_address=form.username.data, msg_html=html_msg, subject="Password Reset")
         
         return redirect(url_for('auth.forgotconfirmation'))
         
@@ -146,16 +160,20 @@ def forgot():
 @bp.route('/forgotconfirmation', methods=['GET'])
 def forgotconfirmation():
     form = ForgotConfimation()
-    return render_template('forgotconfimation.html', form=form, msg=form.msg)
+    return render_template('forgotconfirmation.html', form=form, msg=form.msg)
 
-def send_email(email_address, msg_html):
+def send_email(email_address, msg_html, subject):
+    sendSubject = subject
     msg = Message(
-                'Hello',
+                subject = sendSubject,
                 sender ='su.study.buddy@gmail.com',
                 recipients = [email_address]
                )
-    msg.body = 'Hello Flask message sent from Flask-Mail'
-    msg.html = msg_html 
+    msg.html = msg_html
+    # TODO cant get this to work. adding image to email using flask-mail
+    with current_app.open_resource("static/images/lock.png") as lock:
+        msg.attach("lock.png", "image/png", lock.read())
+
     email.send(msg)
     return 'Sent'
 
@@ -164,5 +182,16 @@ def email_content_password_reset(username, reset_password_url):
     #reset_password_url = url_for('auth.reset_password')
     token =  random.randint(10**9,10**10)
     url = f"{reset_password_url}?t={token}"
-    html_msg = f'<b>Hey {username}</b>, sending you this email from my <a href="{url}">Study Buddy App</a>'
+    html_msg = f'Hi <b>{username}</b>, please click the link to reset your Study Buddy password. <br> <a href="{url}">Reset Password</a>'
     return html_msg
+
+def email_content_email_confirmation(username, email_confirmation):
+    token =  random.randint(10**9,10**10)
+    url = f"{email_confirmation}?t={token}"
+    return render_template('email.html', username=username, url=url)
+
+#**************NOTES****************
+# TODO trying to get app.config['SECRET_KEY'] to work
+# def get_reset_token(reset_token, expires_sec=86400):
+#     s = Serializer(current_app.config['SECRET_KEY'], expires_sec)
+#     return s.dumps({'user_id': reset_token}).decode('utf-8')
