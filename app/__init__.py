@@ -19,9 +19,10 @@ def create_app(test_config=None):
         
     
     
-    from . import auth, dashboard
+    from . import auth, dashboard, inbox
     app.register_blueprint(auth.bp)
     app.register_blueprint(dashboard.bp)
+    app.register_blueprint(inbox.bp)
 
     return app
 
