@@ -140,10 +140,17 @@ def login():
             msg = "Invalid Login" 
     return render_template('login.html', form=form, msg=msg)
 
+class contactUs(FlaskForm):
+    contactButton = SubmitField("Contact Us")
 
-@bp.route('/')
+@bp.route('/', methods=['GET', 'POST'])
 def home():
-    return render_template('home.html')
+    form = contactUs()
+    if form.validate_on_submit():
+        if form.data['contactButton']:
+            return redirect(url_for('contactus.contactUs'))
+    return render_template('home.html', form=form)
+
 
 
 @bp.route('/logout', methods=['GET', 'POST'])

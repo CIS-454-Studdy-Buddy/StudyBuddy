@@ -10,11 +10,11 @@ class profileForm(FlaskForm):
     logoutButton = SubmitField("Logout")
     saveButton = SubmitField("Save")
     firstName = "James"
-    LastName = "Smith"
+    lastName = "Smith"
     username = "jsmith@syr.edu"
     phoneNumber = StringField(validators=[InputRequired(), Email(granular_message="invalid phone number"), Length(
         min=0, max=15)], render_kw={"placeholder": "Phone Number"})
-    aboutMe = StringField(validators=[InputRequired(), Email(granular_message="invalid phone number"), Length(
+    aboutMe = StringField(validators=[InputRequired(), Email(granular_message="invalid about me input"), Length(
         min=0, max=50)], render_kw={"placeholder": "About Me"})
 
     
