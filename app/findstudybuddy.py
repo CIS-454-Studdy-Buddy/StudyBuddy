@@ -3,12 +3,12 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, log
 from app.auth import *
 from app.dashboard import *
 
-class InboxForm(FlaskForm):
+class FindBuddyForm(FlaskForm):
     but = SubmitField("Button")
 
-bp = Blueprint('inbox', __name__, url_prefix='/')
-@bp.route('/inbox', methods=['GET', 'POST'])
+bp = Blueprint('findstudybuddy', __name__, url_prefix='/')
+@bp.route('/findstudybuddy', methods=['GET', 'POST'])
 @login_required
-def inbox():
-    form = InboxForm()
-    return render_template('inbox.html', form=form)
+def findBuddy():
+    form = FindBuddyForm()
+    return render_template('findstudybuddy.html', form=form)

@@ -3,12 +3,12 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, log
 from app.auth import *
 from app.dashboard import *
 
-class InboxForm(FlaskForm):
+class materialsViewForm(FlaskForm):
     but = SubmitField("Button")
 
-bp = Blueprint('inbox', __name__, url_prefix='/')
-@bp.route('/inbox', methods=['GET', 'POST'])
+bp = Blueprint('materialsview', __name__, url_prefix='/')
+@bp.route('/materialsview', methods=['GET', 'POST'])
 @login_required
-def inbox():
-    form = InboxForm()
-    return render_template('inbox.html', form=form)
+def materialsView():
+    form = materialsViewForm()
+    return render_template('materialsview.html', form=form)

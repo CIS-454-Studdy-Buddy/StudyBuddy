@@ -3,12 +3,12 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, log
 from app.auth import *
 from app.dashboard import *
 
-class InboxForm(FlaskForm):
+class materialsUploadForm(FlaskForm):
     but = SubmitField("Button")
 
-bp = Blueprint('inbox', __name__, url_prefix='/')
-@bp.route('/inbox', methods=['GET', 'POST'])
+bp = Blueprint('materialsupload', __name__, url_prefix='/')
+@bp.route('/materialsupload', methods=['GET', 'POST'])
 @login_required
-def inbox():
-    form = InboxForm()
-    return render_template('inbox.html', form=form)
+def materialsUpload():
+    form = materialsUploadForm()
+    return render_template('materialsupload.html', form=form)

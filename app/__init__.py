@@ -19,10 +19,17 @@ def create_app(test_config=None):
         
     
     
-    from . import auth, dashboard, inbox
+    from . import auth, dashboard, inbox, findstudybuddy, subjectselection, materialsupload, materialsview, rate, viewratings, profile
     app.register_blueprint(auth.bp)
     app.register_blueprint(dashboard.bp)
     app.register_blueprint(inbox.bp)
+    app.register_blueprint(findstudybuddy.bp)
+    app.register_blueprint(subjectselection.bp)
+    app.register_blueprint(materialsupload.bp)
+    app.register_blueprint(materialsview.bp)
+    app.register_blueprint(rate.bp)
+    app.register_blueprint(viewratings.bp)
+    app.register_blueprint(profile.bp)
 
     return app
 
