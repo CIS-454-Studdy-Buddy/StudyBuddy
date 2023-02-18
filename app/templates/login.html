@@ -24,43 +24,42 @@
 
         <!-- logo -->
         <div class="row">
-
             <div class="logo">
                 <img src="{{url_for('static', filename='logo-study-buddy.png')}}" , width="200" ,height="200">
+                <center>
+                    <div class="col-4 align-items-baseline">Log In</div>
+                </center>
             </div>
 
         </div>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
         <div class="row">
             <div class="col-4"></div>
-            <div class="col-4 align-items-baseline"><center>Log In</center>
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
 
+            <br>
+            <br>
+            <br>
 
-                <form method="POST" action="">
+                <center><form method="POST" action="">
                     {{ form.hidden_tag() }}
-                    <center> <div class="form-group">
+                    <div class="form-group">
                         <label for="emailAddress">SU email</label>
                         {{ form.username }}
-
-                    </div> </center>
+                    </div> 
                     <p></p>
-                    <center><div class="form-group">
+                    <div class="form-group">
                         <label for="exampleInputPassword1">Password</label>
-
-
                         {{ form.password }}
-                    </div></center>
+                    </div>
                     <p></p>
-                    <center>{{ form.submit }}</center>
+                    {{ form.submit }}
                     <div class="row">
-                        <center><a href="{{url_for('auth.signup')}}">New User? Signup Here</a></center>
+                        <a href="{{url_for('auth.signup')}}">New User? Signup Here</a>
                     </div>
                     <div class="row">
                         <p>{{msg}}</p>
                     </div>
 
-                </form>
+                </form></center>
             </div>
             <div class="col-4"></div>
 

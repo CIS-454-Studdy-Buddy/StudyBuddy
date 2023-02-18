@@ -27,45 +27,43 @@
         <div class="row">
             <div class="logo">
                 <img src="{{url_for('static', filename='logo-study-buddy.png')}}" , width="200" ,height="200">
+                <center><div class="col-4 align-items-baseline">Sign Up</div></center>
             </div>
 
         </div>
         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
         <div class="row">
             <div class="col-4"></div>
-            <div class="col-4 align-items-baseline"><center>Sign Up</center>
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
 
                 <form method="POST" action="">
                     {{form.hidden_tag()}}
                     <center><div class="form-group">
                         <label for="emailAddress">First Name</label>
+                        <br>
                         {{form.first_name}}
                     </div></center>
                     <p></p>
                     <center><div class="form-group">
-                        <label for="emailAddress">Last Name</label>
-
+                        <label for="emailAddress"><p>Last Name</label</p></label>
+                        <br>
                         {{form.last_name}}
                     </div></center>
                     <p></p>
                     <center><div class="form-group">
                         <label for="emailAddress">SU email</label>
-
-
+                        <br>
                         {{form.username}}
                     </div></center>
                     <p></p>
                     <center><div class="form-group">
                         <label for="exampleInputPassword1">PASSWORD</label>
-
-
+                        <br>
                         {{form.password}}
                     </div></center>
                     <p></p>
                     <center><div class="form-group">
                         <label for="exampleInputPassword1">Re-enter Password</label>
-
+                        <br>
                         {{form.re_enter_password}}
                     </div></center>
                     <p></p>
