@@ -105,12 +105,17 @@ def signup():
     msg = ""
     if form.validate_on_submit():
         if form.password.data == form.re_enter_password.data:
-            html_msg = email_content_email_confirmation(username=form.username.data, 
-                                                email_confirmation=url_for('auth.login', _external=True))
+            token =  random.randint(10**9,10**10)
+            html_msg = email_content_email_confirmation(
+                username=form.username.data, 
+                email_confirmation=url_for('auth.login', _external=True),
+                token=token 
+                )
             send_email(email_address=form.username.data, msg_html=html_msg)
             hashed_password = bcrypt.generate_password_hash(form.password.data)
             new_user = User(first_name=form.first_name.data, last_name=form.last_name.data,  
-                            username=form.username.data, password=hashed_password)
+                            username=form.username.data, password=hashed_password,
+                            token=token)
             db.session.add(new_user)
             db.session.commit()
             return redirect(url_for('auth.emailconfirmation'))
@@ -128,10 +133,25 @@ def emailconfirmation():
 def login():
     msg = ""
     form = LoginForm()
+    token = request.args.get("t")
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user:
             if bcrypt.check_password_hash(user.password, form.password.data):
+                if token:
+                    if user.token == token:
+                        user.is_verified = True
+                        db.session.add(user)
+                        db.session.commit()
+                    else:
+                        msg = "Invalid token"
+                        return render_template('login.html', form=form, msg=msg)
+                    
+                else:
+                    if not user.is_verified:
+                        msg = "Did not click on the link which was sent to your email"
+                        return render_template('login.html', form=form, msg=msg)
+                    
                 login_user(user)
                 return redirect(url_for('dashboard.dashboard'))
             else:
@@ -189,8 +209,7 @@ def email_content_password_reset(username, reset_password_url):
     html_msg = f'<b>Hey {username}</b>, sending you this email from my <a href="{url}">Study Buddy App</a>'
     return html_msg
 
-def email_content_email_confirmation(username, email_confirmation):
-    token =  random.randint(10**9,10**10)
+def email_content_email_confirmation(username, email_confirmation, token):
     url = f"{email_confirmation}?t={token}"
     html_msg = f'<b>Hey {username}</b>, sending you this email from my <a href="{url}">Study Buddy App</a>'
     return html_msg
