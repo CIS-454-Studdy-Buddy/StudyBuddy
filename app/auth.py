@@ -4,13 +4,13 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, EmailField, validators
 from wtforms.validators import InputRequired, Length, ValidationError, Email
 from flask_bcrypt import Bcrypt
-import app
 from app.models.user import User
 from app.extensions import db, bcrypt, login_manager, email
 from flask_mail import Message
-import random
+import random 
 
 # matt imports
+import app
 from flask import current_app
 from app import create_app
 from instance.config import Config
@@ -78,7 +78,7 @@ class PasswordResetForm(FlaskForm):
 class EmailConfirmation(FlaskForm):
     msg = "Please check your email to confirm validity"
 
-class ForgotConfimation(FlaskForm):
+class ForgotConfirmation(FlaskForm):
     msg = "Please check your email for a link to reset password"
 
 @bp.route('/reset_password', methods=['GET', 'POST'])
@@ -102,8 +102,6 @@ def reset_password():
             msg = "Passwords do not match, try again."
     return render_template('reset_password.html', form = form, msg = msg)
             
-
-
 @bp.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = RegisterForm()
@@ -173,7 +171,7 @@ def forgot():
 
 @bp.route('/forgotconfirmation', methods=['GET'])
 def forgotconfirmation():
-    form = ForgotConfimation()
+    form = ForgotConfirmation()
     return render_template('forgotconfirmation.html', form=form, msg=form.msg)
 
 def send_email(email_address, msg_html, subject):

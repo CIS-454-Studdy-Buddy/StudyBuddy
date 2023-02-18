@@ -9,3 +9,4 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(20), nullable=False, unique=True)
     password = db.Column(db.String(80), nullable=False)
     isVerified = db.Column(db.Boolean, nullable=False, default=False)
+    
