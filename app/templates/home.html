@@ -5,40 +5,52 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>LogoTemplate</title>
+    <title>Study Buddy</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <script src="js/bootstrap.js"></script>
-
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-<body class="bg">
-
-    <div class="container-fluid">
-        <!-- logo -->
-        <div class="col">
-            <div class="logo">
-                <img src="{{url_for('static', filename='logo-study-buddy.png')}}", width="200" ,height="200">
-            </div>
-                 <p></p>
-                <center><a href="{{url_for('auth.signup')}}">Register Here</a></center>
-                <p></p>
-                <center><a href="{{url_for('auth.login')}}">Log In Here</a></center>
-            <div class="borderLeft"></div>
-        </div>
-
-    </div>
-  
-
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="static/home.css">
 </head>
 
 <body class="bg">
+    <div class="container-fluid landingbg">
+        <!-- top buffer -->
+        <div class="row landingbuffer">
+        </div>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
-            crossorigin="anonymous"></script>
+
+        <div class="row">
+            <!-- left buffer -->
+            <div class="col-1"></div>
+            <div class="col-xl-3 col-lg-4 col-md-5 col-sm-6 col-7">
+                <!-- box1 -->
+                <div class="row landingtext">
+                    <h3 style="text-align: center;">Studying Alone?</h3>
+                    Study Buddy is a service where students can help each other succeed in their studies. ALso, it's a
+                    great way to meet students in your major and making long lasting connections!
+                </div>
+
+
+                <!-- box2 -->
+                <div class="row landingtext">
+                    <div class="col" style=" text-align: center;">
+                        <h4>Find your Buddy today!</h3>
+                            <div class="row">
+                                <div class="col py-3"><a href="{{url_for('auth.login')}}" type="button"
+                                        class="btn btn-outline-primary btn-lg">Log In</a></div>
+                                <div class="col py-3"><a href="{{url_for('auth.signup')}}" type="button"
+                                        class="btn btn-outline-primary btn-lg">Sign Up</a></div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
