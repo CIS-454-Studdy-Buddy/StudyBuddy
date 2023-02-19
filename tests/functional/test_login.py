@@ -1,12 +1,17 @@
-# 
+'''
+Author: Aaron Alakkadan 
+'''
 from app.auth import email_content_password_reset, url_for, send_email
 from unittest import mock
 import random
-from app.models.user import User 
+from app.models.user import User
 
+# test case for login email verification link clicked and successfully login 
 @mock.patch("app.extensions.email.send", return_value=True, autospec=True)
 @mock.patch("random.randint", return_value=1234, autospec=True)
 def test_login_email_verification_link_clicked(mock_token, mock_email, client):
+    # send data to signup using post method
+    # redirects to email confirmation
     username = "validt@syr.edu"
     response = client.post("/signup", data={"first_name": "Bobby", "last_name": "Goldstein",
                                             "username": username, "password": "ge3456",
@@ -25,6 +30,7 @@ def test_login_email_verification_link_clicked(mock_token, mock_email, client):
         assert user.is_verified
         assert response.request.path == '/dashboard'  
 
+# test case for login invalid token 
 @mock.patch("app.extensions.email.send", return_value=True, autospec=True)
 @mock.patch("random.randint", return_value=1234, autospec=True)
 def test_login_invalid_token(mock_token, mock_email, client):

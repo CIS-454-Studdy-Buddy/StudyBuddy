@@ -1,7 +1,13 @@
+'''
+Author: Talal Hakki
+'''
 from flask import Blueprint, render_template, url_for, redirect, request, session 
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user 
 from app.auth import *
 
+'''
+This is a form class for the contactForm 
+'''
 class contactForm(FlaskForm):
     firstName = StringField(validators=[InputRequired(), Length(
         min=4, max=20)], render_kw={"placeholder": "First Name"})
