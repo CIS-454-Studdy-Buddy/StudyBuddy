@@ -81,22 +81,31 @@ class ForgotConfirmation(FlaskForm):
 def reset_password():
     msg = ""
     form = PasswordResetForm()
+    token = request.args.get("t")
     if form.validate_on_submit():
-        if form.password.data == form.re_enter_password.data:
-            user = User.query.filter_by(username=form.username.data).first()
-            if user:
-                ## TODO replace old password with new password in database
-                hash_pass = bcrypt.generate_password_hash(form.password.data)
-                User.query.filter_by(username=form.username.data).update(dict (password=hash_pass))
-                db.session.commit()
-                msg = "Success, passwords match."
-                return redirect(url_for('auth.login'))
+        user = User.query.filter_by(username=form.username.data).first()
+        if user:
+            if form.password.data == form.re_enter_password.data:
+                if token:
+                    if user.token == token:
+                        hash_pass = bcrypt.generate_password_hash(form.password.data)
+                        user.password=hash_pass
+                        db.session.add(user)
+                        db.session.commit()
+                        msg = "Success, passwords match."
+                        return redirect(url_for('auth.login'))
+                    
+                    else:
+                        msg = "Invalid token"
+                else:
+                    msg = "Empty token"
+            
             else:
-                msg = "Invalid username, try again."
+                msg = "Passwords do not match, try again."
                 
         else:
-            msg = "Passwords do not match, try again."
-    return render_template('reset_password.html', form = form, msg = msg)
+            msg = "Invalid User"
+    return render_template('reset_password.html', form=form, msg=msg)
             
 
 
@@ -177,15 +186,29 @@ def logout():
 @bp.route('/forgot', methods=['GET', 'POST'])
 def forgot():
     form = ForgotForm() 
+    msg = ""
     if form.validate_on_submit():
-        html_msg = email_content_password_reset(username=form.username.data, 
-                                                reset_password_url=url_for('auth.reset_password', _external=True))
+        token = random.randint(10**9,10**10)
+        user = User.query.filter_by(username=form.username.data).first()
+        if user:
+            if user.is_verified:
+                user.token = token
+                db.session.add(user)
+                db.session.commit()
+
+                html_msg = email_content_password_reset(
+                    username=form.username.data, 
+                    reset_password_url=url_for('auth.reset_password', _external=True),
+                    token=token)
         
-        send_email(email_address=form.username.data, msg_html=html_msg, subject="Password Reset")
+                send_email(email_address=form.username.data, msg_html=html_msg, subject="Password Reset")
         
-        return redirect(url_for('auth.forgotconfirmation'))
+                return redirect(url_for('auth.forgotconfirmation'))
+            
+            else:
+                msg = "Your email is not verified"
         
-    return render_template('forgot.html', form=form)
+    return render_template('forgot.html', form=form, msg=msg)
 
 @bp.route('/forgotconfirmation', methods=['GET'])
 def forgotconfirmation():
@@ -203,12 +226,11 @@ def send_email(email_address, msg_html, subject):
     email.send(msg)
     return msg
 
-def email_content_password_reset(username, reset_password_url):
-    msg_non_html = ""
-    token =  random.randint(10**9,10**10)
+def email_content_password_reset(username, reset_password_url, token):
     url = f"{reset_password_url}?t={token}"
-    html_msg = f'<b>Hey {username}</b>, sending you this email from my <a href="{url}">Study Buddy App</a>'
-    return html_msg
+    return render_template('reset_pw_email.html', username=username, url=url)
+    #html_msg = f'<b>Hey {username}</b>, sending you this email from my <a href="{url}">Study Buddy App</a>'
+    #return html_msg
 
 def email_content_email_confirmation(username, email_confirmation_url, token):
     url = f"{email_confirmation_url}?t={token}"
