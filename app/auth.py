@@ -14,7 +14,8 @@ bp = Blueprint('auth', __name__, url_prefix='/')
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    #return User.query.get(int(user_id))
+    return db.session.get(User,int(user_id))
 
 
 class RegisterForm(FlaskForm):
@@ -37,7 +38,7 @@ class RegisterForm(FlaskForm):
 
     def validate_username(self, username):
         if not username.data.endswith("@syr.edu"):
-            raise ValidationError("email address must syracuse university email address")
+            raise ValidationError("Your email address must be a valid Syracuse University email")
         existing_user_username = User.query.filter_by(
             username=username.data).first()
 
@@ -70,10 +71,10 @@ class PasswordResetForm(FlaskForm):
         min=4, max=20)], render_kw={"placeholder": "Re-enter New Password"})
     submit = SubmitField("Submit")
 
-class EmailConfimation(FlaskForm):
+class EmailConfirmation(FlaskForm):
     msg = "Please check your email to confirm validity"  
 
-class ForgotConfimation(FlaskForm):
+class ForgotConfirmation(FlaskForm):
     msg = "Please check your email for a link to reset password"
 
 @bp.route('/reset_password', methods=['GET', 'POST'])
@@ -108,10 +109,10 @@ def signup():
             token =  random.randint(10**9,10**10)
             html_msg = email_content_email_confirmation(
                 username=form.username.data, 
-                email_confirmation=url_for('auth.login', _external=True),
+                email_confirmation_url=url_for('auth.login', _external=True),
                 token=token 
                 )
-            send_email(email_address=form.username.data, msg_html=html_msg)
+            send_email(email_address=form.username.data, msg_html=html_msg, subject="Email Confirmation")
             hashed_password = bcrypt.generate_password_hash(form.password.data)
             new_user = User(first_name=form.first_name.data, last_name=form.last_name.data,  
                             username=form.username.data, password=hashed_password,
@@ -125,8 +126,8 @@ def signup():
 
 @bp.route('/emailconfirmation', methods=['GET'])
 def emailconfirmation():
-    form = EmailConfimation()
-    return render_template('emailconfimation.html', form=form, msg=form.msg)
+    form = EmailConfirmation()
+    return render_template('emailconfirmation.html', form=form, msg=form.msg)
 
 
 @bp.route('/login', methods=['GET','POST'])
@@ -180,7 +181,7 @@ def forgot():
         html_msg = email_content_password_reset(username=form.username.data, 
                                                 reset_password_url=url_for('auth.reset_password', _external=True))
         
-        send_email(email_address=form.username.data, msg_html=html_msg)
+        send_email(email_address=form.username.data, msg_html=html_msg, subject="Password Reset")
         
         return redirect(url_for('auth.forgotconfirmation'))
         
@@ -188,16 +189,16 @@ def forgot():
 
 @bp.route('/forgotconfirmation', methods=['GET'])
 def forgotconfirmation():
-    form = ForgotConfimation()
-    return render_template('forgotconfimation.html', form=form, msg=form.msg)
+    form = ForgotConfirmation()
+    return render_template('forgotconfirmation.html', form=form, msg=form.msg)
 
-def send_email(email_address, msg_html):
+def send_email(email_address, msg_html, subject):
+    sendSubject = subject
     msg = Message(
-                'Hello',
+                subject = sendSubject,
                 sender ='su.study.buddy@gmail.com',
                 recipients = [email_address]
                )
-    msg.body = 'Hello Flask message sent from Flask-Mail'
     msg.html = msg_html 
     email.send(msg)
     return msg
@@ -209,7 +210,8 @@ def email_content_password_reset(username, reset_password_url):
     html_msg = f'<b>Hey {username}</b>, sending you this email from my <a href="{url}">Study Buddy App</a>'
     return html_msg
 
-def email_content_email_confirmation(username, email_confirmation, token):
-    url = f"{email_confirmation}?t={token}"
-    html_msg = f'<b>Hey {username}</b>, sending you this email from my <a href="{url}">Study Buddy App</a>'
-    return html_msg
+def email_content_email_confirmation(username, email_confirmation_url, token):
+    url = f"{email_confirmation_url}?t={token}"
+    return render_template('email.html', username=username, url=url)
+    #html_msg = f'<b>Hey {username}</b>, sending you this email from my <a href="{url}">Study Buddy App</a>'
+    #return html_msg
