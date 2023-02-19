@@ -8,3 +8,5 @@ class User(db.Model, UserMixin):
     last_name  = db.Column(db.String(50), nullable=False, default = '')
     username = db.Column(db.String(20), nullable=False, unique=True)
     password = db.Column(db.String(80), nullable=False)
+    token = db.Column(db.String(20), nullable=True, unique=True)
+    is_verified = db.Column(db.Boolean, nullable=False, default=False)
