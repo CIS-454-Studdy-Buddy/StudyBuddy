@@ -7,4 +7,9 @@ class Config:
     MAIL_PASSWORD = 'mvzuqlkwoedrkcsi'
     MAIL_USE_TLS = False
     MAIL_USE_SSL = True
+
+class DebugConfig(Config):
+    SQLALCHEMY_DATABASE_URI = 'sqlite://'
+    DEBUG = True
+    TESTING = True
     

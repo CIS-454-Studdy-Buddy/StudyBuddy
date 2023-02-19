@@ -8,7 +8,10 @@ from flask_mail import Mail
 
 def create_app(test_config=None):
     app = Flask(__name__)
-    app.config.from_object("instance.config.Config")
+    if test_config:
+        app.config.from_object("instance.config.DebugConfig")
+    else: 
+        app.config.from_object("instance.config.Config")
 
     with app.app_context():
         db.init_app(app)
@@ -32,5 +35,6 @@ def create_app(test_config=None):
     app.register_blueprint(profile.bp)
     app.register_blueprint(contactus.bp)
 
+    
     return app
 
