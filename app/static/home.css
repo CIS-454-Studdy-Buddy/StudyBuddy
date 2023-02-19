@@ -1,0 +1,23 @@
+
+.bg{
+    background-color:rgb(255,153,0);
+}
+
+.landingbg{
+    height:100vh;
+    background-image: url('homeBG.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+
+}
+.landingbuffer{
+    padding-top: 15%;
+}
+.landingtext{
+    
+    margin-top: 5%;
+    background-color: rgb(250,104,0);
+    color: aliceblue;
+    text-align: left;
+    padding: 10px;
+}
