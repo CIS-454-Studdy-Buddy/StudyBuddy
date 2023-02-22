@@ -1,7 +1,7 @@
 '''
 Author: Aaron Alakkadan, Matt Faiola, Talal Hakki 
 '''
-from flask import Blueprint, render_template, url_for, redirect, request, session 
+from flask import Blueprint, render_template, url_for, redirect, request, session, current_app
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, EmailField, validators
@@ -12,6 +12,11 @@ from app.extensions import db, bcrypt, login_manager, email
 from flask_mail import Message
 import random  
 
+'''
+send email subject lines
+'''
+subjectEmailConfirmation = "Email Confirmation"
+subjectPasswordReset = "Password Reset"
 
 bp = Blueprint('auth', __name__, url_prefix='/')
 
@@ -157,7 +162,7 @@ def signup():
                 email_confirmation_url=url_for('auth.login', _external=True),
                 token=token 
                 )
-            send_email(email_address=form.username.data, msg_html=html_msg, subject="Email Confirmation")
+            send_email(email_address=form.username.data, msg_html=html_msg, subject=subjectEmailConfirmation)
             hashed_password = bcrypt.generate_password_hash(form.password.data)
             new_user = User(first_name=form.first_name.data, last_name=form.last_name.data,  
                             username=form.username.data, password=hashed_password,
@@ -265,7 +270,7 @@ def forgot():
                     reset_password_url=url_for('auth.reset_password', _external=True),
                     token=token)
         
-                send_email(email_address=form.username.data, msg_html=html_msg, subject="Password Reset")
+                send_email(email_address=form.username.data, msg_html=html_msg, subject=subjectPasswordReset)
         
                 return redirect(url_for('auth.forgotconfirmation'))
             
@@ -296,6 +301,10 @@ def send_email(email_address, msg_html, subject):
                 sender ='su.study.buddy@gmail.com',
                 recipients = [email_address]
                )
+
+    with current_app.open_resource("static/images/lock.png", 'rb') as lock:
+        msg.attach('lock.png', 'image/png', lock.read(), 'inline', headers=[['Content-ID','<lock>']])
+
     msg.html = msg_html 
     email.send(msg)
     return msg
@@ -306,7 +315,8 @@ and generates the url
 '''
 def email_content_password_reset(username, reset_password_url, token):
     url = f"{reset_password_url}?t={token}"
-    return render_template('reset_pw_email.html', username=username, url=url)
+    contacturl = url_for('contactus.contactUs')
+    return render_template('reset_pw_email.html', username=username, url=url, contacturl=contacturl)
     #html_msg = f'<b>Hey {username}</b>, sending you this email from my <a href="{url}">Study Buddy App</a>'
     #return html_msg
 
@@ -316,6 +326,7 @@ and generates the url
 '''
 def email_content_email_confirmation(username, email_confirmation_url, token):
     url = f"{email_confirmation_url}?t={token}"
-    return render_template('email.html', username=username, url=url)
+    contacturl = url_for('contactus.contactUs')
+    return render_template('email.html', username=username, url=url, contacturl=contacturl)
     #html_msg = f'<b>Hey {username}</b>, sending you this email from my <a href="{url}">Study Buddy App</a>'
     #return html_msg

@@ -1,9 +1,10 @@
 '''
-Author: Aaron Alakkadan, Matt Failoa, Talal Hakki
+Author: Aaron Alakkadan, Matt Faiola, Talal Hakki
 '''
 
 from app.extensions import db
 from flask_login import UserMixin
+from datetime import datetime
 
 '''
 This is the user class model which we inherits from the db.Model class. This represents the user table.    
@@ -16,4 +17,6 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(80), nullable=False)
     token = db.Column(db.String(20), nullable=True, unique=True)
     is_verified = db.Column(db.Boolean, nullable=False, default=False)
-
+    phone_number = db.Column(db.String(20), nullable=True, unique=True)
+    about_me = db.Column(db.Text, nullable=True)
+    date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
