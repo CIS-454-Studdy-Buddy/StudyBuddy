@@ -20,3 +20,8 @@ class User(db.Model, UserMixin):
     phone_number = db.Column(db.String(20), nullable=True, unique=True)
     about_me = db.Column(db.Text, nullable=True)
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+
+    def __repr__(self):
+        return f"<User {self.id}>"
+
