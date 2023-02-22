@@ -10,6 +10,6 @@ class Config:
 
 class DebugConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'sqlite://'
-    DEBUG = True
+    DEBUG = False
     TESTING = True
     
