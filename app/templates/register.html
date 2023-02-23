@@ -16,14 +16,198 @@
 
     <link rel="stylesheet" href="css/bootstrap.css">
     <script src="js/bootstrap.js"></script>
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/register.css">
+
 </head>
 
+<body>
+
+<nav class="navbar navbar-expand-lg py- sticky-top bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <img src="{{url_for('static', filename='logo-study-buddy.png')}}" , width="230" height="65">
+        </a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <h2 style="color: rgb(247, 105, 0);">Sign Up</h2>
+        </div>
+    </div>
+</nav>
+
+<section class="vh-100 gradient-custom">
+    <div class="container py-5 h-100">
+        <div class="row justify-content-center align-items-center h-100">
+            <div class="col-12 col-lg-9 col-xl-7">
+                <div class="card bg-dark shadow-2-strong card-registration" style="border-radius: 15px;">
+                    <div class="card-body p-4 p-md-5">
+                        <!--<center><h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Registration Form</h3></center>-->
+                        <form method="POST" action="">
+                            <!--{{form.hidden_tag}}-->
+                            <center>
+                            <div class="form-group">
+                                <label class="text-white" for="emailAddress">First Name</label>
+                                <br>
+                                {{form.first_name}}
+                            </div>
+                            </center>
+                            <p></p>
+                            <center>
+                                <div class="form-group">
+                                    <label for="emailAddress"> <p class="text-white">Last Name</p></label>
+                                    <br>
+                                    {{form.last_name}}
+                                </div>
+                            </center>
+                            <p></p>
+                            <center>
+                                <div class="form-group">
+                                    <label class="text-white" for="emailAddress">SU email</label>
+                                    <br>
+                                    {{form.username}}
+                                </div>
+                            </center>
+                            <p></p>
+                            <center>
+                                <div class="form-group">
+                                    <label class="text-white" for="exampleInputPassword1">PASSWORD</label>
+                                    <br>
+                                    {{form.password}}
+                                </div>
+                            </center>
+                            <p></p>
+                            <center>
+                                <div class="form-group">
+                                    <label class="text-white" for="exampleInputPassword1">Re-enter Password</label>
+                                    <br>
+                                    {{form.re_enter_password}}
+                                </div>
+                            </center>
+                            <p></p>
+                            <center>{{form.submit}}</center>
+                            <div class="row">
+                                <center><a href="{{url_for('auth.login')}}">Have an account? Signin Here</a></center>
+                            </div>
+                            <div class="row">
+                                <p>{{msg}}</p>
+                            </div>
+                            
+                            <u1>
+                                {% for error in form.username.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </u1>
+                            <ul>
+                                {% for error in form.password.errors %}
+                                <li>{{ error }}</li>
+                            
+                                {% endfor %}
+                            </ul>
+                            <!--
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+
+                                    <div class="form-outline">
+                                        <input type="text" id="firstName" class="form-control form-control-lg" />
+                                        <label class="form-label" for="firstName">First Name</label>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6 mb-4">
+
+                                    <div class="form-outline">
+                                        <input type="text" id="lastName" class="form-control form-control-lg" />
+                                        <label class="form-label" for="lastName">Last Name</label>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-4 d-flex align-items-center">
+
+                                    <div class="form-outline datepicker w-100">
+                                        <input type="text" class="form-control form-control-lg" id="birthdayDate" />
+                                        <label for="birthdayDate" class="form-label">Birthday</label>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6 mb-4">
+
+                                    <h6 class="mb-2 pb-1">Gender: </h6>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                            id="femaleGender" value="option1" checked />
+                                        <label class="form-check-label" for="femaleGender">Female</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                            id="maleGender" value="option2" />
+                                        <label class="form-check-label" for="maleGender">Male</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                            id="otherGender" value="option3" />
+                                        <label class="form-check-label" for="otherGender">Other</label>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-4 pb-2">
+
+                                    <div class="form-outline">
+                                        <input type="email" id="emailAddress" class="form-control form-control-lg" />
+                                        <label class="form-label" for="emailAddress">Email</label>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6 mb-4 pb-2">
+
+                                    <div class="form-outline">
+                                        <input type="tel" id="phoneNumber" class="form-control form-control-lg" />
+                                        <label class="form-label" for="phoneNumber">Phone Number</label>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12">
+
+                                    <select class="select form-control-lg">
+                                        <option value="1" disabled>Choose option</option>
+                                        <option value="2">Subject 1</option>
+                                        <option value="3">Subject 2</option>
+                                        <option value="4">Subject 3</option>
+                                    </select>
+                                    <label class="form-label select-label">Choose option</label>
+
+                                </div>
+                            </div>
+
+                            <div class="mt-4 pt-2">
+                                <input class="btn btn-primary btn-lg" type="submit" value="Submit" />
+                            </div>
+                            -->
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+ 
+</body>
+<!--
 <body class="bg">
 
     <div class="container-fluid">
 
-        <!-- logo -->
+         logo
         <div class="row">
             <div class="logo">
                 <img src="{{url_for('static', filename='logo-study-buddy.png')}}" , width="200" ,height="200">
@@ -97,5 +281,6 @@
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
         crossorigin="anonymous"></script>
 </body>
+-->
 
 </html>
