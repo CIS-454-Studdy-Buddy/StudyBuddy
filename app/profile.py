@@ -11,7 +11,7 @@ class profileForm(FlaskForm):
     inboxButton = SubmitField("Inbox")
     logoutButton = SubmitField("Logout")
     saveButton = SubmitField("Save")
-    phoneNumber = StringField(render_kw={"placeholder": ""})
+    phoneNumber = StringField(render_kw={"placeholder": "Phone Number"})
     aboutMe = StringField(render_kw={"placeholder": "About Me"})
 
 
@@ -23,6 +23,10 @@ def profile():
     msg = ""
     user = User.query.filter_by(username=current_user.username).first()
     if user:
+        if request.method == 'GET':
+            form.phoneNumber.data = user.phone_number
+            form.aboutMe.data = user.about_me
+
         if form.data['saveButton']:
             # phoneNumber and aboutMe are optional fields
             # if phone number and about me are not changed, do not update user's fields
