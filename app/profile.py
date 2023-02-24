@@ -11,8 +11,10 @@ class profileForm(FlaskForm):
     inboxButton = SubmitField("Inbox")
     logoutButton = SubmitField("Logout")
     saveButton = SubmitField("Save")
-    phoneNumber = StringField(render_kw={"placeholder": ""})
+    phoneNumber = StringField(render_kw={"placeholder": "Phone Number"})
     aboutMe = StringField(render_kw={"placeholder": "About Me"})
+    removePhoneButton = SubmitField("remove my current phone number")
+    removeAboutMeButton = SubmitField("delete my current about me description")
 
 
 bp = Blueprint('profile', __name__, url_prefix='/')
@@ -66,5 +68,21 @@ def profile():
 
         elif form.data['logoutButton']:
             return redirect(url_for('auth.login'))
+        
+        # user clicks remove phone number button, delete current user's phone number from database
+        elif form.data['removePhoneButton']:
+            user.phone_number = ""
+            db.session.add(user)
+            db.session.commit()
+            return redirect(url_for('profile.profile'))
+
+        # user clicks remove about me description button, delete current user's about 
+        # me description from database
+        elif form.data['removeAboutMeButton']:
+            print("Reset about me description")
+            user.about_me = ""
+            db.session.add(user)
+            db.session.commit()
+            return redirect(url_for('profile.profile'))
 
     return render_template('profile.html', form=form, msg = msg)
