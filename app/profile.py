@@ -13,8 +13,8 @@ class profileForm(FlaskForm):
     saveButton = SubmitField("Save")
     phoneNumber = StringField(render_kw={"placeholder": "Phone Number"})
     aboutMe = StringField(render_kw={"placeholder": "About Me"})
-    removePhoneButton = SubmitField("remove my current phone number")
-    removeAboutMeButton = SubmitField("delete my current about me description")
+    removePhoneButton = SubmitField("edit") 
+    removeAboutMeButton = SubmitField("edit")
 
 
 bp = Blueprint('profile', __name__, url_prefix='/')
