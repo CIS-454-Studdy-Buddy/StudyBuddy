@@ -10,8 +10,8 @@ from sqlalchemy.orm import joinedload
 
 
 class SubjectSelectionForm(FlaskForm):
-    subject_code = SelectField('Subject Code', choices=[])
-    course_title = SelectField('Course Title', choices=[], 
+    subject_code = SelectField('Subject Code', validators=[InputRequired()], choices=[])
+    course_title = SelectField('Course Title', validators=[InputRequired()], choices=[], 
                                render_kw={"onchange": "course_title.onchange()"})
 
     pro_ans1 = RadioField(u'How Knowledgeable are you on a subject?',
