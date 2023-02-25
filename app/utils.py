@@ -1,7 +1,7 @@
 from app.models import *
 from app.models.user import User
 from app.models.studyinterest import StudyInterest
-from app.models.course import Courses, SubjectCode
+from app.models.course import Course, Subject
 from app.extensions import db
 import os
 import csv
@@ -12,7 +12,7 @@ def import_courses(file_path):
         csv_reader = csv.reader(csv_file)
         next(csv_reader)
         for row in csv_reader:
-            model_instance = Courses(subject_code=row[0], course_number=row[1], course_name=row[2])
+            model_instance = Course(subject_code=row[0], course_number=row[1], course_name=row[2])
             db.session.add(model_instance)
         db.session.commit()
 
@@ -21,14 +21,14 @@ def import_subject_code(file_path):
         csv_reader = csv.reader(csv_file)
         next(csv_reader)
         for row in csv_reader:
-            model_instance = SubjectCode(subject_code=row[0], subject_name=row[1])
+            model_instance = Subject(subject_code=row[0], subject_name=row[1])
             db.session.add(model_instance)
         db.session.commit()
 
 def create_db():
     from app import create_app
 
-    #tables = ['courses', 'subjectcode', 'studyinterest', 'user']
+    #tables = ['course', 'subject', 'studyinterest', 'user']
     #tables_exist = db.engine.dialect.has_table(db.engine, tables)
 
     if os.path.isfile('instance/database.db'):
