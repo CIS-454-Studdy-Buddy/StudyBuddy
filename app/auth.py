@@ -315,8 +315,8 @@ and generates the url
 '''
 def email_content_password_reset(username, reset_password_url, token):
     url = f"{reset_password_url}?t={token}"
-    contacturl = url_for('contactus.contactUs')
-    return render_template('reset_pw_email.html', username=username, url=url, contacturl=contacturl)
+    #contacturl = url_for('contactus.contactUs')
+    return render_template('reset_pw_email.html', username=username, url=url)
     #html_msg = f'<b>Hey {username}</b>, sending you this email from my <a href="{url}">Study Buddy App</a>'
     #return html_msg
 
@@ -326,7 +326,4 @@ and generates the url
 '''
 def email_content_email_confirmation(username, email_confirmation_url, token):
     url = f"{email_confirmation_url}?t={token}"
-    contacturl = url_for('contactus.contactUs')
-    return render_template('email.html', username=username, url=url, contacturl=contacturl)
-    #html_msg = f'<b>Hey {username}</b>, sending you this email from my <a href="{url}">Study Buddy App</a>'
-    #return html_msg
+    return render_template('email.html', username=username, url=url)
