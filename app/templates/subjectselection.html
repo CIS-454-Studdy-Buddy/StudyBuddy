@@ -15,31 +15,27 @@
 </head>
 <body>
     <div>
-    <h1>Subject Selection Page under construction</h1>
+    <h1>Subject Selection</h1>
 
     <form method="POST" action="">
         {{ form.hidden_tag() }}
         <div>
             <label for="subject_code">Subject Code:</label>
-            {{ subject_search_form.subject_code }}
+            {{ form.subject_code }}
         </div>
         <div>
             <label for="course_title">Course Title:</label>
-            {{ subject_search_form.course_title }}
+            {{ form.course_title }}
         </div>
-        <div>
-            <p>
-                <p>The current selected Subject Code is: <span id="subject_code">{{ subject_search_form.subject_code.data }}</span></p>
-                <p>The current selected Course Title is: <span id="course_title">{{ subject_search_form.course_title.data }}</span></p>
-            </p>
-            <input type="submit" value="Submit" onclick="updateCurrentValue()">
-        </div>
-    </form>
-
+        
+    <br>
     <div>Proficiency Assessment</div>
-    
-    <form method="POST" action="">
-        {{ form.hidden_tag() }}
+    <div>
+        <p>
+            <p>The current selected Subject Code is: <span id="subject_code_display">{{ form.subject_code.data }}</span></p>
+            <p>The current selected Course Title is: <span id="course_title_display">{{ form.course_title.data }}</span></p>
+        </p>
+    </div>   
         <br>
         {{ course.name }}
         <br>
@@ -68,6 +64,8 @@
         
         <br>
         {{ form.but }}
+        <br>
+        {{msg}}
     </form>
 </div>
 <script>
@@ -104,6 +102,15 @@ subject_code_select.onchange = function() {
             )
         }
     )
+}
+course_title.onchange = function() {
+    var e = subject_code_select;
+    var e1 = document.getElementById("subject_code_display");
+    e1.innerHTML = e.options[e.selectedIndex].text;
+
+    var e2 = course_title_select;
+    var e3 = document.getElementById("course_title_display");
+    e3.innerHTML = e2.options[e2.selectedIndex].text;
 }
 </script>
 </body>
