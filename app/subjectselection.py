@@ -5,12 +5,12 @@ from app.auth import *
 from app.dashboard import *
 from app.models.course import *
 from app.models.studyinterest import *
+from statistics import mean
 
 class SubjectSearchForm(FlaskForm):
 
     subject_code = SelectField('Subject Code', choices=[])
     course_title = SelectField('Course Title', choices=[])
-
 
 class SubjectSelectionForm(FlaskForm):
     pro_ans1 = RadioField(u'How Knowledgeable are you on a subject?', 
@@ -20,7 +20,12 @@ class SubjectSelectionForm(FlaskForm):
     pro_ans3 = RadioField(u'How would you Rate Yourself in this subject?', 
                            choices=[("1", "1"), ("2", "2"), ("3", "3"), ("4", "4"), ("5", "5")])
     but = SubmitField("Submit")
-    
+
+def calc_pro_score(form):
+    return round(mean([int(form.pro_ans1.data),
+                                     int(form.pro_ans2.data), 
+                                     int(form.pro_ans3.data)]),2)
+
 bp = Blueprint('subjectselection', __name__, url_prefix='/')
 
 @bp.route('/subjectselection', methods=['GET', 'POST'])
@@ -33,14 +38,28 @@ def subjectSelection():
 
     course_id  = 1
     course = Courses.query.filter_by(id=course_id).first()
+    user = User.query.filter_by(username=current_user.username).first()
+    si = StudyInterest.query.filter_by(user_id=user.id).filter_by(course_id=course.id).first()
+    if request.method == 'GET':
+        if si:
+            form.pro_ans1.data = si.pro_ans1
+            form.pro_ans2.data = si.pro_ans2
+            form.pro_ans3.data = si.pro_ans3
+
     if form.validate_on_submit:
-        user = User.query.filter_by(username=current_user.username).first()
         if user:
             if form.data['but']:
-                si = StudyInterest(user_id=user.id, course_id=course.id, pro_ans1=form.pro_ans1.data,
+                if si:
+                    si.pro_ans1 = form.pro_ans1.data
+                    si.pro_ans2 = form.pro_ans2.data
+                    si.pro_ans3 = form.pro_ans3.data
+                    si.pro_score = calc_pro_score(form)
+                                                   
+                else:
+                    si = StudyInterest(user_id=user.id, course_id=course.id, pro_ans1=form.pro_ans1.data,
                                pro_ans2=form.pro_ans2.data, pro_ans3=form.pro_ans3.data, 
-                               pro_score=
-                               ((int(form.pro_ans1.data) + int(form.pro_ans2.data) + int(form.pro_ans3.data)) / 3))
+                               pro_score= calc_pro_score(form))
+                                    
                 db.session.add(si)
                 db.session.commit()
 
