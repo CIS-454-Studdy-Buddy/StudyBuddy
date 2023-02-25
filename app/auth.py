@@ -238,6 +238,19 @@ def home():
     if form.validate_on_submit():
         if form.data['contactButton']:
             return redirect(url_for('contactus.contactUs'))
+    
+    if request.method == 'POST':
+        name = request.form['name']
+        email_address = request.form['email']
+        subject = request.form['subject']
+        message = request.form['message']
+        our_email = "mjfaiola@syr.edu"
+        msg = Message(subject=subject, sender='su.study.buddy@gmail.com', recipients=[our_email])
+        msg.body = f"Name: {name}\nEmail: {email_address}\n\n{message}"
+        email.send(msg)
+
+        return render_template('home.html', form=form)
+
     return render_template('home.html', form=form)
 
 
