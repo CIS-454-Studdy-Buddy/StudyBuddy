@@ -39,9 +39,9 @@ def test_proficiency_pro_score(mock_token, mock_email, client):
         
         with client:
             course_id  = 1
-            course = Course.query.filter_by(id=course_id).first()
+            course = Courses.query.filter_by(id=course_id).first()
             if not course:
-                course = Course(name="Software Implementation", family="CIS",  
+                course = Courses(name="Software Implementation", family="CIS",  
                                 number="454")
                 db.session.add(course)
                 db.session.commit() 
