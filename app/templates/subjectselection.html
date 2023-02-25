@@ -19,6 +19,17 @@
 
     <form method="POST" action="">
         {{ form.hidden_tag() }}
+
+        {% for s in si_all %}
+            <div>
+                {{s.course.subject_code}}
+                {{s.course.course_number}}
+                {{s.course.course_name}}
+                {{s.pro_score}}
+            </div>
+        {% endfor %}
+
+        
         <div>
             <label for="subject_code">Subject Code:</label>
             {{ form.subject_code }}
