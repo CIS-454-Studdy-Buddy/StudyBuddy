@@ -35,6 +35,40 @@
             <input type="submit" value="Submit" onclick="updateCurrentValue()">
         </div>
     </form>
+
+    <div>Proficiency Assessment</div>
+    
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <br>
+        {{ course.name }}
+        <br>
+        {{ form.pro_ans1.label }}
+        
+        {% for subfield in form.pro_ans1 %}       
+            {{ subfield }}
+            {{ subfield.label }}        
+        {% endfor %}
+        
+        <br>
+        {{ form.pro_ans2.label }}
+        
+            {% for subfield in form.pro_ans2 %}       
+                {{ subfield }}
+                {{ subfield.label }}        
+            {% endfor %}
+        
+        <br>
+        {{ form.pro_ans3.label }}
+        
+            {% for subfield in form.pro_ans3 %}       
+                {{ subfield }}
+                {{ subfield.label }}        
+            {% endfor %}
+        
+        <br>
+        {{ form.but }}
+    </form>
 </div>
 <script>
     function updateCurrentValue() {

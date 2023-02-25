@@ -18,7 +18,7 @@ class User(db.Model, UserMixin):
     token = db.Column(db.String(20), nullable=True, unique=True)
     is_verified = db.Column(db.Boolean, nullable=False, default=False)
     phone_number = db.Column(db.String(20), nullable=False, unique=True, default = '')
-    about_me = db.Column(db.Text, nullable=True, default = '')
+    about_me = db.Column(db.Text, nullable=False, default = '')
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
 

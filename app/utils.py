@@ -53,10 +53,10 @@ def seed_data():
         hashed_password = bcrypt.generate_password_hash("123456")
         new_user = User(first_name="Aaron", last_name="Alakkadan",  
                             username="aalakkad@syr.edu", password=hashed_password,
-                            token="1234", is_verified=True)
+                            token="1234", is_verified=True, phone_number="3155777555", about_me="I am a student at Syracuse University")
         new_user2 = User(first_name="Matt", last_name="Faiola",  
                             username="mjfaiola@syr.edu", password=hashed_password,
-                            token="1234", is_verified=True)
+                            token="234234", is_verified=True, phone_number="3155555555", about_me="I am a student at Syracuse University")
         db.session.add(new_user)
         db.session.add(new_user2)
         db.session.commit()
