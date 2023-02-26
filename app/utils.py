@@ -57,7 +57,11 @@ def seed_data():
         new_user2 = User(first_name="Matt", last_name="Faiola",  
                             username="mjfaiola@syr.edu", password=hashed_password,
                             token="234234", is_verified=True, phone_number="3155555555", about_me="I am a student at Syracuse University")
+        new_user3 = User(first_name="Talal", last_name="Hakki",  
+                            username="thakki@syr.edu", password=hashed_password,
+                            token="4567", is_verified=True, phone_number="3151231234", about_me="I am a student at Syracuse University")
         db.session.add(new_user)
         db.session.add(new_user2)
+        db.session.add(new_user3)
         db.session.commit()
         

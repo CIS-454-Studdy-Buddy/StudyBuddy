@@ -10,8 +10,8 @@ from sqlalchemy.orm import joinedload
 
 
 class SubjectSelectionForm(FlaskForm):
-    subject_code = SelectField('Subject Code', choices=[])
-    course_title = SelectField('Course Title', choices=[], 
+    subject_code = SelectField('Subject Code', validators=[InputRequired()], choices=[])
+    course_title = SelectField('Course Title', validators=[InputRequired()], choices=[], 
                                render_kw={"onchange": "course_title.onchange()"})
 
     pro_ans1 = RadioField(u'How Knowledgeable are you on a subject?',
@@ -40,11 +40,12 @@ bp = Blueprint('subjectselection', __name__, url_prefix='/')
 @login_required
 def subjectSelection():
     form = SubjectSelectionForm()
-    form.subject_code.choices = [(Subject.subject_code, f'({Subject.subject_code}) {Subject.subject_name}') for Subject in Subject.query.all()]
+    form.subject_code.choices = [(Subject.subject_code, f'{Subject.subject_code} - {Subject.subject_name}') for Subject in Subject.query.all()]
     user = User.query.filter_by(username=current_user.username).first()
     course = None
+    si_all = None
+    si = None
     
-        
     '''
     if request.method == 'GET':
         if si:
@@ -54,6 +55,7 @@ def subjectSelection():
     '''
     if form.validate_on_submit:
         if user:
+            si_all = StudyInterest.query.filter_by(user_id=user.id).options(joinedload(StudyInterest.course)).all()
             if form.data['but']:
                 #Count si study_interest
                 course_id  = form.course_title.data # Option value contains id 
@@ -62,7 +64,7 @@ def subjectSelection():
                 
                 if total_si >= 5:
                     msg = "Maximum number of subjects selected"
-                    return render_template('subjectselection.html', form=form, course=course, msg=msg)
+                    return render_template('subjectselection.html', form=form, course=course, si_all=si_all, msg=msg)
                 
                 si = StudyInterest.query.filter_by(user_id=user.id).filter_by(course_id=course.id).first()
                 if si:
@@ -87,13 +89,14 @@ def subjectSelection():
             print(request.form.get("pro_ans1"))
             print(request.form.get("pro_ans2"))
             print(request.form.get("pro_ans3"))
-    return render_template('subjectselection.html', form=form, course=course)
+            si_all = StudyInterest.query.filter_by(user_id=user.id).options(joinedload(StudyInterest.course)).all()
+    return render_template('subjectselection.html', form=form, course=course, si_all=si_all)
 
 @bp.route('/subjectselection/<get_code>', methods=['GET', 'POST'])
 @login_required
 def codesortcourse(get_code):
     course = Course.query.filter_by(subject_code=get_code).all()
-    course_array = []
+    course_array = [{"id" : "", "code" : "", "number" : "", "name" : "Select a Course Title"}]
     for code in course:
         course = {}
         course['id'] = code.id
@@ -115,5 +118,6 @@ def list_of_subjects_selected():
     si = None
     user = User.query.filter_by(username=current_user.username).first()
     if user:
-        si = StudyInterest.query.filter_by(user_id=user.id).options(joinedload(StudyInterest.course)).all()  
+        si = StudyInterest.query.filter_by(user_id=user.id).options(joinedload(StudyInterest.course)).all()
+        print(si)  
     return render_template('subjectselections.html',form=form, si=si)
