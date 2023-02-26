@@ -19,7 +19,7 @@
 }
 
 .body {
-    font-family: "Sora, sans-serif";
+    font-family: "Sora", sans-serif;
     line-height: 1.7;
     color: var(--body);
 }
@@ -48,6 +48,16 @@ a {
     padding: 14px 18px;
     border-width: 2px;
     border-radius: 0;
+    border: 1px solid rgb(247, 105, 0);
+    padding: 10px 14px;
+    transition: border-color 0.3s ease-in-out;
+}
+
+.btn:hover {
+    background-color: rgb(255, 118, 13);
+    color: rgb(0, 0, 0);
+    border-color: rgb(33, 37, 41);
+
 }
 
 .hero {
@@ -139,8 +149,13 @@ section {
     background-position: center;
     background-size: cover;
     min-height: 500px;
+}
 
-
+.col-img1 {
+    background-image: url('/static/student1.png');
+    background-position: center;
+    background-size: cover;
+    min-height: 500px;
 }
 
 .team-member img {
@@ -183,5 +198,5 @@ section {
 form .form-control {
     border: transparent;
     border-radius: 0;
-    background-color: rgba(0, 0, 0, 0.0.2)
+    background-color: rgba(0, 0, 0, 0.04)
 }

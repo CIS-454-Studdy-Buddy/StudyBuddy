@@ -1,6 +1,6 @@
 from app.extensions import db
 from app.models.user import User
-from app.models.course import Course
+from app.models.course import Course, Subject
 from sqlalchemy.orm import relationship
 
 class StudyInterest(db.Model):
@@ -17,4 +17,4 @@ class StudyInterest(db.Model):
     course = relationship("Course")
 
     def __repr__(self):
-        return f"<StudyInterest {self.id}>"
+        return f"<StudyInterest {self.id}, {self.course_id}>"

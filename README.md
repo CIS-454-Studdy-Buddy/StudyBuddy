@@ -31,14 +31,13 @@ pip3 install -r requirements.txt
 
 **command "deactivate" to close  
 
-## Create db
-python3 
+## Create new database if you get SQLAlchemy errors
 
 ```
-
-from app.utils import create_db
-
+python3
+from app.utils import create_db, seed_data
 create_db()
+seed_data()
 
 ```
 
@@ -48,4 +47,4 @@ source venv/bin/activate
 flask run  
 copy and paste the url shown in the terminal to your web browser  
 
-https://github.com/git-guides/git-pull  
+https://github.com/git-guides/git-pull 

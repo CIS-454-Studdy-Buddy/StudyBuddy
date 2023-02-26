@@ -62,19 +62,17 @@
 
     <form method="POST" action="">
         {{ form.hidden_tag() }}
-        <div> {{current_user.first_name}} </div>
-        <div> {{current_user.last_name}} </div>
-        <div> {{current_user.username}} </div>
-        <div> {{current_user.phone_number}} </div>
-        <div> {{current_user.about_me}} </div>
+        <h1> {{current_user.first_name}} </h1>
+        <h1> {{current_user.last_name}} </h1>
+        <h1> {{current_user.username}} </h1>
+        <h1> {{current_user.phone_number}} </h1>
+        <h1> {{current_user.about_me}} </h1>
         {{ form.homeButton }}
         {{ form.inboxButton }}  
         {{ form.logoutButton }} 
         {{ form.saveButton }}
         {{ form.phoneNumber }}
         {{ form.aboutMe }}
-        {{ form.removePhoneButton }}
-        {{ form.removeAboutMeButton }}
         {{ msg }}
     </form>
 
@@ -136,7 +134,6 @@
         </div>
     </div>
 </section>
-
 
     
 </body>
