@@ -44,6 +44,7 @@
                             <!--{{form.hidden_tag}}-->
                             <center>
                             <div class="form-group">
+                                {{form.hidden_tag()}}
                                 <label class="text-white" for="emailAddress">First Name</label>
                                 <br>
                                 {{form.first_name}}
@@ -228,7 +229,7 @@
                     </div></center>
                     <p></p>
                     <center><div class="form-group">
-                        <label for="emailAddress"><p>Last Name</label</p></label>
+                        <label for="emailAddress">Last Name</label</label>
                         <br>
                         {{form.last_name}}
                     </div></center>

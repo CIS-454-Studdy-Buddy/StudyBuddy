@@ -12,15 +12,18 @@
 
     <form method="POST" action="">
         {{ form.hidden_tag() }}
-        {{ form.firstName }}
-        {{ form.lastName }}
-        {{ form.username }}
+        <h1> {{current_user.first_name}} </h1>
+        <h1> {{current_user.last_name}} </h1>
+        <h1> {{current_user.username}} </h1>
+        <h1> {{current_user.phone_number}} </h1>
+        <h1> {{current_user.about_me}} </h1>
         {{ form.homeButton }}
         {{ form.inboxButton }}
         {{ form.logoutButton }}
         {{ form.saveButton }}
         {{ form.phoneNumber }}
         {{ form.aboutMe }}
+        {{ msg }}
 
         
         
