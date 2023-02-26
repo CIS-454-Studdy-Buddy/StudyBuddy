@@ -238,6 +238,19 @@ def home():
     if form.validate_on_submit():
         if form.data['contactButton']:
             return redirect(url_for('contactus.contactUs'))
+    
+    if request.method == 'POST':
+        name = request.form['name']
+        email_address = request.form['email']
+        subject = request.form['subject']
+        message = request.form['message']
+        our_email = "mjfaiola@syr.edu"
+        msg = Message(subject=subject, sender='su.study.buddy@gmail.com', recipients=[our_email])
+        msg.body = f"Name: {name}\nEmail: {email_address}\n\n{message}"
+        email.send(msg)
+
+        return render_template('home.html', form=form)
+
     return render_template('home.html', form=form)
 
 
@@ -315,8 +328,8 @@ and generates the url
 '''
 def email_content_password_reset(username, reset_password_url, token):
     url = f"{reset_password_url}?t={token}"
-    contacturl = url_for('contactus.contactUs')
-    return render_template('reset_pw_email.html', username=username, url=url, contacturl=contacturl)
+    #contacturl = url_for('contactus.contactUs')
+    return render_template('reset_pw_email.html', username=username, url=url)
     #html_msg = f'<b>Hey {username}</b>, sending you this email from my <a href="{url}">Study Buddy App</a>'
     #return html_msg
 
@@ -326,7 +339,4 @@ and generates the url
 '''
 def email_content_email_confirmation(username, email_confirmation_url, token):
     url = f"{email_confirmation_url}?t={token}"
-    contacturl = url_for('contactus.contactUs')
-    return render_template('email.html', username=username, url=url, contacturl=contacturl)
-    #html_msg = f'<b>Hey {username}</b>, sending you this email from my <a href="{url}">Study Buddy App</a>'
-    #return html_msg
+    return render_template('email.html', username=username, url=url)
