@@ -40,7 +40,7 @@ bp = Blueprint('subjectselection', __name__, url_prefix='/')
 @login_required
 def subjectSelection():
     form = SubjectSelectionForm()
-    form.subject_code.choices = [(Subject.subject_code, f'({Subject.subject_code}) {Subject.subject_name}') for Subject in Subject.query.all()]
+    form.subject_code.choices = [(Subject.subject_code, f'{Subject.subject_code} - {Subject.subject_name}') for Subject in Subject.query.all()]
     user = User.query.filter_by(username=current_user.username).first()
     course = None
     si_all = None
@@ -96,7 +96,7 @@ def subjectSelection():
 @login_required
 def codesortcourse(get_code):
     course = Course.query.filter_by(subject_code=get_code).all()
-    course_array = []
+    course_array = [{"id" : "", "code" : "", "number" : "", "name" : "Select a Course Title"}]
     for code in course:
         course = {}
         course['id'] = code.id
