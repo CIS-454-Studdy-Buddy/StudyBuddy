@@ -5,9 +5,59 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-</head>
-<body>
 
+    <style>
+        /* Modify the background color */
+        /*    .navbar-custom {
+                    background-color: rgb(250, 104, 0);
+                } */
+    
+        nav .navbar-nav li a {
+            color: white !important;
+            font-size: 18px;
+            font-weight: 700;
+        }
+    </style>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    
+    <link rel="stylesheet" href="static/home.css">
+    
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    
+</head>
+    
+    <body>
+        <nav class="navbar navbar-expand-lg py-3 sticky-top bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#">
+                    <img src="{{url_for('static', filename='logo-study-buddy.png')}}" , width="230" height="65">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+
+                <div class="collapse navbar-collapse mx-auto" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <button class="btn ms-4">
+                        <a href="{{url_for('inbox.inbox')}}">Inbox</a>
+                    </button>
+                    <button class="btn ms-4">
+                        <a href="{{url_for('dashboard.dashboard')}}">Home</a>
+                    </button>
+                    <button class="btn ms-4">
+                        <a href="{{url_for('auth.signup')}}">Logout</a>
+                    </button>
+                </ul>
+                </div>
+            </div>
+        </nav>
+        <!--Nav Bar End-->
+<!--
     <h1>Profile</h1>
 
     <form method="POST" action="">
@@ -18,16 +68,73 @@
         <h1> {{current_user.phone_number}} </h1>
         <h1> {{current_user.about_me}} </h1>
         {{ form.homeButton }}
-        {{ form.inboxButton }}
-        {{ form.logoutButton }}
+        {{ form.inboxButton }}  
+        {{ form.logoutButton }} 
         {{ form.saveButton }}
         {{ form.phoneNumber }}
         {{ form.aboutMe }}
         {{ msg }}
-
-        
-        
     </form>
+
+    -->
+
+    <section class="vh-100 gradient-custom">
+    <div class="container">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col col-lg-6 mb-4 mb-lg-0">
+                <div class="card mb-3" style="border-radius: .5rem;">
+                    <form method="POST" action="">
+                        {{ form.hidden_tag() }}
+                        <div class="row g-0">
+                            <div class="col-md-8">
+                                <div class="card-body p-4">
+                                    <h6>Information</h6>
+                                    <hr class="mt-0 mb-4">
+                                    <div class="row pt-1">
+                                        <div class="col-6 mb-3">
+                                            <h6> <strong> Name </strong></h6>
+                                            {{current_user.first_name}}
+                                            {{current_user.last_name}}
+                                        </div>
+                                        <div class="col-6 mb-3">
+                                            <h6> <strong> User </strong></h6>
+                                            {{current_user.username}}
+                                        </div>
+                                        <div class="col-6 mb-3">
+                                            <h6> <strong> Phone </strong></h6>
+                                            {{current_user.phone_number}}
+                                        </div>
+                                        <div class="col-6 mb-3">
+                                            <h6><strong>About Me</strong></h6>
+                                            {{current_user.about_me}}
+                                        </div>
+                                    </div>
+                                <h6>Update</h6>
+                                <hr class="mt-0 mb-4">
+                                <div class="row pt-1">
+                                    <div class="col-6 mb-3">
+                                        <h6> <strong> phone </strong></h6>
+                                        {{ form.phoneNumber }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6> <strong> About Me </strong></h6>
+                                        {{ form.aboutMe }}
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        {{ form.saveButton }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{ msg }}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
     
 </body>
 </html>
