@@ -1,3 +1,7 @@
+'''
+Author: Aaron Alakkadan 
+'''
+
 from flask import url_for, request
 from app.auth import email_content_password_reset, url_for, send_email
 from unittest import mock
@@ -9,6 +13,7 @@ import pytest
 
 '''
 This function tests if you can calculate a proficiency score based on the 3 proficiency answers
+the test data of pro_score should return you an average where the decimal is .00
 '''
 @mock.patch("app.extensions.email.send", return_value=True, autospec=True)
 @mock.patch("random.randint", return_value=1234, autospec=True)
@@ -40,6 +45,10 @@ def test_proficiency_pro_score_one(mock_token, mock_email, client):
         
 
         # Go to the subject selection page
+        # Select the subject code CIS
+        # Select the first entry in CIS which is course number 151
+        # Send the suject code, course_id, and pro_ans1, pro_ans2, and pro_ans3 to the subject selection page
+        # Check the proficiency score 
         response = client.get('/subjectselection')
         assert response.status_code == 200
         assert response.request.path == '/subjectselection'
@@ -54,6 +63,7 @@ def test_proficiency_pro_score_one(mock_token, mock_email, client):
 
 '''
 This function tests if you can calculate a proficiency score based on the 3 proficiency answers
+the test data of pro_score should return you an average .33 repeating  
 '''
 @mock.patch("app.extensions.email.send", return_value=True, autospec=True)
 @mock.patch("random.randint", return_value=1234, autospec=True)
@@ -85,6 +95,10 @@ def test_proficiency_pro_score_two(mock_token, mock_email, client):
         
 
         # Go to the subject selection page
+        # Select the subject code CIS
+        # Select the first entry in CIS which is course number 151
+        # Send the suject code, course_id, and pro_ans1, pro_ans2, and pro_ans3 to the subject selection page
+        # Check the proficiency score
         response = client.get('/subjectselection')
         assert response.status_code == 200
         assert response.request.path == '/subjectselection'
@@ -99,6 +113,7 @@ def test_proficiency_pro_score_two(mock_token, mock_email, client):
 
 '''
 This function tests if you can calculate a proficiency score based on the 3 proficiency answers
+the test data of pro_score should return you an average .66 repeating
 '''
 @mock.patch("app.extensions.email.send", return_value=True, autospec=True)
 @mock.patch("random.randint", return_value=1234, autospec=True)
@@ -130,6 +145,10 @@ def test_proficiency_pro_score_three(mock_token, mock_email, client):
         
 
         # Go to the subject selection page
+        # Select the subject code CIS
+        # Select the first entry in CIS which is course number 151
+        # Send the suject code, course_id, and pro_ans1, pro_ans2, and pro_ans3 to the subject selection page
+        # Check the proficiency score
         response = client.get('/subjectselection')
         assert response.status_code == 200
         assert response.request.path == '/subjectselection'
