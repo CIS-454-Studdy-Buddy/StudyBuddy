@@ -86,9 +86,6 @@ def subjectSelection():
                 form.pro_ans2.data = None
                 form.pro_ans3.data = None
             #form.proScore = (form.proAns1 + form.proAns2 + form.proAns3) / 3
-            print(request.form.get("pro_ans1"))
-            print(request.form.get("pro_ans2"))
-            print(request.form.get("pro_ans3"))
             si_all = StudyInterest.query.filter_by(user_id=user.id).options(joinedload(StudyInterest.course)).all()
     return render_template('subjectselection.html', form=form, course=course, si_all=si_all)
 
