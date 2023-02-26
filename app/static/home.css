@@ -138,8 +138,13 @@ section {
     background-position: center;
     background-size: cover;
     min-height: 500px;
+}
 
-
+.col-img1 {
+    background-image: url('/static/student1.png');
+    background-position: center;
+    background-size: cover;
+    min-height: 500px;
 }
 
 .team-member img {

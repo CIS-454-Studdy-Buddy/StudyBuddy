@@ -1,34 +1,10 @@
-.logo {
-    background-color: rgb(250, 104, 0);
-    color: white;
-    border: 1px;
-    min-height: 50px;
-    font-size: 2rem;
-    text-align: center;
+:root {
+    --primary: rgb(247, 105, 0);
+    --dark: #21252f;
+    --body: #888;
+    --box-shadow: 0 8px 22px rgb(0, 0, 0, 0.1);
 }
 
-.borderLeft {
-    background-color: rgb(11, 0, 51);
-    vertical-align: left;
-    height: 10000000px;
-    width: 100px;
-}
-
-.borderMiddle {
-    background-color: rgb(231, 154, 101);
-    vertical-align: middle;
-    height: 10000000px;
-    width: 100px;
-}
-
-.border
-
-.side {
-    background-color: brown;
-    border: 1px;
-    min-height: 50px;
-    font-size: 2rem;
-}
 
 .main {
     background-color: rgb(225, 219, 219);
