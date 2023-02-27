@@ -79,11 +79,13 @@
         {{msg}}
         <br>
         <br>
+        </form>
+        <form method="POST" action="">
         <h2>Subject Deletion</h2>
         {{form_delete.hidden_tag()}}
         {{form_delete.subject_remove.label}}
         {{form_delete.subject_remove}}
-        {{form_delete.but}}
+        {{form_delete.delbut}}
         {{msg_delete}}
         <span id="subject_delete_display">{{form_delete.subject_remove.data}}</span>
     </form>
