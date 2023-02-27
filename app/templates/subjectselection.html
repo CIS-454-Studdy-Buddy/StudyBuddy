@@ -107,7 +107,19 @@
                                 {{ subfield.label }}        
                                 {% endfor %}
                             </div>
-        
+                            <br>
+                            <br>
+                            </form>
+                            <form method="POST" action="">
+                            <h2>Subject Deletion</h2>
+                            {{form_delete.hidden_tag()}}
+                            {{form_delete.subject_remove.label}}
+                            {{form_delete.subject_remove}}
+                            {{form_delete.delbut}}
+                            {{msg_delete}}
+                            <span id="subject_delete_display">{{form_delete.subject_remove.data}}</span>
+                        </form>
+                    </div>
                             <br>
                             <div style="margin-left: 100px; color: white;">
                             {{ form.pro_ans3.label }}
@@ -170,6 +182,11 @@ course_title.onchange = function() {
     var e3 = document.getElementById("course_title_display");
     e3.innerHTML = e2.options[e2.selectedIndex].text;
 }
+
+subject_remove.onchange = function(){
+    var e = subject_remove;
+    var e1 = document.getElementById("subject_delete_display");
+    e1.innerHTML = e.options[e.selectedIndex].text;}
 </script>
 </body>
 </html>

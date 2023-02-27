@@ -25,6 +25,10 @@ class SubjectSelectionForm(FlaskForm):
                            choices=[("1", "1"), ("2", "2"), ("3", "3"), ("4", "4"), ("5", "5")])   
     but = SubmitField("Submit")
 
+class SubjectDeleteForm(FlaskForm):
+    subject_remove = SelectField('Subject Code', validators=[InputRequired()], choices=[], render_kw={"onchange": "subject_delete.onchange()"})
+    delbut = SubmitField("Remove Subject From List")
+
 def calc_pro_score(form):
     return round(mean([int(form.pro_ans1.data),
                                      int(form.pro_ans2.data), 
@@ -40,8 +44,10 @@ bp = Blueprint('subjectselection', __name__, url_prefix='/')
 @login_required
 def subjectSelection():
     form = SubjectSelectionForm()
+    form_delete = SubjectDeleteForm()
     form.subject_code.choices = [(Subject.subject_code, f'{Subject.subject_code} - {Subject.subject_name}') for Subject in Subject.query.all()]
     user = User.query.filter_by(username=current_user.username).first()
+    form_delete.subject_remove.choices = [(StudyInterest.course_id, f'({StudyInterest.course.subject_code}) - {StudyInterest.course.course_number} - {StudyInterest.course.course_name}') for StudyInterest in StudyInterest.query.filter_by(user_id=user.id).options(joinedload(StudyInterest.course)).all()]
     course = None
     si_all = None
     si = None
@@ -53,6 +59,24 @@ def subjectSelection():
             form.pro_ans2.data = si.pro_ans2
             form.pro_ans3.data = si.pro_ans3
     '''
+    
+    if form_delete.validate_on_submit:
+        if user:
+            if form_delete.data['delbut']:
+                course_id  = form_delete.subject_remove.data
+
+                total_si = StudyInterest.query.filter_by(user_id=user.id).count()
+                if total_si <= 0:
+                    msg_delete = "No subjects to remove"
+                    return render_template('subjectselection.html', form=form, form_delete=form_delete, course=course, si_all=si_all, msg_delete=msg_delete)
+                si = StudyInterest.query.filter_by(user_id=user.id).filter_by(course_id=form_delete.subject_remove.data).first()
+                db.session.query(StudyInterest).filter(StudyInterest.id == si.id).delete()
+                db.session.commit()
+                form_delete.subject_remove.data = None
+                si_all = StudyInterest.query.filter_by(user_id=user.id).options(joinedload(StudyInterest.course)).all()
+                form_delete.subject_remove.choices = [(StudyInterest.course_id, f'({StudyInterest.course.subject_code}) - {StudyInterest.course.course_number} - {StudyInterest.course.course_name}') for StudyInterest in StudyInterest.query.filter_by(user_id=user.id).options(joinedload(StudyInterest.course)).all()]
+
+    
     if form.validate_on_submit:
         if user:
             si_all = StudyInterest.query.filter_by(user_id=user.id).options(joinedload(StudyInterest.course)).all()
@@ -64,7 +88,7 @@ def subjectSelection():
                 
                 if total_si >= 5:
                     msg = "Maximum number of subjects selected"
-                    return render_template('subjectselection.html', form=form, course=course, si_all=si_all, msg=msg)
+                    return render_template('subjectselection.html', form=form, form_delete=form_delete, course=course, si_all=si_all, msg=msg)
                 
                 si = StudyInterest.query.filter_by(user_id=user.id).filter_by(course_id=course.id).first()
                 if si:
@@ -90,8 +114,27 @@ def subjectSelection():
             print(request.form.get("pro_ans2"))
             print(request.form.get("pro_ans3"))
             si_all = StudyInterest.query.filter_by(user_id=user.id).options(joinedload(StudyInterest.course)).all()
-    return render_template('subjectselection.html', form=form, course=course, si_all=si_all)
+            form_delete.subject_remove.choices = [(StudyInterest.course_id, f'({StudyInterest.course.subject_code}) - {StudyInterest.course.course_number} - {StudyInterest.course.course_name}') for StudyInterest in StudyInterest.query.filter_by(user_id=user.id).options(joinedload(StudyInterest.course)).all()]
+    return render_template('subjectselection.html', form=form, form_delete=form_delete, course=course, si_all=si_all)
+    '''
+    if form_delete.validate_on_submit:
+        if user:
+            if form_delete.data['delbut']:
+                course_id  = form_delete.subject_remove.data
 
+                total_si = StudyInterest.query.filter_by(user_id=user.id).count()
+                if total_si <= 0:
+                    msg_delete = "No subjects to remove"
+                    return render_template('subjectselection.html', form=form, form_delete=form_delete, course=course, si_all=si_all, msg_delete=msg_delete)
+                si = StudyInterest.query.filter_by(user_id=user.id).filter_by(course_id=form_delete.subject_remove.data).first()
+                db.session.query(StudyInterest).filter(StudyInterest.id == si.id).delete()
+                db.session.commit()
+                form_delete.subject_remove.data = None
+                si_all = StudyInterest.query.filter_by(user_id=user.id).options(joinedload(StudyInterest.course)).all()
+                form_delete.subject_remove.choices = [(StudyInterest.course_id, f'({StudyInterest.course.subject_code}) - {StudyInterest.course.course_number} - {StudyInterest.course.course_name}') for StudyInterest in StudyInterest.query.filter_by(user_id=user.id).options(joinedload(StudyInterest.course)).all()]
+
+    return render_template('subjectselection.html', form=form, form_delete=form_delete, course=course, si_all=si_all)
+    '''
 @bp.route('/subjectselection/<get_code>', methods=['GET', 'POST'])
 @login_required
 def codesortcourse(get_code):
