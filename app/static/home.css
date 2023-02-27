@@ -7,6 +7,17 @@
     --box-shadow: 0 8px 22px rgb(0, 0, 0, 0.1);
 }
 
+.gradient-custom {
+    /* fallback for old browsers */
+    background: rgb(247, 105, 0);
+
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to bottom right, rgb(255, 106, 0), rgb(249, 170, 90));
+
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to bottom right, rgb(248, 175, 115), rgb(255, 106, 0))
+}
+
 .body {
     font-family: "Sora", sans-serif;
     line-height: 1.7;
@@ -138,8 +149,13 @@ section {
     background-position: center;
     background-size: cover;
     min-height: 500px;
+}
 
-
+.col-img1 {
+    background-image: url('/static/student1.png');
+    background-position: center;
+    background-size: cover;
+    min-height: 500px;
 }
 
 .team-member img {

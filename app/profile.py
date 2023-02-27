@@ -15,8 +15,6 @@ class profileForm(FlaskForm):
         min=0, max=15)],render_kw={"placeholder": "Phone Number"})
     aboutMe = StringField(validators=[Length(
         min=0, max=50)], render_kw={"placeholder": "About Me"})
-    
- 
 
 bp = Blueprint('profile', __name__, url_prefix='/')
 @bp.route('/profile', methods=['GET', 'POST'])
