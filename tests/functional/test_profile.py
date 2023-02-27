@@ -1,3 +1,7 @@
+'''
+Author: Aaron Alakkadan 
+'''
+
 from flask import url_for, request
 from app.auth import email_content_password_reset, url_for, send_email
 from unittest import mock
@@ -36,7 +40,7 @@ def test_profile_fields_present(mock_token, mock_email, client):
         assert user.is_verified
         assert response.request.path == '/dashboard' 
 
-        # Go to the profile page to check these fields
+        # Go to the profile page to check the first name, last name, and username fields
         response = client.get('/profile') 
         assert response.request.path == '/profile'
         assert current_user.first_name == user.first_name
@@ -77,8 +81,8 @@ def test_profile_input_phonenumber(mock_token, mock_email, client):
 
         # Go to the profile page to check these fields
         # Enter phone number via post data and save it 
-        # Redirect to dashboard page
-        # Go to profile page to ensure change has been made 
+        # Stay on the profile page
+        # Ensure the phoneNumber is displayed in the text box field  
         assert response.status_code == 200
         response = client.get('/profile')
         phoneNumber = "1234567890"
@@ -125,9 +129,9 @@ def test_profile_input_aboutme(mock_token, mock_email, client):
         assert response.request.path == '/dashboard' 
 
         # Go to the profile page to check these fields
-        # Enter phone number via post data and save it 
-        # Redirect to dashboard page
-        # Go to profile page to ensure change has been made 
+        # Enter the aboutMe via post data and save it 
+        # Stay on the profile page
+        # Ensure the aboutMe is displayed in the text box field
         assert response.status_code == 200
         response = client.get('/profile')
         aboutMe = "Hi, my name is Bob and I like computer science"
@@ -173,9 +177,9 @@ def test_profile_input_phonenumber_and_aboutme(mock_token, mock_email, client):
         assert response.request.path == '/dashboard' 
 
         # Go to the profile page to check these fields
-        # Enter phone number via post data and save it 
-        # Redirect to dashboard page
-        # Go to profile page to ensure change has been made 
+        # Enter phone number and aboutMe via post data and save it 
+        # Stay on the profile page
+        # Ensure both the phone number and aboutMe are displayed in the text box  
         assert response.status_code == 200
         response = client.get('/profile')
         phoneNumber = "1234567890"
@@ -223,9 +227,11 @@ def test_profile_edit_phonenumber(mock_token, mock_email, client):
         assert response.request.path == '/dashboard' 
 
         # Go to the profile page to check these fields
-        # Enter phone number via post data and save it 
-        # Redirect to dashboard page
-        # Go to profile page to ensure change has been made 
+        # Enter phone number via post data and save it
+        # Stay on the profile page
+        # Edit the textbox and input a new phone number via post data and save it 
+        # Stay on the profile page 
+        # Ensure the old phone number has been edited to the new user's phone number 
         assert response.status_code == 200
         response = client.get('/profile')
         phoneNumber = "1234567890"
@@ -274,9 +280,11 @@ def test_profile_edit_aboutme(mock_token, mock_email, client):
         assert response.request.path == '/dashboard' 
 
         # Go to the profile page to check these fields
-        # Enter phone number via post data and save it 
-        # Redirect to dashboard page
-        # Go to profile page to ensure change has been made 
+        # Enter the aboutMe via post data and save it 
+        # Stay on the profile page
+        # Edit the textbox and input the new aboutMe via post data and save it
+        # Stay on the profile page
+        # Ensure the old aboutMe is edited to the new user's aboutMe
         assert response.status_code == 200
         response = client.get('/profile')
         aboutMe = "Hi, my name is Bob and I like computer science"
@@ -326,9 +334,11 @@ def test_profile_edit_phonenumber_and_about_me(mock_token, mock_email, client):
         assert response.request.path == '/dashboard' 
 
         # Go to the profile page to check these fields
-        # Enter phone number via post data and save it 
-        # Redirect to dashboard page
-        # Go to profile page to ensure change has been made 
+        # Enter phone number and aboutMe via post data and save it 
+        # Stay on the profile page
+        # Edit the textbox and input of the new phone number and new aboutMe via post data and save it
+        # Stay on the profile page 
+        # Ensure the old phone number has been edited to the new user's phone number and ensure the old aboutMe has been edited to the new user's aboutMe
         assert response.status_code == 200
         response = client.get('/profile')
         phoneNumber = "1234567890"
@@ -380,9 +390,9 @@ def test_profile_phonenumber_char_limit_error(mock_token, mock_email, client):
         assert response.request.path == '/dashboard' 
 
         # Go to the profile page to check these fields
-        # Enter phone number via post data and save it 
-        # Redirect to dashboard page
-        # Go to profile page to ensure change has been made 
+        # Enter phone number that has over 15 characters via post data and save it 
+        # Stay on the profile page 
+        # Throw an error message to the user that lets them know the character limit on the phone number
         assert response.status_code == 200
         response = client.get('/profile')
         phoneNumber = "12345678904545646545644565656"
@@ -429,9 +439,9 @@ def test_profile_phonenumber_numeric_limit_error(mock_token, mock_email, client)
         assert response.request.path == '/dashboard' 
 
         # Go to the profile page to check these fields
-        # Enter phone number via post data and save it 
-        # Redirect to dashboard page
-        # Go to profile page to ensure change has been made 
+        # Enter phone number that is not numeric via post data and save it 
+        # Stay on the profile page
+        # Throw an error message to the user that lets them know to enter digits in a phone number
         assert response.status_code == 200
         response = client.get('/profile')
         phoneNumber = "123abcdef"
@@ -477,9 +487,9 @@ def test_profile_aboutMe_char_limit_error(mock_token, mock_email, client):
         assert response.request.path == '/dashboard' 
 
         # Go to the profile page to check these fields
-        # Enter phone number via post data and save it 
-        # Redirect to dashboard page
-        # Go to profile page to ensure change has been made 
+        # Enter aboutMe over the character limit of 50 via post data and save it 
+        # Stay on the profile page
+        # Throw an error message that lets the user know that they exceeded the character limit in aboutMe
         assert response.status_code == 200
         response = client.get('/profile')
         aboutMe = "My favorite soup is creamy tomato bisque with grilled cheese."
