@@ -2,6 +2,8 @@ from flask import Blueprint, render_template, url_for, redirect, request, sessio
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user 
 from app.auth import *
 from app.inbox import *
+from app.models.studyinterest import *
+from sqlalchemy.orm import joinedload
 
 class DashboardForm(FlaskForm):
     inboxBut = SubmitField("Inbox")
@@ -47,5 +49,11 @@ def dashboard():
         elif form.data['logoutBut']:
             return redirect(url_for('auth.login'))
 
-        
-    return render_template('dashboard.html', form=form)
+    si_all = None
+    user = User.query.filter_by(username=current_user.username).first()
+    if user:
+        si_all = StudyInterest.query.filter_by(user_id=user.id).options(joinedload(StudyInterest.course)).all()
+        print(si_all)
+    return render_template('dashboard.html', form=form, si_all=si_all)
+
+    
