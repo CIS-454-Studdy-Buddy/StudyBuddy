@@ -109,6 +109,16 @@
                                 {% endfor %}
                             </div>
                             <br>
+                            <div style="margin-left: 100px; color: white;">
+                            {{ form.pro_ans3.label }}
+                            {% for subfield in form.pro_ans3 %}       
+                                {{ subfield }}
+                                {{ subfield.label }}        
+                                {% endfor %}
+                            </div>
+                            <br>
+                            <br>
+                            <center>{{ form.but }}</center>
                             <br>
                             </form>
                             <form method="POST" action="">
@@ -121,16 +131,8 @@
                             <span id="subject_delete_display">{{form_delete.subject_remove.data}}</span>
                         </form>
                     </div>
-                            <br>
-                            <div style="margin-left: 100px; color: white;">
-                            {{ form.pro_ans3.label }}
-                            {% for subfield in form.pro_ans3 %}       
-                                {{ subfield }}
-                                {{ subfield.label }}        
-                                {% endfor %}
-                            </div>
-                            <br>
-                            <center>{{ form.but }}</center>
+                           
+                            
                             <br>
                             {{msg}}
                         </form>
