@@ -1,3 +1,6 @@
+'''
+Author: Aaron Alakkadan 
+'''
 from app.extensions import db
 from app.models.user import User
 from app.models.course import Course, Subject

@@ -1,7 +1,6 @@
 from app.extensions import db
 '''
-Did not explicilty create a relationship also duplicates on PST were found 
-data was corrected manually to put a slash PST
+Author: Aaron Alakkadan 
 '''
 class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
