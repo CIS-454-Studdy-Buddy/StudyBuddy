@@ -8,12 +8,26 @@
 </head>
 <body>
 
-    <h1>Find a Study Buddy Page under construction</h1>
+    <h1>Find a Study Buddy</h1>
 
     <form method="POST" action="">
         {{ form.hidden_tag() }}
-        {{ form.but }}
-        
+        <div>
+            <label>Select StudyInterest</label>
+            {{ form.subject_code }}
+        </div>
+        <br>
+        {{ form.buddy_but }}
+        <br>
+        <br>
+        {% for s in si_all %}
+        <div>
+            {{s.user.first_name}}
+            {{s.user.last_name}}
+            {{s.pro_score}}
+            <input type="submit" name="{{s.user.id}}" value="select"> </input>
+        </div>
+    {% endfor %}
     </form>
     
 </body>
