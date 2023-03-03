@@ -1,5 +1,6 @@
 import os 
 from flask import Flask
+#from . import findstudybuddy
 from app.extensions import db, bcrypt, login_manager, email
 from flask_bcrypt import Bcrypt
 from flask_mail import Mail
@@ -22,7 +23,7 @@ def create_app(test_config=None):
         
     
     
-    from . import auth, dashboard, inbox, findstudybuddy, subjectselection, materialsupload, materialsview, rate, viewratings, profile, contactus
+    from . import auth, dashboard, findstudybuddy, inbox, subjectselection, materialsupload, materialsview, rate, viewratings, profile, contactus
     app.register_blueprint(auth.bp)
     app.register_blueprint(dashboard.bp)
     app.register_blueprint(inbox.bp)
