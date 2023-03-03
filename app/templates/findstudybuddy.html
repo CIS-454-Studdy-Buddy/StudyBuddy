@@ -25,9 +25,11 @@
             {{s.user.first_name}}
             {{s.user.last_name}}
             {{s.pro_score}}
-            <input type="submit" name="{{s.user.id}}" value="select"> </input>
+            <input type="radio" name="select_buddy" value="{{s.user.id}}"> </input>
         </div>
+        <br>
     {% endfor %}
+    {{form.select_buddy_but}}
     </form>
     
 </body>
