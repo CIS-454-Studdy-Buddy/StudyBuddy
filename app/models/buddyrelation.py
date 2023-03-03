@@ -9,7 +9,7 @@ class BuddyRelation(db.Model):
     buddy_sender = db.Column(db.Integer, db.ForeignKey("user.id"))
     buddy_receiver = db.Column(db.Integer, db.ForeignKey("user.id"))
     study_interest_id = db.Column(db.Integer, db.ForeignKey("study_interest.id"))
-    invitation_status = db.Column(db.String(1), nullable=False, default = '')
+    invitation_status = db.Column(db.String(1), nullable=False, default = 'N')
 
     sender = relationship("User", foreign_keys=[buddy_sender])
     receiver = relationship("User", foreign_keys=[buddy_receiver])
