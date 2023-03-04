@@ -83,27 +83,41 @@
                             <div class="card-body p-1 p-md-5">
                                 <h1 style="color: white;">Your connections</h1>
                                 <div class="row mb-2">
+                                    {% for b in br_connections %}
+
                                     <div class="col-lg-4 col-sm-6">
                                         <div class="service card-effect">
-                                            <h5 class="mt-4 mb-2">Name of Buddy</h5>
-                                            <p>subject: Name of Subject</p>
+                                            <h5 class="mt-4 mb-2">{{b.receiver.first_name}} {{b.receiver.last_name}}</h5>
+                                            <p>Subject: {{b.study_interest.course.course_name}}</p>
+                                            <p>Email: {{b.receiver.username}}</p>
                                         </div>
-                                    </div>
-                                    <div class="col-lg-4 col-sm-6">
-                                        <div class="service card-effect">
-                                            <h5 class="mt-4 mb-2">Name of Buddy</h5>
-                                            <p>subject: Name of Subject</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-sm-6">
-                                        <div class="service card-effect">
-                                            <h5 class="mt-4 mb-2">Name of Buddy</h5>
-                                            <p>subject: Name of Subject</p>
-                                        </div>
-                                    </div>
+                                    </div>  
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
+
+                        <div class="card bg-dark shadow-2-strong card-registration" style="border-radius: 15px; margin-top: 10px;">
+                            <div class="card-body p-1 p-md-5">
+                                <h1 style="color: white;">Pending Invitations</h1>
+                                <div class="row mb-2">
+                                    {% for b in br %}
+                                        {% if b.invitation_status == 'S'%}
+
+                                    <div class="col-lg-4 col-sm-6">
+                                        <div class="service card-effect">
+                                            <a href="{{url_for('findstudybuddy.invitation')}}?id={{b.id}}">
+                                            <h5 class="mt-4 mb-2">{{b.receiver.first_name}} {{b.receiver.last_name}}</h5>
+                                            <p>Subject: {{b.study_interest.course.course_name}}</p>
+                                        </a>
+                                        </div>
+                                    </div>
+                                        {% endif %}    
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="card bg-dark shadow-2-strong mt-4 card-registration" style="border-radius: 15px;"> <!--style="border-radius: 15px;-->
                                 <div class="card-body"> <!--p-md-5-->
                                     <div class="row" style="margin-top: 25px; margin-bottom: 25px; margin-left: 25px; margin-right: 25px;"> <!--mb-5-->

@@ -14,6 +14,7 @@ class StudyInterest(db.Model):
     pro_ans2 = db.Column(db.Integer, nullable=False, default=0)
     pro_ans3 = db.Column(db.Integer, nullable=False, default=0)
     pro_score = db.Column(db.Numeric(precision=2, scale=2), nullable=False)
+    buddy_status = db.Column(db.String(1), nullable=False, default = 'N')
 
 
     user = relationship("User")
