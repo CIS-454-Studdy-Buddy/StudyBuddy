@@ -3,7 +3,9 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, log
 from app.auth import *
 from app.inbox import *
 from app.models.studyinterest import *
+from app.models.buddyrelation import *
 from sqlalchemy.orm import joinedload
+from sqlalchemy import and_ , or_
 
 class DashboardForm(FlaskForm):
     inboxBut = SubmitField("Inbox")
@@ -53,7 +55,8 @@ def dashboard():
     user = User.query.filter_by(username=current_user.username).first()
     if user:
         si_all = StudyInterest.query.filter_by(user_id=user.id).options(joinedload(StudyInterest.course)).all()
-        print(si_all)
-    return render_template('dashboard.html', form=form, si_all=si_all)
+        br = BuddyRelation.query.filter_by(buddy_receiver=user.id, invitation_status='S')
+        br_connections = BuddyRelation.query.filter(or_(BuddyRelation.buddy_receiver==user.id, BuddyRelation.buddy_sender==user.id), BuddyRelation.invitation_status=='A').all()
+    return render_template('dashboard.html', form=form, si_all=si_all, br=br, br_connections=br_connections)
 
     
