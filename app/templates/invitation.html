@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pending Invitation Status</title>
+</head>
+<body>
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        {% if br %}
+        <div>
+            {{br.sender.first_name}}
+            {{br.sender.last_name}}
+        </div>
+
+            <div>
+                {{br.study_interest.course.subject_code}}
+                {{br.study_interest.course.course_number}}
+                {{br.study_interest.course.course_name}}
+            </div>
+        <br>
+        <br>
+        {{ form.accept_buddy_but }}
+        {{ form.deny_buddy_but}}
+        {% endif %}
+</body>
+</html>
