@@ -12,4 +12,8 @@ class DebugConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'sqlite://'
     DEBUG = False
     TESTING = True
-    
+
+class TestConfig(Config):
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
+    DEBUG = False
+    TESTING = True 

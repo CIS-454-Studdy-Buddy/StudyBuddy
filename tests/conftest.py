@@ -1,7 +1,7 @@
 import pytest
 from app import create_app, db
 from app.models import *
-from app.utils import import_courses, import_subject_code
+from app.utils import import_courses, import_subject_code, seed_test_data
 
 @pytest.fixture()
 def app():
@@ -11,6 +11,8 @@ def app():
         db.create_all()
         import_subject_code('instance/sortedCode.csv')
         import_courses('instance/sortedCourse.csv')
+        #seed_test_data()
+        
     
     yield app
 
