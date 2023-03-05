@@ -90,4 +90,34 @@ def seed_data():
                 si.pro_score = round(mean([int(pro_ans1), int(pro_ans2), int(pro_ans3)]),2)
                 db.session.add(si)
         db.session.commit()
+
+def seed_test_data():
+    from app.extensions import db, bcrypt
+    from app import create_app
+
+    with create_app().app_context():
+        hashed_password = bcrypt.generate_password_hash("123456")
+        if not User.query.filter_by(username="test1@syr.edu").count():
+            test_user = User(first_name="test1", last_name="user1",  
+                            username="test1@syr.edu", password=hashed_password,
+                            token="9001", is_verified=True, phone_number="9001231234", about_me="I am a student at Syracuse University")
+            db.session.add(test_user)
+            db.session.commit()
+
+        if not User.query.filter_by(username="tsender@syr.edu").count():
+            test_sender = User(first_name="testsender", last_name="user2",  
+                            username="tsender@syr.edu", password=hashed_password,
+                            token="9002", is_verified=True, phone_number="9001231235", about_me="I am a student at Syracuse University")
+            db.session.add(test_sender)
+            db.session.commit()
+
+        if not User.query.filter_by(username="tsender@syr.edu").count():   
+            test_receiver = User(first_name="testreceiver", last_name="user3",  
+                            username="treceiver@syr.edu", password=hashed_password,
+                            token="9003", is_verified=True, phone_number="9001231236", about_me="I am a student at Syracuse University")
+            db.session.add(test_receiver)
+            db.session.commit()
+
+        
+
         

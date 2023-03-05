@@ -10,7 +10,7 @@ from flask_mail import Mail
 def create_app(test_config=None):
     app = Flask(__name__)
     if test_config:
-        app.config.from_object("instance.config.DebugConfig")
+        app.config.from_object("instance.config.TestConfig")
     else: 
         app.config.from_object("instance.config.Config")
 
