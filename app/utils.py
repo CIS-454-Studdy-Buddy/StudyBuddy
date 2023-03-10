@@ -2,6 +2,8 @@ from app.models import *
 from app.models.user import User
 from app.models.studyinterest import StudyInterest
 from app.models.buddyrelation import BuddyRelation
+from app.models.document import Document
+from app.models.buddyrating import BuddyRating
 from app.models.course import Course, Subject
 from app.extensions import db
 import os
