@@ -142,7 +142,8 @@
                             </div>
                             <br>
                             {% endfor %}
-                        
+                            
+                            <div style="margin-left: 100px; margin-top: 10px; margin-bottom: 30px;">
                             {% if subject_buddy_status == 'N' %}
                             {{form.select_buddy_but}}
                             {% elif subject_buddy_status == 'D' %}
@@ -155,6 +156,7 @@
                             {% elif subject_buddy_status == 'A' %}
                             <div>Invitation has been sent!</div>
                             {% endif %}
+                            </div>
                         </div>
                     </div>
                 </div>
