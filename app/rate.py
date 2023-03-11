@@ -36,6 +36,9 @@ def reward_points_calc(form):
     
     return rewards_points
 
+class RateConfirmation(FlaskForm):
+    msg = "You have successfully rated your buddy" 
+
 class rateForm(FlaskForm):
     month = SelectField('Duration', validators=[InputRequired()], 
                         choices=[("", ""), (1, 'January'), (2, 'February'), (3, 'March'), (4, 'April'), 
@@ -115,4 +118,10 @@ def rate():
             si.buddy_star_rating = avg_rating
             db.session.add(si)
             db.session.commit()
+            return redirect(url_for('rate.rateconfirmation'))
     return render_template('rate.html', form=form, buddy=buddy, br=br)
+
+@bp.route('/rateconfirmation', methods=['GET'])
+def rateconfirmation():
+    form = RateConfirmation()
+    return render_template('rateconfirmation.html', form=form, msg=form.msg)
