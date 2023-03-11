@@ -113,10 +113,16 @@ def rate():
                 BuddyRating.buddy_relation_id==br_id, 
                 BuddyRating.rating_sender==user.id,
                 BuddyRating.rating_receiver==buddy.id).scalar()
+            
+            total_rewards = db.session.query(func.sum(BuddyRating.reward_points).label('sum')).filter(
+                BuddyRating.rating_receiver==buddy.id).scalar()
+            user = User.query.filter_by(id=buddy_id).first()
+            user.total_reward_points = total_rewards
             print(avg_rating)
             si = StudyInterest.query.filter_by(user_id=buddy_id, course_id=course_id).first()
             si.buddy_star_rating = avg_rating
             db.session.add(si)
+            db.session.add(user)
             db.session.commit()
             return redirect(url_for('rate.rateconfirmation'))
     return render_template('rate.html', form=form, buddy=buddy, br=br)

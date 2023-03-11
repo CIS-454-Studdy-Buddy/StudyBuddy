@@ -83,13 +83,19 @@
                     <div class="col-12 col-lg-9 col-xl-7">
                         <div class="card bg-dark shadow-2-strong card-registration" style="border-radius: 15px; margin-top: 10px;">
                             <div class="card-body p-1 p-md-5">
+                                <h1 style="color: white;">Reward Points: {{user.total_reward_points}}</h1>
+                            </div>
+                        </div>
+
+                        <div class="card bg-dark shadow-2-strong card-registration" style="border-radius: 15px; margin-top: 10px;">
+                            <div class="card-body p-1 p-md-5">
                                 <h1 style="color: white;">Your connections</h1>
                                 <div class="row mb-2">
                                     {% for b in br_connections %}
                                         
                                     <div class="col-lg-4 col-sm-6">
                                         <div class="service card-effect">
-                                            {% if current_user.username == b.sender.username %}
+                                            {% if user.username == b.sender.username %}
                                             <h5 class="mt-4 mb-2">{{b.receiver.first_name}} {{b.receiver.last_name}}</h5>
                                             <p>Subject: {{b.study_interest.course.course_name}}</p>
                                             <p>Email: {{b.receiver.username}}</p>
@@ -139,12 +145,10 @@
                                             {{s.course.course_number}}
                                             {{s.course.course_name}}
                                             {{s.buddy_star_rating}}
-                                            <!--
-                                            <div id="star-{{s.course.course_number}}" class="my-rating" data-star="{{s.buddy_star_rating}}">
+                                            
+                                            <div id="star-{{s.course.course_number}}" class="my-rating" data-rating="{{s.buddy_star_rating}}">
 
                                             </div>
-                                             -->
-                                           
                                             
                                             <br>
                                         {% endfor %}
