@@ -14,6 +14,8 @@ def create_app(test_config=None):
     else: 
         app.config.from_object("instance.config.Config")
 
+    app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024     # 5MB
+
     with app.app_context():
         db.init_app(app)
         login_manager.login_view = "login"
