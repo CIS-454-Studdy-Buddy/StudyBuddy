@@ -57,6 +57,6 @@ def dashboard():
         si_all = StudyInterest.query.filter_by(user_id=user.id).options(joinedload(StudyInterest.course)).all()
         br = BuddyRelation.query.filter_by(buddy_receiver=user.id, invitation_status='S')
         br_connections = BuddyRelation.query.filter(or_(BuddyRelation.buddy_receiver==user.id, BuddyRelation.buddy_sender==user.id), BuddyRelation.invitation_status=='A').all()
-    return render_template('dashboard.html', form=form, si_all=si_all, br=br, br_connections=br_connections)
+    return render_template('dashboard.html', form=form, si_all=si_all, br=br, br_connections=br_connections, current_user=current_user)
 
     

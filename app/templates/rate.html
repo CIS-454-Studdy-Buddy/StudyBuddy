@@ -4,15 +4,51 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Rating</title>
 </head>
 <body>
 
-    <h1> Rate Page under construction</h1>
+    <h1> Rate Your Buddy </h1>
 
     <form method="POST" action="">
         {{ form.hidden_tag() }}
-        {{ form.but }}
+        <div>
+            <label style="margin-left: 0px; margin-top: 50px; color: black;">Buddy you are Rating: </label>
+        {{ buddy.first_name }}
+        {{ buddy.last_name }}
+        </div>
+
+        <div>
+            <label style="margin-left: 0px; margin-top: 50px; color: black;">Subject for Buddy you are Rating: </label>
+        {{ br.study_interest.course.course_name}}
+        </div>
+        <div>
+            <label style="margin-left: 0px; margin-top: 50px; color: black;">Select Month</label>
+        {{ form.month }}
+        </div>
+        <div>
+            <label style="margin-left: 0px; margin-top: 50px; color: black;">Select Year</label>
+        {{ form.year }}
+        </div>
+        <div>
+            <label style="margin-left: 0px; margin-top: 50px; color: black;">{{form.is_score_improved.label}}</label>
+        {{ form.is_score_improved }}
+        </div>
+        <div>
+            <label style="margin-left: 0px; margin-top: 50px; color: black;">{{form.is_gained_knowledge.label}}</label>
+        {{ form.is_gained_knowledge}}
+        </div>
+        <div>
+            <label style="margin-left: 0px; margin-top: 50px; color: black;">{{form.buddy_rate.label}}</label>
+        {{ form.buddy_rate}}
+        </div>
+        <div>
+            <label style="margin-left: 0px; margin-top: 50px; color: black;">{{form.comment.label}}</label>
+        {{ form.comment}}
+        </div>
+        <br>
+        <br>
+        {{ form.rate_but }}
         
     </form>
     
