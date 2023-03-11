@@ -84,12 +84,19 @@
                                 <h1 style="color: white;">Your connections</h1>
                                 <div class="row mb-2">
                                     {% for b in br_connections %}
-
+                                        
                                     <div class="col-lg-4 col-sm-6">
                                         <div class="service card-effect">
+                                            {% if current_user.username == b.sender.username %}
                                             <h5 class="mt-4 mb-2">{{b.receiver.first_name}} {{b.receiver.last_name}}</h5>
                                             <p>Subject: {{b.study_interest.course.course_name}}</p>
                                             <p>Email: {{b.receiver.username}}</p>
+                                            {% else %}
+                                            <h5 class="mt-4 mb-2">{{b.sender.first_name}} {{b.sender.last_name}}</h5>
+                                            <p>Subject: {{b.study_interest.course.course_name}}</p>
+                                            <p>Email: {{b.sender.username}}</p>
+                                            {% endif %}
+                                            <a href="{{url_for('rate.rate')}}?id={{b.id}}">Rate Buddy</a>
                                         </div>
                                     </div>  
                                     {% endfor %}

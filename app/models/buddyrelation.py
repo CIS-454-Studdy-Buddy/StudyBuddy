@@ -14,6 +14,13 @@ class BuddyRelation(db.Model):
     sender = relationship("User", foreign_keys=[buddy_sender])
     receiver = relationship("User", foreign_keys=[buddy_receiver])
     study_interest = relationship("StudyInterest")
+    
+    def get_buddy(self, current_user_id):
+        if current_user_id == self.sender.username:
+            return self.receiver
+        else:
+            return self.sender
+
 
     def __repr__(self):
         return f"<BuddyRelation {self.id}, {self.study_interest_id}>"
