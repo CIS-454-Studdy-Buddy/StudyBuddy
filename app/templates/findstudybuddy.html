@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Find Buddy</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
@@ -67,22 +67,22 @@
                             <form method="POST" action="">
                             {{ form.hidden_tag() }}
                         <div>
-                            <label style="margin-left: 100px; margin-top: 50px; color: white;">Select StudyInterest</label>
+                            <label style="margin-left: 75px; margin-top: 50px; color: white;">Select StudyInterest</label>
                             {{ form.subject_code }}
                         </div>
                         <div>
-                            <label style="margin-left: 100px; margin-top: 10px;color: white;">Proficiency Filter</label>
+                            <label style="margin-left: 75px; margin-top: 10px;color: white;">Proficiency Filter</label>
                             <br>
-                            <label style="margin-left: 100px; color: white;">{{ form.prof_select }}</label>
+                            <label style="margin-left: 75px; color: white;">{{ form.prof_select }}</label>
                         </div>
                         <br>
-                        <label style="margin-left: 100px; margin-bottom: 30px;">{{ form.buddy_but }}</label>
+                        <label style="margin-left: 75px; margin-bottom: 30px;">{{ form.buddy_but }}</label>
                         <br>
                     </div>
                     <div class="card bg-dark shadow-2-strong" style="border-radius: 15px;">
                         <br>
                         {% for s in si_all %}
-                        <div style="margin-left: 100px; margin-top: 10px;color: white;">
+                        <div style="margin-left: 75px; margin-top: 10px;color: white;">
                             {{s.user.first_name}}
                             {{s.user.last_name}}
                             {{s.pro_score}}
@@ -112,38 +112,47 @@
     -->
 
 <section class="vh-100 gradient-custom">
-    <div class="container py-1 h-100">
+    <div class="container py-1 h-50">
         <div class="row ml-2 justify-content-center align-items-center h-100">
             <div class="col-12 col-lg-9 col-xl-7">
-                <div class="card bg-dark shadow-2-strong" style="border-radius: 15px;">
+                <div class="card bg-dark shadow-2-strong" style="border-radius: 15px; list-style: none;">
                     <form method="POST" action="">
                         {{ form.hidden_tag() }}
                         <div>
-                            <label style="margin-left: 100px; margin-top: 50px; color: white;">Select StudyInterest</label>
+                            <label style="margin-left: 75px; margin-top: 30px; color: white;">Select StudyInterest</label>
                             {{ form.subject_code }}
                         </div>
-                        <div>
-                            <label style="margin-left: 100px; margin-top: 10px;color: white;">Proficiency Filter</label>
+                        <div id="prof_filter">
+                            <label style="margin-left: 75px; margin-top: 10px;color: white;">Proficiency Filter</label>
                             <br>
-                            <label style="margin-left: 100px; color: white;">{{ form.prof_select }}</label>
+                            <label style="margin-left: 75px; color: white;">{{ form.prof_select }}</label>
+                        </div>
+                        <div id="star_filter">
+                            <label style="margin-left: 75px; margin-top: 10px;color: white;">Star Rating Filter</label>
+                            <br>
+                            <label style="margin-left: 75px; color: white;">{{ form.star_select }}</label>
                         </div>
                         <br>
-                        <label style="margin-left: 100px; margin-bottom: 30px;">{{ form.buddy_but }}</label>
+                        <label style="margin-left: 75px; margin-bottom: 30px;">{{ form.buddy_but }}</label>
                         <br>
                         </div>
-                        <div class="card bg-dark shadow-2-strong" style="border-radius: 15px; margin-top: 50px;">
+                        <div class="card bg-dark shadow-2-strong" style="border-radius: 15px; margin-top: 30px;">
                             <br>
                             {% for s in si_all %}
-                            <div style="margin-left: 100px; margin-top: 10px;color: white;">
+                            <div style="margin-left: 75px; margin-top: 10px;color: white;">
                                 {{s.user.first_name}}
                                 {{s.user.last_name}}
-                                {{s.pro_score}}
                                 <input type="radio" name="select_buddy" value="{{s.user.id}}"> </input>
+                                <br>
+                                <label>Proficiency Score:</label>
+                                {{s.pro_score}} &emsp; &emsp;
+                                <label>Star Rating:</label>
+                                {{s.buddy_star_rating}}
                             </div>
                             <br>
                             {% endfor %}
                             
-                            <div style="margin-left: 100px; margin-top: 10px; margin-bottom: 30px;">
+                            <div style="margin-left: 75px; margin-top: 10px; margin-bottom: 30px;">
                             {% if subject_buddy_status == 'N' %}
                             {{form.select_buddy_but}}
                             {% elif subject_buddy_status == 'D' %}

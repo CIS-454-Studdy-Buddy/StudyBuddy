@@ -21,15 +21,18 @@ class SelectMultipleFieldsWithChecks(SelectMultipleField):
 class FindBuddyForm(FlaskForm):
     subject_code = SelectField('Subject Code', validators=[InputRequired()], choices=[])
 
-    prof_select = SelectMultipleFieldsWithChecks('Proficiency Score', validate_choice=False, choices=[(4, '4.0 - 5.0 score'), (3, '3.0 - 4.0 score'), (2, '2.0 - 3.0 score'), (1, '1.0 - 2.0 score')])
+    prof_select = SelectMultipleFieldsWithChecks('Proficiency Score', validate_choice=False, 
+                                                choices=[(4, '4.0 - 5.0 score'), (3, '3.0 - 4.0 score'), (2, '2.0 - 3.0 score'), (1, '1.0 - 2.0 score')], 
+                                                render_kw={'class': 'prof_checks'})
 
-    star_select = SelectMultipleFieldsWithChecks('Buddy Stars', validate_choice=False, choices=[(4, '4.0 - 5.0 stars'), (3, '3.0 - 4.0 stars'), (2, '2.0 - 3.0 stars'), (1, '1.0 - 2.0 stars')])
+    star_select = SelectMultipleFieldsWithChecks('Buddy Stars', validate_choice=False, 
+                                                choices=[(4, '4.0 - 5.0 stars'), (3, '3.0 - 4.0 stars'), (2, '2.0 - 3.0 stars'), (1, '1.0 - 2.0 stars')],
+                                                render_kw={'class': 'star_checks'})
 
     buddy_but = SubmitField("Search Buddy")
     
     select_buddy = RadioField(u'Select',
-                              validators=[InputRequired()]
-                              )
+                              validators=[InputRequired()])
         
     select_buddy_but = SubmitField("Select Buddy")
 
@@ -65,25 +68,27 @@ def findBuddy():
         br_user_id = form.select_buddy.data
         course_id = form.subject_code.data
         ''' For all the selected proficiency score range boxes or star rating boxes create a list of filters'''
-        prof_score_filter = []
-        star_filter = []
+        id_filters = [StudyInterest.user_id != user.id,
+                        StudyInterest.course_id==form.subject_code.data]
+        prof_filters = []
+        star_filters = []
         if isinstance(form.prof_select.data, list) and len(form.prof_select.data) > 0:
-            prof_score_filter = ['(StudyInterest.pro_score >= {}) & (StudyInterest.pro_score <= {} + 1)'.format(score, score) for score in form.prof_select.data]
-            prof_filters = [eval(expr) for expr in prof_score_filter]
+            for prof in form.prof_select.data:
+                prof1 = int(prof) + 1
+                prof_filters.append(and_((StudyInterest.pro_score >= int(prof)),(StudyInterest.pro_score <= int(prof1))))
+            print(prof_filters)       
         if isinstance(form.star_select.data, list) and len(form.star_select.data) > 0:
-            star_filter = ['(StudyInterest.buddy_star_rating >= {}) & (StudyInterest.buddy_star_rating <= {} + 1)'.format(score, score) for score in form.star_select.data]
-            star_filters = [eval(expr) for expr in star_filter]
-        if len(prof_score_filter) > 0 or len(star_filter) > 0:
+            for star in form.star_select.data:
+                star1 = int(star) + 1
+                star_filters.append(and_((StudyInterest.buddy_star_rating >= int(star)),(StudyInterest.buddy_star_rating <= int(star1))))
+            print(star_filters) 
+        if len(prof_filters) > 0 or len(star_filters) > 0:
             si_query = StudyInterest.query.filter(
-                and_(StudyInterest.user_id != user.id,
-                    StudyInterest.course_id==form.subject_code.data,
-                    or_(*prof_filters),
-                    or_(*star_filters))                  
+                    and_(*id_filters, (and_(or_(*prof_filters), or_(*star_filters))))            
                     ).options(joinedload(StudyInterest.course)).options(joinedload(StudyInterest.user))
         else:
             si_query = StudyInterest.query.filter(
-                and_(StudyInterest.user_id != user.id,
-                    StudyInterest.course_id==form.subject_code.data)                  
+                    and_(*id_filters)                
                     ).options(joinedload(StudyInterest.course)).options(joinedload(StudyInterest.user))
         si_all = si_query.all()
         #print(si_query.statement)
