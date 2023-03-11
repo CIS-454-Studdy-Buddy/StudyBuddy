@@ -10,9 +10,14 @@
 
     <h1> Materials Upload Page under construction</h1>
 
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <input type="submit" value="Upload">
+    </form>
+
     <form method="POST" action="">
         {{ form.hidden_tag() }}
-        {{ form.but }}
+        <!-- {{ form.but }} -->
         
     </form>
     
