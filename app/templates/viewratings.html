@@ -8,11 +8,32 @@
 </head>
 <body>
 
-    <h1>View Ratings Page under construction</h1>
+    <h1>View Ratings</h1>
 
     <form method="POST" action="">
         {{ form.hidden_tag() }}
-        {{ form.but }}
+        <table border="1" cellpadding="5" cellspacing="5">
+
+        <tr>
+            <th>Date</th>  
+            <th>Course</th>         
+            <th>Rating</th>
+            <th>Given By</th>            
+            <th>Comments</th>
+        </tr>
+        {% for br in buddy_rating %}
+        <tr>
+            <td>{{ br.month }}/{{ br.year }}</td>
+            <td> {{br.buddy_relation.study_interest.course.course_name}}</td>
+            <td>{{ br.buddy_rate }}</td>
+            <td>{{ br.sender.first_name }} {{br.sender.last_name}}</td>            
+            <td>{{ br.comment }}</td>
+        </tr>
+        {% endfor %}
+        </table>
+        <br>
+        <br>
+        {{ form.view_rating_but }}
         
     </form>
     

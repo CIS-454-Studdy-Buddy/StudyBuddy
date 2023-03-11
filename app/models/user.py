@@ -20,6 +20,7 @@ class User(db.Model, UserMixin):
     phone_number = db.Column(db.String(20), nullable=False, unique=False, default = '')
     about_me = db.Column(db.Text, nullable=False, default = '')
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    total_reward_points = db.Column(db.Integer, nullable=False, default=0)
 
 
     def __repr__(self):
