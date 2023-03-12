@@ -45,26 +45,3 @@ def materialsUpload():
     
     return render_template('materialsupload.html', form=form, br=br, buddy=buddy)
 
-@bp.route('/upload', methods=['POST'])
-def upload():
-    
-    br_id = int(request.args.get("id"))
-    br = BuddyRelation.query.filter_by(id=br_id).first()
-    user = User.query.filter_by(username=current_user.username).first()
-    buddy = br.get_buddy(current_user.username)
-
-    try:
-        file = request.files['file']
-
-        if file:
-            d = Document(buddy_sender=user.id, buddy_receiver=buddy.id,
-                          course_id=br.study_interest.course.id)
-            db.session.add(d)
-            db.session.commit()
-            file.save(os.path.join('uploads/', secure_filename(file.filename)))
-
-    except RequestEntityTooLarge:
-        return 'File is larger than the 5MB limit.'
-    
-    return redirect(url_for('materialsupload.materialsUpload'))
-
