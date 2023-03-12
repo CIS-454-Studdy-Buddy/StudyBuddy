@@ -25,11 +25,11 @@
 <nav class="navbar navbar-expand-lg py- sticky-top bg-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
-            <img src="{{url_for('static', filename='logo-study-buddy.png')}}" , width="230" height="65">
+            <center><img src="{{url_for('static', filename='logo-study-buddy.png')}}" , width="230" height="65"></center>
         </a>
-        <div class="collapse navbar-collapse" id="navbarNav">
+        <!--<div class="collapse navbar-collapse" id="navbarNav">
             <h2 style="color: rgb(247, 105, 0);">Sign Up</h2>
-        </div>
+        </div>-->
     </div>
 </nav>
 
@@ -91,17 +91,17 @@
                                 <p>{{msg}}</p>
                             </div>
                             
-                            <u1>
+                            <center><u1 class="text-white">
                                 {% for error in form.username.errors %}
                                 <li>{{ error }}</li>
                                 {% endfor %}
                             </u1>
-                            <ul>
+                            <ul class="text-white">
                                 {% for error in form.password.errors %}
                                 <li>{{ error }}</li>
                             
                                 {% endfor %}
-                            </ul>
+                            </ul></center>
                             <!--
                             <div class="row">
                                 <div class="col-md-6 mb-4">
