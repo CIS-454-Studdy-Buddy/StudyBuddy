@@ -24,6 +24,9 @@ def materialsUpload():
         try:
             print(request.files)
             file = request.files['file']
+
+            if not os.path.exists('uploads'):
+                os.makedirs('uploads')
             
             if file:
                 blob_data = None
