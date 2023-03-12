@@ -39,6 +39,20 @@ a {
     text-decoration: none;
 }
 
+a.loginlinks:link {
+text-decoration: underline;
+}
+
+a.loginlinks:hover {
+color: rgb(255, 125, 0);
+text-decoration: underline;
+}
+
+a.loginlinks:active {
+color: blue;
+text-decoration: underline;
+}
+
 .navbar {
     box-shadow: var(--box-shadow);
 }

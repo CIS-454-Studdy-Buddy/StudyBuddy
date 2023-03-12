@@ -87,16 +87,16 @@
                             <div class="row">
                                 <center><a href="{{url_for('auth.login')}}">Have an account? Signin Here</a></center>
                             </div>
-                            <div class="row">
+                            <div class="row" class="text-white">
                                 <p>{{msg}}</p>
                             </div>
                             
-                            <u1>
+                            <u1 class="text-white">
                                 {% for error in form.username.errors %}
                                 <li>{{ error }}</li>
                                 {% endfor %}
                             </u1>
-                            <ul>
+                            <ul class="text-white">
                                 {% for error in form.password.errors %}
                                 <li>{{ error }}</li>
                             
