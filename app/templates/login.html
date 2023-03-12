@@ -46,7 +46,7 @@
                         <!-- Email input -->
                         <div class="form-outline mb-4">
                             <div class="form-group">
-                                <label for="emailAddress">SU email</label>
+                                <label for="emailAddress">SU email&nbsp;</label>
                                 {{ form.username }}
                             </div>
                         </div>
@@ -74,13 +74,16 @@
 
                             <div class="col">
                                 <!-- Simple link -->
-                                <a href="{{url_for('auth.forgot')}}">Forgot password?</a>
+                                <a class="loginlinks" href="{{url_for('auth.forgot')}}">Forgot password?</a>
                             </div>
                         </div>
 
                         <!-- Register buttons -->
                         <div class="text-center">
-                            <p>Not a member? <a href="{{url_for('auth.signup')}}">Register</a></p>
+                            <p>Not a member? <a class="loginlinks" href="{{url_for('auth.signup')}}">Register</a></p>
+                        </div>
+                        <div class="row">
+                            <p>{{msg}}</p>
                         </div>
                     </form></center>
 

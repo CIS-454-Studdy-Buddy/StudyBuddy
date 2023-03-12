@@ -98,6 +98,7 @@
                                             <p>Subject: {{b.study_interest.course.course_name}}</p>
                                             <p>Email: {{b.sender.username}}</p>
                                             {% endif %}
+                                            <a href="{{url_for('materialsupload.materialsUpload')}}?id={{b.id}}">Material Upload</a>
                                             <a href="{{url_for('rate.rate')}}?id={{b.id}}">Rate Buddy</a>
                                         </div>
                                     </div>  

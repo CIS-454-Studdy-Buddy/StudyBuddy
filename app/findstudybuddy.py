@@ -83,15 +83,25 @@ def findBuddy():
                 star_filters.append(and_((StudyInterest.buddy_star_rating >= int(star)),(StudyInterest.buddy_star_rating <= int(star1))))
             print(star_filters) 
         if len(prof_filters) > 0 or len(star_filters) > 0:
-            si_query = StudyInterest.query.filter(
+            if prof_filters and star_filters:
+                si_query = StudyInterest.query.filter(
                     and_(*id_filters, (and_(or_(*prof_filters), or_(*star_filters))))            
                     ).options(joinedload(StudyInterest.course)).options(joinedload(StudyInterest.user))
+            elif prof_filters:
+                si_query = StudyInterest.query.filter(
+                    and_(*id_filters, or_(*prof_filters))            
+                    ).options(joinedload(StudyInterest.course)).options(joinedload(StudyInterest.user))
+            else:
+                si_query = StudyInterest.query.filter(
+                    and_(*id_filters, or_(*star_filters))            
+                    ).options(joinedload(StudyInterest.course)).options(joinedload(StudyInterest.user))
+            
         else:
             si_query = StudyInterest.query.filter(
                     and_(*id_filters)                
                     ).options(joinedload(StudyInterest.course)).options(joinedload(StudyInterest.user))
         si_all = si_query.all()
-        #print(si_query.statement)
+        print(si_query.statement)
         si_subject_blocked = StudyInterest.query.filter(
             and_(StudyInterest.user_id == user.id,
                   StudyInterest.course_id==course_id
@@ -154,7 +164,7 @@ def invitation():
     br = BuddyRelation.query.filter_by(id=int(br_id), buddy_receiver=current_user.id).first()
     if form.validate_on_submit:
         if form.data['accept_buddy_but'] or form.data['deny_buddy_but']:
-            email_address = "aalakkad@syr.edu"  #br.sender.username
+            email_address = br.sender.username  #br.sender.username
             if form.data['accept_buddy_but']:
                 acceptance_status = 'A'
                 html_msg = email_content_buddy_acceptance(
