@@ -4,6 +4,7 @@ instance/*
 !instance/config.py
 !instance/sortedCode.csv
 !instance/sortedCourse.csv
+uploads/*
 venv/*
 .vscode/*
 .idea/*

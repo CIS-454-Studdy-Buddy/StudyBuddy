@@ -8,17 +8,29 @@
 </head>
 <body>
 
-    <h1> Materials Upload Page under construction</h1>
-
-    <form action="/upload" method="post" enctype="multipart/form-data">
+    <h1>Materials Upload</h1>
+    <!--
+    <form action="/upload?id={{br.id}}" method="post" enctype="multipart/form-data">
         <input type="file" name="file">
         <input type="submit" value="Upload">
     </form>
-
-    <form method="POST" action="">
+    -->
+    <form method="POST" action="" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
-        <!-- {{ form.but }} -->
-        
+        <div>
+            <label style="margin-left: 0px; margin-top: 50px; color: black;">Material you are Uploading For: </label>
+        {{ buddy.first_name }}
+        {{ buddy.last_name }}
+        </div>
+
+        <div>
+            <label style="margin-left: 0px; margin-top: 50px; color: black;">Subject for Material you are Uploading: </label>
+        {{ br.study_interest.course.course_name}}
+        </div>
+        <div>
+            <input type="file" name="file">
+             {{ form.material_but }}
+        </div>
     </form>
     
 </body>
