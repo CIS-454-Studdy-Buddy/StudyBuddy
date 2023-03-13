@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template, url_for, redirect, request, session, current_app, Flask
+from io import BytesIO
+from flask import Blueprint, render_template, url_for, redirect, request, session, current_app, Flask, send_file
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user 
 from app.auth import *
 from app.dashboard import *
@@ -27,11 +28,11 @@ def materialsUpload():
             
             if file:
                 blob_data = None
-                file.save(os.path.join('uploads/', secure_filename(file.filename)))
-                with open(os.path.join('uploads/', secure_filename(file.filename)), "rb") as f:
+                file.save(os.path.join('app/uploads/', secure_filename(file.filename)))
+                with open(os.path.join('app/uploads/', secure_filename(file.filename)), "rb") as f:
                     blob_data = bytearray(f.read())
                 d = Document(buddy_sender=user.id, buddy_receiver=buddy.id,
-                            course_id=br.study_interest.course.id, content=blob_data)
+                            course_id=br.study_interest.course.id, name=file.filename, content=blob_data)
                 db.session.add(d)
                 db.session.commit()
                 '''
@@ -42,6 +43,21 @@ def materialsUpload():
                 
         except RequestEntityTooLarge:
             return 'File is larger than the 5MB limit.'
-    
+        
+
+
+
     return render_template('materialsupload.html', form=form, br=br, buddy=buddy)
+
+@bp.route('/download', methods=['GET','POST'])
+@login_required
+def download_file():
+
+    user = User.query.filter_by(username=current_user.username).first()
+    print(user.id)
+
+    docs = Document.query.filter_by(buddy_receiver=user.id).first()     # change to .all() and iterate through to display all documents
+    
+    
+    return send_file(BytesIO(docs.content), as_attachment=True, download_name=docs.name)
 
