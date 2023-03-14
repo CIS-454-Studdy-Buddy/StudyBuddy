@@ -18,3 +18,5 @@ class Document(db.Model):
 
     sender = relationship("User", foreign_keys=[buddy_sender])
     receiver = relationship("User", foreign_keys=[buddy_receiver])
+    course = relationship("Course")
+    

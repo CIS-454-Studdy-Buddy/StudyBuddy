@@ -8,11 +8,33 @@
 </head>
 <body>
 
-    <h1> Materials View Page under construction</h1>
+    <h1>Materials View</h1>
 
     <form method="POST" action="">
         {{ form.hidden_tag() }}
-        {{ form.but }}
+        <table border="1" cellpadding="5" cellspacing="5">
+
+        <tr>
+            <th>Date Uploaded</th>
+            <th>Course</th>
+            <th>Sender</th>  
+            <th>Name</th>         
+        </tr>
+
+        {% for d in list_of_doc %}
+        <tr>
+            <td>{{d.date_uploaded}}</td>
+            <td>{{d.course.course_name}}</td>
+            <td>{{d.sender.first_name}} {{d.sender.last_name}}</td>
+            <td> <a href="{{url_for('materialsview.docView')}}?id={{d.id}}">{{d.name}}</a></td> 
+            
+
+        </tr>
+        {% endfor %}
+        </table>
+        <br>
+        <br>   
+        {{ form.material_view_but }}
         
     </form>
     
