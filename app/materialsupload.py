@@ -48,18 +48,4 @@ def materialsUpload():
             return 'File is larger than the 5MB limit.'
         
 
-
-
     return render_template('materialsupload.html', form=form, br=br, buddy=buddy)
-
-@bp.route('/download', methods=['GET','POST'])
-@login_required
-def download_file():
-
-    user = User.query.filter_by(username=current_user.username).first()
-    print(user.id)
-
-    docs = Document.query.filter_by(buddy_receiver=user.id).first()     # change to .all() and iterate through to display all documents
-    
-    
-    return send_file(BytesIO(docs.content), as_attachment=True, download_name=docs.name)
