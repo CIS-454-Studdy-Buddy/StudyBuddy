@@ -90,8 +90,21 @@ def seed_data():
                 pro_ans3 = random.randint(1, 5)
                 si.pro_ans1 = pro_ans3
                 si.pro_score = round(mean([int(pro_ans1), int(pro_ans2), int(pro_ans3)]),2)
+                si.buddy_status = 'S'
                 db.session.add(si)
         db.session.commit()
+
+        #adds pending 5 invitations from aaron to matt
+        
+        # for x in range(1, 5):
+        #     br = BuddyRelation()
+        #     br.buddy_sender = new_user.id
+        #     br.buddy_receiver = new_user2.id
+        #     br.study_interest_id = x
+        #     br.invitation_status = 'S'
+        #     db.session.add(br)
+        # db.session.commit()
+
 
 def seed_test_data():
     from app.extensions import db, bcrypt
