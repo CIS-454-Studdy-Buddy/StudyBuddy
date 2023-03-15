@@ -174,7 +174,7 @@ section {
 
 .team-member img {
     width: 120px;
-    height: 12-0px;
+    height: auto;
     border-radius: 100px;
 }
 
