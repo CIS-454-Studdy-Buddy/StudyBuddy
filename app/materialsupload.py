@@ -21,9 +21,10 @@ def materialsUpload():
     br = BuddyRelation.query.filter_by(id=br_id).first()
     user = User.query.filter_by(username=current_user.username).first()
     buddy = br.get_buddy(current_user.username)
+    file_name = ""
     if form.data['material_but']:
         try:
-            print(request.files)
+            print("request.files1", request.files)
             file = request.files['file']
             
             if not os.path.exists('app/uploads'):
@@ -38,6 +39,8 @@ def materialsUpload():
                             course_id=br.study_interest.course.id, name=file.filename, content=blob_data)
                 db.session.add(d)
                 db.session.commit()
+                file_name = file.filename
+                print("This is the file.filename: ", file.filename)
                 '''
                 d = Document.query.filter_by(id=4).first()
                 with open(os.path.join('uploads/', 'temp.png'), "wb") as f:
@@ -48,4 +51,4 @@ def materialsUpload():
             return 'File is larger than the 5MB limit.'
         
 
-    return render_template('materialsupload.html', form=form, br=br, buddy=buddy)
+    return render_template('materialsupload.html', form=form, br=br, buddy=buddy, file_name=file_name)
