@@ -12,6 +12,11 @@
 
     <form method="POST" action="">
         {{ form.hidden_tag() }}
+        <div>
+            <label >Select StudyInterest</label>
+            {{ form.course_name }}
+            {{ form.material_view_but }}
+        </div>
         <table border="1" cellpadding="5" cellspacing="5">
 
         <tr>
@@ -34,7 +39,6 @@
         </table>
         <br>
         <br>   
-        {{ form.material_view_but }}
         
     </form>
     
