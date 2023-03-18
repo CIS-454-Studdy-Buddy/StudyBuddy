@@ -26,10 +26,11 @@ def materialsUpload():
     buddy = br.get_buddy(current_user.username)
     msg = ''
     upload_message = ''
+    file_name = ""
     if br.can_user_upload(current_user.username):
         if form.data['material_but']:
             try:
-                #print(request.files)
+                #print("request.files1", request.files)
                 file = request.files['file']
                 
                 if not os.path.exists('app/uploads'):
@@ -44,6 +45,9 @@ def materialsUpload():
                                 course_id=br.study_interest.course.id, name=file.filename, content=blob_data)
                     db.session.add(d)
                     db.session.commit()
+
+                    file_name = file.filename
+                    #print("This is the file.filename: ", file.filename)
 
                     msg = 'File uploaded successfully!'
 
@@ -73,4 +77,4 @@ def materialsUpload():
     if not br.can_user_upload(current_user.username):
         upload_message = 'You have reached the maximum number of uploads for today.'
 
-    return render_template('materialsupload.html', form=form, br=br, buddy=buddy, msg=msg, upload_message=upload_message)
+    return render_template('materialsupload.html', form=form, br=br, buddy=buddy, msg=msg, file_name=file_name, upload_message=upload_message)

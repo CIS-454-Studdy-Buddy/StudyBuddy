@@ -144,8 +144,8 @@ def test_pending_invitation(mock_token2, mock_email, client):
         response = client.post('/login', data={"username": username , "password": "ge3456"}, follow_redirects=True)
         assert response.request.path == '/dashboard'
         br = BuddyRelation.query.filter_by(buddy_sender=user_sender.id, buddy_receiver=user_receiver.id, study_interest_id=si_receiver.id).first()
-        assert br.receiver.first_name in response.text
-        assert br.receiver.last_name in response.text
+        assert br.sender.first_name in response.text
+        assert br.sender.last_name in response.text
         assert br.study_interest.course.course_name in response.text
         response = client.get(f"/invitation?id={br.id}")
         br = BuddyRelation.query.filter_by(buddy_sender=user_sender.id, buddy_receiver=user_receiver.id, study_interest_id=si_receiver.id).first()
@@ -288,8 +288,8 @@ def test_accept_invitation(mock_token2, mock_email, client):
         response = client.post('/login', data={"username": username , "password": "ge3456"}, follow_redirects=True)
         assert response.request.path == '/dashboard'
         br = BuddyRelation.query.filter_by(buddy_sender=user_sender.id, buddy_receiver=user_receiver.id, study_interest_id=si_receiver.id).first()
-        assert br.receiver.first_name in response.text
-        assert br.receiver.last_name in response.text
+        assert br.sender.first_name in response.text
+        assert br.sender.last_name in response.text
         assert br.study_interest.course.course_name in response.text
         response = client.get(f"/invitation?id={br.id}")
         br = BuddyRelation.query.filter_by(buddy_sender=user_sender.id, buddy_receiver=user_receiver.id, study_interest_id=si_receiver.id).first()
@@ -455,8 +455,8 @@ def test_deny_invitation(mock_token2, mock_email, client):
         response = client.post('/login', data={"username": username , "password": "ge3456"}, follow_redirects=True)
         assert response.request.path == '/dashboard'
         br = BuddyRelation.query.filter_by(buddy_sender=user_sender.id, buddy_receiver=user_receiver.id, study_interest_id=si_receiver.id).first()
-        assert br.receiver.first_name in response.text
-        assert br.receiver.last_name in response.text
+        assert br.sender.first_name in response.text
+        assert br.sender.last_name in response.text
         assert br.study_interest.course.course_name in response.text
         response = client.get(f"/invitation?id={br.id}")
         br = BuddyRelation.query.filter_by(buddy_sender=user_sender.id, buddy_receiver=user_receiver.id, study_interest_id=si_receiver.id).first()
@@ -467,10 +467,4 @@ def test_deny_invitation(mock_token2, mock_email, client):
         assert response.status_code == 200
         br = BuddyRelation.query.filter_by(buddy_sender=user_sender.id, buddy_receiver=user_receiver.id, study_interest_id=si_receiver.id).first()
         assert br.invitation_status == 'D'
-
-
-             
-        
-
-
 

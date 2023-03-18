@@ -46,6 +46,8 @@ class BuddyRelation(db.Model):
                     db.session.commit()
                     return True
             else:
+                self.reset_upload_date_sender = datetime.today().date()
+                db.session.commit()
                 return True
         elif current_user_id == self.receiver.username:
             if self.reset_upload_date_receiver is not None:
@@ -64,6 +66,8 @@ class BuddyRelation(db.Model):
                     db.session.commit()
                     return True
             else:
+                self.reset_upload_date_receiver = datetime.today().date()
+                db.session.commit()
                 return True
         else:
             return False
