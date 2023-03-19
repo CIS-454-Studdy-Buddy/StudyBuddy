@@ -71,31 +71,44 @@
 </nav>
 
 <section style="font-size: 125%;" class="text-white gradient-custom">
-    <div class="container py-5 h-20">
+    <div class = "text-black" style = "text-align: center;">
+        {{ upload_message }}
+    </div>
+    <div class="container py-1 h-20">
         <div class="row justify-content-center align-items-center h-100">
             <div class="col-12 col-lg-9 col-xl-7">
                 <div class="card bg-dark shadow-2-strong card-registration"
                     style="border-radius: 15px; padding-left: 5%;">
                     <div class="card-body p-5 p-md-5">
-                        <form method="POST" action="" enctype="multipart/form-data">
+                        <form method="POST" action="/materialsupload?id= {{ br.id }}" enctype="multipart/form-data">
                             <br>
                             <br>
                             {{ form.hidden_tag() }}
                             <div>
-                                <label style="margin-left: 0px; margin-top: 10px;">Material you are Uploading For: </label>
-                            {{ buddy.first_name }}
-                            {{ buddy.last_name }}
+                                <label style="text-align: center;">Material you are Uploading For: </label>
+                                <label class = "text_orange" style="text-align: center;">
+                                    {{ buddy.first_name }}
+                                    {{ buddy.last_name }}
+                                </label>
                             </div>
 
                             <div>
-                                <label style="margin-left: 0px; margin-top: 50px;">Subject for Material you are Uploading: </label>
-                            {{ br.study_interest.course.course_name}}
+                                <label style="margin-top: 50px;">Subject for Material you are Uploading: </label>
+                                <br>
+                                <label class = "text_orange">
+                                    {{ br.study_interest.course.course_name}}
+                                </label>
                             </div>
                             <div>
-                                <input type="file" name="file">
-                                {{ form.material_but }}
+                                <input type="file" name="file" id="file_upload_button" style = "margin-top: 10px;">
+                                {% if not upload_message %}
+                                    {{ form.material_but }}
+                                {% endif %}
                                 <br>
                                 <br>
+                                <div class = "text-white" style = "text-align: center;" id = "file_upload_msg">
+                                    {{ msg }}
+                                </div>
                                 <br>
                             </div>
                             <div>Last upload : {{file_name}} </div>
@@ -108,3 +121,10 @@
 </section>
 </body>
 </html>
+
+<script>
+
+    document.getElementById("file_upload_button").addEventListener("change", function(){
+        document.getElementById("file_upload_msg").style.display = "none";
+    });
+</script>

@@ -174,7 +174,7 @@ section {
 
 .team-member img {
     width: 120px;
-    height: 12-0px;
+    height: auto;
     border-radius: 100px;
 }
 
@@ -224,4 +224,8 @@ form .form-control {
 }
 .prof_checks {
     list-style: none;
+}
+
+.text_orange {
+    color: rgb(247, 105, 0);
 }
