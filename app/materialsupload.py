@@ -12,6 +12,7 @@ from datetime import datetime
 
 class materialsUploadForm(FlaskForm):
     material_but = SubmitField("Upload")
+    comment = StringField(validators=[Length(min=0, max=50)], render_kw={"placeholder": "Add a comment"})
 
 bp = Blueprint('materialsupload', __name__, url_prefix='/')
 @bp.route('/materialsupload', methods=['GET','POST'])
@@ -42,7 +43,7 @@ def materialsUpload():
                     with open(os.path.join('app/uploads/', secure_filename(file.filename)), "rb") as f:
                         blob_data = bytearray(f.read())
                     d = Document(buddy_sender=user.id, buddy_receiver=buddy.id,
-                                course_id=br.study_interest.course.id, name=file.filename, content=blob_data)
+                                course_id=br.study_interest.course.id, comment=form.comment.data, name=file.filename, content=blob_data)
                     db.session.add(d)
                     db.session.commit()
 
