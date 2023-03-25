@@ -111,6 +111,7 @@
                                 </div>
                                 <a class="btn m-1" role="button" href="{{url_for('materialsupload.materialsUpload')}}?id={{b.id}}">Material Upload</a>
                                 <a class="btn m-1" role="button" href="{{url_for('rate.rate')}}?id={{b.id}}">Rate Buddy</a>
+                                <a class="btn m-1" role="button" href="{{url_for('removebuddy.removeBuddy')}}?id={{b.id}}">Remove Buddy</a>
                             </div>
                             {% else %}
                             <div class="card card-effect mb-2">
@@ -129,6 +130,7 @@
                                 </div>
                                 <a class="btn m-1" role="button" href="{{url_for('materialsupload.materialsUpload')}}?id={{b.id}}">Material Upload</a>
                                 <a class="btn m-1" role="button" href="{{url_for('rate.rate')}}?id={{b.id}}">Rate Buddy</a>
+                                <a class="btn m-1" role="button" href="{{url_for('removebuddy.removeBuddy')}}?id={{b.id}}">Remove Buddy</a>
                                 </div>
                             {% endif %}
                         {% endfor %}

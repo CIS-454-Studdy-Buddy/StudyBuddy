@@ -31,6 +31,7 @@ def materialsUpload():
     if br.can_user_upload(current_user.username):
         if form.data['material_but']:
             try:
+                print("outside of if file clause")
                 #print("request.files1", request.files)
                 file = request.files['file']
                 
@@ -38,6 +39,7 @@ def materialsUpload():
                     os.makedirs('app/uploads')
 
                 if file:
+                    print("HELLOOO99999")
                     blob_data = None
                     file.save(os.path.join('app/uploads/', secure_filename(file.filename)))
                     with open(os.path.join('app/uploads/', secure_filename(file.filename)), "rb") as f:
@@ -72,8 +74,9 @@ def materialsUpload():
                 else:
                     msg = 'No file selected.'
                     
-            except RequestEntityTooLarge as e:
-                msg = 'File is larger than the 5MB limit.' + str(e)
+            except RequestEntityTooLarge:
+                msg = 'File is larger than the 5MB limit.'
+                
 
     if not br.can_user_upload(current_user.username):
         upload_message = 'You have reached the maximum number of uploads for today.'
