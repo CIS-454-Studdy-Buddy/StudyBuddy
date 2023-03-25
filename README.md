@@ -48,3 +48,30 @@ flask run
 copy and paste the url shown in the terminal to your web browser  
 
 https://github.com/git-guides/git-pull 
+
+
+## Build project for distribution
+Run the build command below and it will create tar file in dist folder
+
+```
+python -m build
+
+```
+
+Upload the tar file to s3 bucket
+
+asg user data copies this file ec2
+
+running manual commands on the terminal
+
+```
+
+yes | tar -xvf studybuddy.tar.gz 
+mv StudyBuddy-1.0.1 studybuddy
+sudo yum install python3.9
+sudo yum install python-pip
+cd studybuddy
+pip install -r requirements.txt
+
+```
+
