@@ -40,6 +40,12 @@ def materialsUpload():
 
                 if file:
                     print("HELLOOO99999")
+
+                    if file.content_length > 1024 * 5:
+                        print("max file size")
+                        msg = 'File is larger than the 5MB limit.'
+                        return render_template('materialsupload.html', form=form, br=br, buddy=buddy, msg=msg, file_name=file_name, upload_message=upload_message)
+                        
                     blob_data = None
                     file.save(os.path.join('app/uploads/', secure_filename(file.filename)))
                     with open(os.path.join('app/uploads/', secure_filename(file.filename)), "rb") as f:
@@ -82,3 +88,5 @@ def materialsUpload():
         upload_message = 'You have reached the maximum number of uploads for today.'
 
     return render_template('materialsupload.html', form=form, br=br, buddy=buddy, msg=msg, file_name=file_name, upload_message=upload_message)
+
+
