@@ -30,45 +30,40 @@
     </form>
     -->
 
-<nav class="navbar navbar-expand-lg py-3 sticky-top bg-dark">
-    <div class="container-fluid">
-
-        <a class="navbar-brand" href="#">
-            <img src="{{url_for('static', filename='logo-study-buddy.png')}}" , width="160" height="55">
-        </a>
-
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <button class="btn ms-4">
-                <a href="{{url_for('findstudybuddy.findBuddy')}}">Find a Buddy</a>
+    <nav class="navbar navbar-expand-lg py-3 sticky-top bg-dark">
+        <div class="container-fluid">
+    
+            <a class="navbar-brand" href="{{url_for('dashboard.dashboard')}}">
+                <img src="{{url_for('static', filename='logo-study-buddy.png')}}" , width="220" height="65">
+            </a>
+    
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
             </button>
-            <button class="btn ms-4">
-                <a href="{{url_for('subjectselection.subjectSelection')}}">Subject Select</a>
-            </button>
-            <button class="btn ms-4">
-                <a href="{{url_for('materialsupload.materialsUpload')}}">Materials Upload</a>
-            </button>
-            <button class="btn ms-4">
-                <a href="{{url_for('materialsview.materialsView')}}">Materials View</a>
-            </button>
-            <button class="btn ms-4">
-                <a href="{{url_for('rate.rate')}}">Rate a Buddy</a>
-            </button>
-            <button class="btn ms-4">
-                <a href="{{url_for('viewratings.viewRatings')}}">View Ratings</a>
-            </button>
-            <button class="btn ms-4">
-                <a href="{{url_for('profile.profile')}}">Profile</a>
-            </button>
-            <button class="btn ms-4">
-                <a href="{{url_for('auth.login')}}">Logout</a>
-            </button>
+            <div class="collapse navbar-collapse" id="navbarNav" style="padding-left: 20%;">
+                <button class="btn ms-4">
+                    <a href="{{url_for('findstudybuddy.findBuddy')}}">Buddy Search</a>
+                </button>
+                <button class="btn ms-4">
+                    <a href="{{url_for('subjectselection.subjectSelection')}}">Subject Select</a>
+                </button>
+                <button class="btn ms-4">
+                    <a href="{{url_for('materialsview.materialsView')}}">View Materials</a>
+                </button>
+                <button class="btn ms-4">
+                    <a href="{{url_for('viewratings.viewRatings')}}">View Ratings</a>
+                </button>
+                <button class="btn ms-4">
+                    <a href="{{url_for('profile.profile')}}">Profile</a>
+                </button>
+                <button class="btn ms-4">
+                    <a href="{{url_for('auth.login')}}">Logout</a>
+                </button>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
+  
 
 <section style="font-size: 125%;" class="text-white gradient-custom">
     <div class = "text-black" style = "text-align: center;">

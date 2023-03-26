@@ -23,37 +23,39 @@
 
 <body>
     <nav class="navbar navbar-expand-lg py-3 sticky-top bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <img src="{{url_for('static', filename='logo-study-buddy.png')}}" , width="230" height="65">
+        <div class="container-fluid">
+    
+            <a class="navbar-brand" href="{{url_for('dashboard.dashboard')}}">
+                <img src="{{url_for('static', filename='logo-study-buddy.png')}}" , width="220" height="65">
             </a>
+    
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link text-white text-center" href="#">Subject Select</a>
-                    </li>
-                </ul>
+            <div class="collapse navbar-collapse" id="navbarNav" style="padding-left: 20%;">
                 <button class="btn ms-4">
-                    <a href="{{url_for('dashboard.dashboard')}}">Home</a>
+                    <a href="{{url_for('findstudybuddy.findBuddy')}}">Buddy Search</a>
+                </button>
+                <button class="btn ms-4">
+                    <a href="{{url_for('subjectselection.subjectSelection')}}">Subject Select</a>
+                </button>
+                <button class="btn ms-4">
+                    <a href="{{url_for('materialsview.materialsView')}}">View Materials</a>
+                </button>
+                <button class="btn ms-4">
+                    <a href="{{url_for('viewratings.viewRatings')}}">View Ratings</a>
+                </button>
+                <button class="btn ms-4">
+                    <a href="{{url_for('profile.profile')}}">Profile</a>
+                </button>
+                <button class="btn ms-4">
+                    <a href="{{url_for('auth.login')}}">Logout</a>
                 </button>
             </div>
-      </nav>
+        </div>
+    </nav>
       
-   <form method="POST" action="">
-        {{ form.hidden_tag() }}
-
-        {% for s in si_all %}
-            <div>
-                {{s.course.subject_code}}
-                {{s.course.course_number}}
-                {{s.course.course_name}}
-                {{s.pro_score}}
-            </div>
-        {% endfor %}
         <!--
         <div>
             <label for="subject_code">Subject Code:</label>
@@ -69,6 +71,31 @@
 
     <div>
     <section class="vh-100 gradient-custom">
+        <div class="container">
+            <div class="row ml-2 justify-content-center align-items-center">
+                <div class="col-12 col-lg-9 col-xl-7">
+                    <div class="card bg-dark shadow-2-strong" style="border-radius: 15px;">
+                        <center>
+                            <h3 style="color: white;">Your Courses</h3>
+                        </center>
+                        <center>
+                            <form method="POST" action="" style="color: white;">
+                                {{ form.hidden_tag() }}
+        
+                                {% for s in si_all %}
+                                <div>
+                                    {{s.course.subject_code}}
+                                    {{s.course.course_number}}
+                                    {{s.course.course_name}}
+                                    {{s.pro_score}}
+                                </div>
+                                {% endfor %}
+                            </form>
+                        </center>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="container py-1 h-100">
             <div class="row ml-2 justify-content-center align-items-center h-100">
                 <div class="col-12 col-lg-9 col-xl-7">
@@ -117,18 +144,20 @@
                                 {% endfor %}
                             </div>
                             <br>
-                            <br>
                             <center>{{ form.but }}</center>
-                            <br>
                             </form>
+                            <br>
                             <form method="POST" action="">
-                            <h2>Subject Deletion</h2>
                             {{form_delete.hidden_tag()}}
-                            {{form_delete.subject_remove.label}}
-                            {{form_delete.subject_remove}}
-                            {{form_delete.delbut}}
+                            <center>{{form_delete.subject_remove.label}}</center>
+                            
+                            <center>{{form_delete.subject_remove}}</center>
+                            <br>
+                            <center>{{form_delete.delbut}}</center>
                             {{msg_delete}}
                             <span id="subject_delete_display">{{form_delete.subject_remove.data}}</span>
+                            <br>
+                            <br>
                         </form>
                     </div>
                            
@@ -141,6 +170,8 @@
             </div>
         </div>
     </section>
+
+
 <script>
     function updateCurrentValue() {
         var current_subject_code = document.getElementById("subject_code").value;
