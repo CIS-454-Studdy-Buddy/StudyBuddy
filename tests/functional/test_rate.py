@@ -1229,7 +1229,6 @@ def test_rate_multiple_months_rated(mock_token2, mock_email, client):
                                                         "buddy_rate": 5,  
                                                         "comment": "They were amazing",
                                                         "rate_but": 1}, follow_redirects=True)
-        
         br_rate = BuddyRating.query.filter_by(buddy_relation_id=br_id, rating_sender=user.id,
                                                   rating_receiver=buddy.id, month=4, year=2023).first()
         assert br_rate.is_survey_completed == True
