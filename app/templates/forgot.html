@@ -14,26 +14,30 @@
 
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/home.css">
+<style>
+    body {
+        background: linear-gradient(to left, rgb(255, 106, 0), rgb(249, 170, 90));
+    }
 
+    .gradient-custom {
+        background: linear-gradient(to left, rgb(255, 106, 0), rgb(249, 170, 90));
+    }
+</style>
 </head>
 
-<body class="bg">
+<body>
 
+<nav class="navbar navbar-expand-lg py-3 sticky-top bg-dark">
     <div class="container-fluid">
 
-        <!-- logo -->
-        <div class="row">
-            <div class="logo">
-                <img src="{{url_for('static', filename='logo-study-buddy.png')}}" , width="200" ,height="200">
-                <center>
-                    <div class="col-4 align-items-baseline">Forgot Password</div>
-                </center>
-            </div>
+        <a class="navbar-brand" href="#">
+            <img src="{{url_for('static', filename='logo-study-buddy.png')}}" , width="220" height="65">
+        </a>
         </div>
-        <br>
-        <br>
-        <br>
+    </div>
+</nav>
+    <!--
         <center><p>please enter your email to recover your account</p></center>
         <center><form method="POST" action="">
         {{ form.hidden_tag() }}
@@ -51,5 +55,37 @@
 
     </form></center>
     </div>
+-->
+<br>
+<br>
+<br>
+<br>
+
+    <center><div class="card text-center" style="width: 300px;">
+        <div class="card-header h5 text-white bg-dark">Password Reset</div>
+        <div class="card-body px-5">
+            <p class="card-text py-2">
+                Enter your email address and we'll send you an email with instructions to reset your password.
+            </p>
+            <form method="POST" action="">
+                {{ form.hidden_tag() }}
+                {{ form.username }}
+            </div>
+            <label style="margin: 4;"> {{ form.submit }}</label>
+            <div class="d-flex justify-content-between">
+                <a style="padding-left: 12%;" href="{{url_for('auth.login')}}">Login</a>
+                <a style="padding-right: 12%;" href="{{url_for('auth.signup')}}">Register</a>
+            </div>
+            <u1>
+                {% for error in form.username.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </u1>
+            <br>
+            <p>{{msg}}</p>
+            </form>
+        </div>
+    </div></center>
+
 </body>
 </html>
