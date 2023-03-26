@@ -56,17 +56,6 @@
         </div>
     </nav>
       
-   <form method="POST" action="">
-        {{ form.hidden_tag() }}
-
-        {% for s in si_all %}
-            <div>
-                {{s.course.subject_code}}
-                {{s.course.course_number}}
-                {{s.course.course_name}}
-                {{s.pro_score}}
-            </div>
-        {% endfor %}
         <!--
         <div>
             <label for="subject_code">Subject Code:</label>
@@ -82,6 +71,31 @@
 
     <div>
     <section class="vh-100 gradient-custom">
+        <div class="container">
+            <div class="row ml-2 justify-content-center align-items-center">
+                <div class="col-12 col-lg-9 col-xl-7">
+                    <div class="card bg-dark shadow-2-strong" style="border-radius: 15px;">
+                        <center>
+                            <h3 style="color: white;">Your Courses</h3>
+                        </center>
+                        <center>
+                            <form method="POST" action="" style="color: white;">
+                                {{ form.hidden_tag() }}
+        
+                                {% for s in si_all %}
+                                <div>
+                                    {{s.course.subject_code}}
+                                    {{s.course.course_number}}
+                                    {{s.course.course_name}}
+                                    {{s.pro_score}}
+                                </div>
+                                {% endfor %}
+                            </form>
+                        </center>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="container py-1 h-100">
             <div class="row ml-2 justify-content-center align-items-center h-100">
                 <div class="col-12 col-lg-9 col-xl-7">
@@ -130,18 +144,20 @@
                                 {% endfor %}
                             </div>
                             <br>
-                            <br>
                             <center>{{ form.but }}</center>
-                            <br>
                             </form>
+                            <br>
                             <form method="POST" action="">
-                            <h2>Subject Deletion</h2>
                             {{form_delete.hidden_tag()}}
-                            {{form_delete.subject_remove.label}}
-                            {{form_delete.subject_remove}}
-                            {{form_delete.delbut}}
+                            <center>{{form_delete.subject_remove.label}}</center>
+                            
+                            <center>{{form_delete.subject_remove}}</center>
+                            <br>
+                            <center>{{form_delete.delbut}}</center>
                             {{msg_delete}}
                             <span id="subject_delete_display">{{form_delete.subject_remove.data}}</span>
+                            <br>
+                            <br>
                         </form>
                     </div>
                            
@@ -154,6 +170,8 @@
             </div>
         </div>
     </section>
+
+
 <script>
     function updateCurrentValue() {
         var current_subject_code = document.getElementById("subject_code").value;
