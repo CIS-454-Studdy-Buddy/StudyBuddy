@@ -44,9 +44,6 @@
                 <div class="collapse navbar-collapse mx-auto" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <button class="btn ms-4">
-                        <a href="{{url_for('inbox.inbox')}}">Inbox</a>
-                    </button>
-                    <button class="btn ms-4">
                         <a href="{{url_for('dashboard.dashboard')}}">Home</a>
                     </button>
                     <button class="btn ms-4">
@@ -67,8 +64,7 @@
         <h1> {{current_user.username}} </h1>
         <h1> {{current_user.phone_number}} </h1>
         <h1> {{current_user.about_me}} </h1>
-        {{ form.homeButton }}
-        {{ form.inboxButton }}  
+        {{ form.homeButton }} 
         {{ form.logoutButton }} 
         {{ form.saveButton }}
         {{ form.phoneNumber }}

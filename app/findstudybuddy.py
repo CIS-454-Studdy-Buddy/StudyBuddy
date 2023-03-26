@@ -26,7 +26,7 @@ class FindBuddyForm(FlaskForm):
                                                 render_kw={'class': 'prof_checks'})
 
     star_select = SelectMultipleFieldsWithChecks('Buddy Stars', validate_choice=False, 
-                                                choices=[(4, '4.0 - 5.0 stars'), (3, '3.0 - 4.0 stars'), (2, '2.0 - 3.0 stars'), (1, '1.0 - 2.0 stars')],
+                                                choices=[(4, '4.0 - 5.0 stars'), (3, '3.0 - 4.0 stars'), (2, '2.0 - 3.0 stars'), (1, '1.0 - 2.0 stars'), (0, 'Unrated Buddies')],
                                                 render_kw={'class': 'star_checks'})
 
     buddy_but = SubmitField("Search Buddy")
@@ -164,7 +164,7 @@ def invitation():
     br = BuddyRelation.query.filter_by(id=int(br_id), buddy_receiver=current_user.id).first()
     if form.validate_on_submit:
         if form.data['accept_buddy_but'] or form.data['deny_buddy_but']:
-            email_address = br.sender.username  #br.sender.username
+            email_address = "mjfaiola@syr.edu"  #br.sender.username
             if form.data['accept_buddy_but']:
                 acceptance_status = 'A'
                 html_msg = email_content_buddy_acceptance(
