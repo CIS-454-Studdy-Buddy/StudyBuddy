@@ -23,7 +23,9 @@
             <th>Date Uploaded</th>
             <th>Course</th>
             <th>Sender</th>  
-            <th>Name</th>         
+            <th>Name</th>
+            <th>Comment</th>
+
         </tr>
 
         {% for d in list_of_doc %}
@@ -31,7 +33,8 @@
             <td>{{d.date_uploaded}}</td>
             <td>{{d.course.course_name}}</td>
             <td>{{d.sender.first_name}} {{d.sender.last_name}}</td>
-            <td> <a href="{{url_for('materialsview.docView')}}?id={{d.id}}">{{d.name}}</a></td> 
+            <td> <a href="{{url_for('materialsview.docView')}}?id={{d.id}}">{{d.name}}</a></td>
+            <td>{{d.comment}}</td> 
             
 
         </tr>

@@ -62,4 +62,9 @@ def dashboard():
         print(current_user.username)
     return render_template('dashboard.html', form=form, si_all=si_all, br=br, br_connections=br_connections, user=user)
 
+
+   
+
+
+
     
