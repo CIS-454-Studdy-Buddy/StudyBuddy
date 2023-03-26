@@ -19,6 +19,16 @@
     <link rel="stylesheet" href="static/home.css">
         
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+<style>
+    body {
+        background: linear-gradient(to right, rgb(255, 106, 0), rgb(249, 170, 90));
+    }
+
+    .gradient-custom {
+        background: linear-gradient(to right, rgb(255, 106, 0), rgb(249, 170, 90));
+    }
+</style>
 </head>
 
 <body>
@@ -35,16 +45,16 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav" style="padding-left: 20%;">
                 <button class="btn ms-4">
-                    <a href="{{url_for('findstudybuddy.findBuddy')}}">Buddy Search</a>
+                    <a href="{{url_for('findstudybuddy.findBuddy')}}">Buddy</a>
                 </button>
                 <button class="btn ms-4">
                     <a href="{{url_for('subjectselection.subjectSelection')}}">Subject Select</a>
                 </button>
                 <button class="btn ms-4">
-                    <a href="{{url_for('materialsview.materialsView')}}">View Materials</a>
+                    <a href="{{url_for('materialsview.materialsView')}}">Materials View</a>
                 </button>
                 <button class="btn ms-4">
-                    <a href="{{url_for('viewratings.viewRatings')}}">View Ratings</a>
+                    <a href="{{url_for('viewratings.viewRatings')}}">Ratings View</a>
                 </button>
                 <button class="btn ms-4">
                     <a href="{{url_for('profile.profile')}}">Profile</a>
