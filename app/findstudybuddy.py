@@ -164,7 +164,7 @@ def invitation():
     br = BuddyRelation.query.filter_by(id=int(br_id), buddy_receiver=current_user.id).first()
     if form.validate_on_submit:
         if form.data['accept_buddy_but'] or form.data['deny_buddy_but']:
-            email_address = "mjfaiola@syr.edu"  #br.sender.username
+            email_address = br.sender.username  #br.sender.username
             if form.data['accept_buddy_but']:
                 acceptance_status = 'A'
                 html_msg = email_content_buddy_acceptance(
