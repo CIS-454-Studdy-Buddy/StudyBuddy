@@ -26,7 +26,7 @@ class FindBuddyForm(FlaskForm):
                                                 render_kw={'class': 'prof_checks'})
 
     star_select = SelectMultipleFieldsWithChecks('Buddy Stars', validate_choice=False, 
-                                                choices=[(4, '4.0 - 5.0 stars'), (3, '3.0 - 4.0 stars'), (2, '2.0 - 3.0 stars'), (1, '1.0 - 2.0 stars')],
+                                                choices=[(4, '4.0 - 5.0 stars'), (3, '3.0 - 4.0 stars'), (2, '2.0 - 3.0 stars'), (1, '1.0 - 2.0 stars'), (0, 'Unrated Buddies')],
                                                 render_kw={'class': 'star_checks'})
 
     buddy_but = SubmitField("Search Buddy")

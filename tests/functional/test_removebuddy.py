@@ -1,6 +1,4 @@
-## Author: Aaron Alakkadan 
-from io import BytesIO
-import io
+# Author: Talal Hakki
 from flask import url_for, request
 from app.auth import email_content_password_reset, url_for, send_email
 from unittest import mock
@@ -8,22 +6,16 @@ import random
 from app.models.user import User
 from app.models.studyinterest import *
 from app.subjectselection import *
-from app.models.buddyrelation import *
-from app.models.buddyrating import *
-from app.models.document import *
-from werkzeug.utils import secure_filename
-from werkzeug.exceptions import RequestEntityTooLarge
-import os
 import pytest
-from freezegun import freeze_time
-
 
 '''
-This function tests if you can upload a document and view the documents information and download the document
+This function tests if the user clicks on the remove buddy button under my connections,
+but doesn't confirm to remove the buddy.
 '''
 @mock.patch("app.extensions.email.send", return_value=True, autospec=True)
 @mock.patch("random.randint", return_value=5678, autospec=True)
-def test_upload_document_and_view_document_on_success(mock_token2, mock_email, client):
+def test_not_remove_buddy(mock_token2, mock_email, client):
+
     # send data to signup using post method
     # redirects to email confirmation
     
@@ -184,64 +176,35 @@ def test_upload_document_and_view_document_on_success(mock_token2, mock_email, c
         assert br.study_interest.course.course_name in response.text
         assert br.receiver.username in response.text
 
-        # Upload a document for your buddy via post data 
-        # Check if buddy the document is displayed in view materials 
-        # Downnload the document  
-        response = client.get(f"/materialsupload?id={br.id}")
+        # Remove your buddy
+        # Check if the confirmation text in remove buddy is displayed
+        # Post data of selecting do not remove buddy. Check and make sure that you are taken back to 
+        # the dashboard and the buddy is not removed.
+        response = client.get(f"/removebuddy?id={br.id}")
         br_id = int(request.args.get("id"))
-        br = BuddyRelation.query.filter_by(id=br_id).first()
-        user = User.query.filter_by(username=current_user.username).first()
-        buddy = br.get_buddy(current_user.username)
-        #file = request.files['file']
-        image_name = "fake-image-stream.jpg"
-        #data = { "material_but": 1, "file": None}
-        data = {"file": (io.BytesIO(b"some random data"), image_name),  "material_but": 1} 
-        response = client.post(f"/materialsupload?id={br.id}", data=data, content_type='multipart/form-data')
-        assert response.status_code == 200
-        #print(response.data)
-        assert image_name in response.text
-        
 
-        response = client.get('/logout')
-        assert response.request.path == '/logout'
-       
-        session.clear()
-   
-    # 1st user goes to dashboard and views the material
-    response = client.get('/')
-    assert response.request.path == '/'
-    response = client.get('/login')
-    assert response.request.path == '/login'
-    with client:
-        response = client.post('/login', data={"username": username , "password": "ge3456"}, follow_redirects=True)
+        assert b"Are you sure you want to remove this buddy?" in response.data
+
+        # clicking the do not remove buddy button
+        response = client.post(f"/removebuddy?id={br.id}", data={"dont_remove_but": "1"}, follow_redirects=True)
+
         assert response.request.path == '/dashboard'
-        response = client.post('/materialsview', data={"course_name" : course_id, "material_view_but" : 1})
-        assert response.request.path == '/materialsview'
-        br = BuddyRelation.query.filter_by(id=br_id).first()
-        user = User.query.filter_by(username=current_user.username).first()
-        buddy = br.get_buddy(current_user.username)
-        image_name = "fake-image-stream.jpg"
-        assert image_name in response.text
-        assert b"Date Uploaded" in response.data
-        assert b"Course" in response.data
-        assert br.sender.first_name in response.text
-        assert br.sender.last_name in response.text
-        doc = Document.query.filter_by(name=image_name).first()
-        print("The doc id is : ", doc.id)
-        response = client.get(f'/docView?id={doc.id}')
-        #print(response.data)
-        assert response.status_code == 200
-        assert b"some random data" in response.data
+
+        # check that the buddy is still in your connections (i.e. the buddy has not been removed)
+        assert first_name in response.text
+        assert last_name in response.text
+
 
 
 
 '''
-This function tests if you can upload a maximum of 20 documents in a day and if the uploaded content file size is less than 5MB
+This function tests if the user clicks on the remove buddy button under my connections,
+and confirms to remove the buddy.
 '''
-@freeze_time ("2023-03-25")
 @mock.patch("app.extensions.email.send", return_value=True, autospec=True)
 @mock.patch("random.randint", return_value=5678, autospec=True)
-def test_upload_document_max_size_and_daily_file_limit(mock_token2, mock_email, client):
+def test_remove_buddy(mock_token2, mock_email, client):
+
     # send data to signup using post method
     # redirects to email confirmation
     
@@ -388,7 +351,7 @@ def test_upload_document_max_size_and_daily_file_limit(mock_token2, mock_email, 
        
         session.clear()
 
-    # 2nd user goes to dashboard and checks their connections and then clicks to upload materials
+    # 2nd user goes to dashboard and checks their connections and then rate the buddy 
     response = client.get('/')
     assert response.request.path == '/'
     response = client.get('/login')
@@ -402,251 +365,20 @@ def test_upload_document_max_size_and_daily_file_limit(mock_token2, mock_email, 
         assert br.study_interest.course.course_name in response.text
         assert br.receiver.username in response.text
 
-        # Upload 20 documents for your buddy via post data 
-        # The 10th document is a file with the fize size too big  
-        response = client.get(f"/materialsupload?id={br.id}")
+        # Remove your buddy
+        # Check if the confirmation text in remove buddy is displayed
+        # Post data of selecting do not remove buddy. Check and make sure that you are taken back to 
+        # the dashboard and the buddy is not removed.
+        response = client.get(f"/removebuddy?id={br.id}")
         br_id = int(request.args.get("id"))
-        br = BuddyRelation.query.filter_by(id=br_id).first()
-        user = User.query.filter_by(username=current_user.username).first()
-        buddy = br.get_buddy(current_user.username)
-        assert br.study_interest.course.course_name in response.text
-        assert buddy.first_name in response.text
-        assert buddy.last_name in response.text
-        #file = request.files['file']
-        #data = { "material_but": 1, "file": None}
-        for x in range(1, 10):
-            document_name = f"fake-document{x}.pdf"
-            data = {"file": (io.BytesIO(b"some random data"), document_name),  "material_but": 1} 
-            response = client.post(f"/materialsupload?id={br.id}", data=data, content_type='multipart/form-data')
-            assert response.status_code == 200
-            assert document_name in response.text
-            assert b"material_but" in response.data
-            assert b"File uploaded successfully!" in response.data
-            assert not b"You have reached the maximum number of uploads for today." in response.data
-            br = BuddyRelation.query.filter_by(id=br_id).first()
-            assert br.upload_count_sender == x
 
-        document_name = f"fake-document10.pdf"
-        #6MB file size
-        file_size = 6 * 1024 * 1024
-        #data = {"file": (io.BytesIO(b"".join([bytes([random.randint(0, 255)]) for _ in range(file_size)])), document_name), "material_but": 1}
-        file_data = io.BytesIO(os.urandom(file_size))
-        data = {"file": (file_data, document_name), "material_but": 1}
-        response = client.post(f"/materialsupload?id={br.id}", data=data, content_type='multipart/form-data')
-        assert response.status_code == 413
-        assert b"Request Entity Too Large" in response.data
+        assert b"Are you sure you want to remove this buddy?" in response.data
+        
+        # clicking the do not remove buddy button
+        response = client.post(f"/removebuddy?id={br.id}", data={"remove_but": "1"}, follow_redirects=True)
 
-        response = client.get(f"/materialsupload?id={br.id}")
-        br_id = int(request.args.get("id"))
-        br = BuddyRelation.query.filter_by(id=br_id).first()
-        assert br.study_interest.course.course_name in response.text
-        assert buddy.first_name in response.text
-        assert buddy.last_name in response.text
-        assert b"material_but" in response.data
-        for x in range(10, 20):
-            document_name = f"fake-document{x}.pdf"
-            data = {"file": (io.BytesIO(b"some random data"), document_name),  "material_but": 1} 
-            response = client.post(f"/materialsupload?id={br.id}", data=data, content_type='multipart/form-data')
-            assert response.status_code == 200
-            assert document_name in response.text
-            assert b"material_but" in response.data
-            assert b"File uploaded successfully!" in response.data
-            assert not b"You have reached the maximum number of uploads for today." in response.data
-            br = BuddyRelation.query.filter_by(id=br_id).first()
-            assert br.upload_count_sender == x
-
-        document_name = f"fake-document20.pdf"
-        data = {"file": (io.BytesIO(b"some random data"), document_name),  "material_but": 1} 
-        response = client.post(f"/materialsupload?id={br.id}", data=data, content_type='multipart/form-data')
-        assert response.status_code == 200
-        assert document_name in response.text
-        assert not b"material_but" in response.data
-        assert b"File uploaded successfully!" in response.data
-        assert b"You have reached the maximum number of uploads for today." in response.data
-        br = BuddyRelation.query.filter_by(id=br_id).first()
-        assert br.upload_count_sender == 20
-
-        document_name = f"fake-document21.pdf"
-        data = {"file": (io.BytesIO(b"data for file 21"), document_name),  "material_but": 1} 
-        response = client.post(f"/materialsupload?id={br.id}", data=data, content_type='multipart/form-data')
-        assert response.status_code == 200
-        br = BuddyRelation.query.filter_by(id=br_id).first()
-        assert br.upload_count_sender == 20
-        document_id = Document.query.filter_by(buddy_sender=user_sender.id, buddy_receiver=user_receiver.id, course_id = course_id).order_by(Document.id.desc()).first().id
-        assert document_id == 20
-
-        response = client.get('/logout')
-        assert response.request.path == '/logout'
-       
-        session.clear()
-
-
-    # 1st user goes to dashboard and clicks to upload materials
-    response = client.get('/')
-    assert response.request.path == '/'
-    response = client.get('/login')
-    assert response.request.path == '/login'
-    with client:
-        response = client.post('/login', data={"username": username , "password": "ge3456"}, follow_redirects=True)
         assert response.request.path == '/dashboard'
-        br = BuddyRelation.query.filter_by(buddy_sender=user_sender.id, buddy_receiver=user_receiver.id, study_interest_id=si_receiver.id).first()
 
-        # Upload 20 documents for your buddy via post data 
-        # The 10th document is a file with the fize size too big  
-        response = client.get(f"/materialsupload?id={br.id}")
-        br_id = int(request.args.get("id"))
-        br = BuddyRelation.query.filter_by(id=br_id).first()
-        user = User.query.filter_by(username=current_user.username).first()
-        buddy = br.get_buddy(current_user.username)
-        assert br.study_interest.course.course_name in response.text
-        assert buddy.first_name in response.text
-        assert buddy.last_name in response.text
-        #file = request.files['file']
-        #data = { "material_but": 1, "file": None}
-        for x in range(1, 10):
-            document_name = f"fake-document{x}.pdf"
-            data = {"file": (io.BytesIO(b"some random data"), document_name),  "material_but": 1} 
-            response = client.post(f"/materialsupload?id={br.id}", data=data, content_type='multipart/form-data')
-            assert response.status_code == 200
-            assert document_name in response.text
-            assert b"material_but" in response.data
-            assert b"File uploaded successfully!" in response.data
-            assert not b"You have reached the maximum number of uploads for today." in response.data
-            br = BuddyRelation.query.filter_by(id=br_id).first()
-            assert br.upload_count_receiver == x
-
-        document_name = f"fake-document10.pdf"
-        #6MB file size
-        file_size = 6 * 1024 * 1024
-        #data = {"file": (io.BytesIO(b"".join([bytes([random.randint(0, 255)]) for _ in range(file_size)])), document_name), "material_but": 1}
-        file_data = io.BytesIO(os.urandom(file_size))
-        data = {"file": (file_data, document_name), "material_but": 1}
-        response = client.post(f"/materialsupload?id={br.id}", data=data, content_type='multipart/form-data')
-        assert response.status_code == 413
-        assert b"Request Entity Too Large" in response.data
-
-        response = client.get(f"/materialsupload?id={br.id}")
-        br_id = int(request.args.get("id"))
-        br = BuddyRelation.query.filter_by(id=br_id).first()
-        assert br.study_interest.course.course_name in response.text
-        assert buddy.first_name in response.text
-        assert buddy.last_name in response.text
-        assert b"material_but" in response.data
-        for x in range(10, 20):
-            document_name = f"fake-document{x}.pdf"
-            data = {"file": (io.BytesIO(b"some random data"), document_name),  "material_but": 1} 
-            response = client.post(f"/materialsupload?id={br.id}", data=data, content_type='multipart/form-data')
-            assert response.status_code == 200
-            assert document_name in response.text
-            assert b"material_but" in response.data
-            assert b"File uploaded successfully!" in response.data
-            assert not b"You have reached the maximum number of uploads for today." in response.data
-            br = BuddyRelation.query.filter_by(id=br_id).first()
-            assert br.upload_count_receiver == x
-
-        document_name = f"fake-document20.pdf"
-        data = {"file": (io.BytesIO(b"some random data"), document_name),  "material_but": 1} 
-        response = client.post(f"/materialsupload?id={br.id}", data=data, content_type='multipart/form-data')
-        assert response.status_code == 200
-        assert document_name in response.text
-        assert not b"material_but" in response.data
-        assert b"File uploaded successfully!" in response.data
-        assert b"You have reached the maximum number of uploads for today." in response.data
-        br = BuddyRelation.query.filter_by(id=br_id).first()
-        assert br.upload_count_receiver == 20
-
-        document_name = f"fake-document21.pdf"
-        data = {"file": (io.BytesIO(b"data for file 21"), document_name),  "material_but": 1} 
-        response = client.post(f"/materialsupload?id={br.id}", data=data, content_type='multipart/form-data')
-        assert response.status_code == 200
-        br = BuddyRelation.query.filter_by(id=br_id).first()
-        assert br.upload_count_receiver == 20
-        document_id = Document.query.filter_by(buddy_sender=user_sender.id, buddy_receiver=user_receiver.id, course_id = course_id).order_by(Document.id.desc()).first().id
-        assert document_id == 20
-
-        # br.reset_upload_date_sender = datetime.datetime.now() + datetime.timedelta(days=2)
-        # br.reset_upload_date_receiver = datetime.datetime.now() + datetime.timedelta(days=2)
-        #print (datetime.datetime.now())
-        # DATE CHANGE
-        with freeze_time("2023-03-27"):
-            #print (datetime.datetime.now())
-            # Upload 20 documents for your buddy via post data 
-            # The 10th document is a file with the fize size too big 
-            br = BuddyRelation.query.filter_by(buddy_sender=user_sender.id, buddy_receiver=user_receiver.id, study_interest_id=si_receiver.id).first() 
-            response = client.get(f"/materialsupload?id={br.id}")
-            br_id = int(request.args.get("id"))
-            br = BuddyRelation.query.filter_by(id=br_id).first()
-            user = User.query.filter_by(username=current_user.username).first()
-            buddy = br.get_buddy(current_user.username)
-            assert br.study_interest.course.course_name in response.text
-            assert buddy.first_name in response.text
-            assert buddy.last_name in response.text
-            #file = request.files['file']
-            #data = { "material_but": 1, "file": None}
-            for x in range(1, 10):
-                document_name = f"fake-document{x}.pdf"
-                data = {"file": (io.BytesIO(b"some random data"), document_name),  "material_but": 1} 
-                response = client.post(f"/materialsupload?id={br.id}", data=data, content_type='multipart/form-data')
-                assert response.status_code == 200
-                assert document_name in response.text
-                assert b"material_but" in response.data
-                assert b"File uploaded successfully!" in response.data
-                assert not b"You have reached the maximum number of uploads for today." in response.data
-                br = BuddyRelation.query.filter_by(id=br_id).first()
-                assert br.upload_count_receiver == x
-
-            document_name = f"fake-document10.pdf"
-            #6MB file size
-            file_size = 6 * 1024 * 1024
-            #data = {"file": (io.BytesIO(b"".join([bytes([random.randint(0, 255)]) for _ in range(file_size)])), document_name), "material_but": 1}
-            file_data = io.BytesIO(os.urandom(file_size))
-            data = {"file": (file_data, document_name), "material_but": 1}
-            response = client.post(f"/materialsupload?id={br.id}", data=data, content_type='multipart/form-data')
-            assert response.status_code == 413
-            assert b"Request Entity Too Large" in response.data
-
-            response = client.get(f"/materialsupload?id={br.id}")
-            br_id = int(request.args.get("id"))
-            br = BuddyRelation.query.filter_by(id=br_id).first()
-            assert br.study_interest.course.course_name in response.text
-            assert buddy.first_name in response.text
-            assert buddy.last_name in response.text
-            assert b"material_but" in response.data
-            for x in range(10, 20):
-                document_name = f"fake-document{x}.pdf"
-                data = {"file": (io.BytesIO(b"some random data"), document_name),  "material_but": 1} 
-                response = client.post(f"/materialsupload?id={br.id}", data=data, content_type='multipart/form-data')
-                assert response.status_code == 200
-                assert document_name in response.text
-                assert b"material_but" in response.data
-                assert b"File uploaded successfully!" in response.data
-                assert not b"You have reached the maximum number of uploads for today." in response.data
-                br = BuddyRelation.query.filter_by(id=br_id).first()
-                assert br.upload_count_receiver == x
-
-            document_name = f"fake-document20.pdf"
-            data = {"file": (io.BytesIO(b"some random data"), document_name),  "material_but": 1} 
-            response = client.post(f"/materialsupload?id={br.id}", data=data, content_type='multipart/form-data')
-            assert response.status_code == 200
-            assert document_name in response.text
-            assert not b"material_but" in response.data
-            assert b"File uploaded successfully!" in response.data
-            assert b"You have reached the maximum number of uploads for today." in response.data
-            br = BuddyRelation.query.filter_by(id=br_id).first()
-            assert br.upload_count_receiver == 20
-
-            document_name = f"fake-document21.pdf"
-            data = {"file": (io.BytesIO(b"data for file 21"), document_name),  "material_but": 1} 
-            response = client.post(f"/materialsupload?id={br.id}", data=data, content_type='multipart/form-data')
-            assert response.status_code == 200
-            br = BuddyRelation.query.filter_by(id=br_id).first()
-            assert br.upload_count_receiver == 20
-            document_id = Document.query.filter_by(buddy_sender=user_sender.id, buddy_receiver=user_receiver.id, course_id = course_id).order_by(Document.id.desc()).first().id
-            assert document_id == 20
-
-            response = client.get('/logout')
-            assert response.request.path == '/logout'
-        
-            session.clear()
-   
-        
+        # check that the buddy is still in your connections (i.e. the buddy has not been removed)
+        assert first_name not in response.text
+        assert last_name not in response.text

@@ -12,6 +12,7 @@ from datetime import datetime
 
 class materialsUploadForm(FlaskForm):
     material_but = SubmitField("Upload")
+    comment = StringField(validators=[Length(min=0, max=50)], render_kw={"placeholder": "Add a comment"})
 
 bp = Blueprint('materialsupload', __name__, url_prefix='/')
 @bp.route('/materialsupload', methods=['GET','POST'])
@@ -30,6 +31,7 @@ def materialsUpload():
     if br.can_user_upload(current_user.username):
         if form.data['material_but']:
             try:
+                print("outside of if file clause")
                 #print("request.files1", request.files)
                 file = request.files['file']
                 
@@ -37,12 +39,19 @@ def materialsUpload():
                     os.makedirs('app/uploads')
 
                 if file:
+                    print("HELLOOO99999")
+
+                    if file.content_length > 1024 * 5:
+                        print("max file size")
+                        msg = 'File is larger than the 5MB limit.'
+                        return render_template('materialsupload.html', form=form, br=br, buddy=buddy, msg=msg, file_name=file_name, upload_message=upload_message)
+                        
                     blob_data = None
                     file.save(os.path.join('app/uploads/', secure_filename(file.filename)))
                     with open(os.path.join('app/uploads/', secure_filename(file.filename)), "rb") as f:
                         blob_data = bytearray(f.read())
                     d = Document(buddy_sender=user.id, buddy_receiver=buddy.id,
-                                course_id=br.study_interest.course.id, name=file.filename, content=blob_data)
+                                course_id=br.study_interest.course.id, comment=form.comment.data, name=file.filename, content=blob_data)
                     db.session.add(d)
                     db.session.commit()
 
@@ -71,10 +80,13 @@ def materialsUpload():
                 else:
                     msg = 'No file selected.'
                     
-            except RequestEntityTooLarge as e:
-                msg = 'File is larger than the 5MB limit.' + str(e)
+            except RequestEntityTooLarge:
+                msg = 'File is larger than the 5MB limit.'
+                
 
     if not br.can_user_upload(current_user.username):
         upload_message = 'You have reached the maximum number of uploads for today.'
 
     return render_template('materialsupload.html', form=form, br=br, buddy=buddy, msg=msg, file_name=file_name, upload_message=upload_message)
+
+

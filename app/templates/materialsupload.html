@@ -79,6 +79,7 @@
                             <br>
                             <br>
                             {{ form.hidden_tag() }}
+                            {{ form.comment }}
                             <div>
                                 <label style="text-align: center;">Material you are Uploading For: </label>
                                 <label class = "text_orange" style="text-align: center;">
@@ -121,5 +122,9 @@
 
     document.getElementById("file_upload_button").addEventListener("change", function(){
         document.getElementById("file_upload_msg").style.display = "none";
+        if(this.files[0].size > 5000000) {
+            alert("Please upload a file less than 5MB. Thanks!");
+            $(this).val('');
+        }
     });
 </script>
