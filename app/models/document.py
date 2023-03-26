@@ -12,6 +12,7 @@ class Document(db.Model):
     buddy_receiver = db.Column(db.Integer, db.ForeignKey("user.id"))
     course_id = db.Column(db.Integer, db.ForeignKey("course.id"))
     date_uploaded = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    comment = db.Column(db.String(50), nullable=False, default = '')
     name = db.Column(db.String(50), nullable=False, default = '')
     content = db.Column(db.LargeBinary())
     

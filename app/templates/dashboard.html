@@ -19,14 +19,14 @@
         <div class="container-fluid">
         
             <a class="navbar-brand" href="{{url_for('dashboard.dashboard')}}">
-                <img src="{{url_for('static', filename='logo-study-buddy.png')}}" , width="180" height="60">
+                <img src="{{url_for('static', filename='logo-study-buddy.png')}}" , width="220" height="65">
             </a>
             
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            <button class="navbar-toggler"  type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav" style="padding-left: 0%;">
+            <div class="collapse navbar-collapse" id="navbarNav" style="padding-left: 20%;">
                 <button class="btn ms-4">
                     <a href="{{url_for('findstudybuddy.findBuddy')}}">Buddy Search</a>
                 </button>
@@ -111,6 +111,7 @@
                                 </div>
                                 <a class="btn m-1" role="button" href="{{url_for('materialsupload.materialsUpload')}}?id={{b.id}}">Material Upload</a>
                                 <a class="btn m-1" role="button" href="{{url_for('rate.rate')}}?id={{b.id}}">Rate Buddy</a>
+                                <a class="btn m-1" role="button" href="{{url_for('removebuddy.removeBuddy')}}?id={{b.id}}">Remove Buddy</a>
                             </div>
                             {% else %}
                             <div class="card card-effect mb-2">
@@ -129,6 +130,7 @@
                                 </div>
                                 <a class="btn m-1" role="button" href="{{url_for('materialsupload.materialsUpload')}}?id={{b.id}}">Material Upload</a>
                                 <a class="btn m-1" role="button" href="{{url_for('rate.rate')}}?id={{b.id}}">Rate Buddy</a>
+                                <a class="btn m-1" role="button" href="{{url_for('removebuddy.removeBuddy')}}?id={{b.id}}">Remove Buddy</a>
                                 </div>
                             {% endif %}
                         {% endfor %}

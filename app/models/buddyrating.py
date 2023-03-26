@@ -19,7 +19,8 @@ class BuddyRating(db.Model):
     buddy_rate = db.Column(db.Integer, nullable=False, default=0)
     comment = db.Column(db.Text, nullable=False, default = '')
     is_survey_completed = db.Column(db.Boolean, nullable=False)
-    reward_points = db.Column(db.Integer, nullable=False)
+    reward_points = db.Column(db.Integer, nullable=False, default=0)
+    sender_survey_points = db.Column(db.Integer, nullable=False, default=0)  
 
     sender = relationship("User", foreign_keys=[rating_sender])
     receiver = relationship("User", foreign_keys=[rating_receiver])

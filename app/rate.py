@@ -101,7 +101,8 @@ def rate():
                                     rating_receiver=buddy.id, month=form.month.data, year=form.year.data,
                                     is_score_improved=form.is_score_improved.data, is_gained_knowledge=form.is_gained_knowledge.data,
                                     buddy_rate=form.buddy_rate.data, comment=form.comment.data, 
-                                    is_survey_completed=True, reward_points=reward_points_calc(form))
+                                    is_survey_completed=True, reward_points=reward_points_calc(form),
+                                    sender_survey_points=5)
             db.session.add(br_rate)
             db.session.commit()
             #br.study_interest.course.course_name
@@ -116,13 +117,20 @@ def rate():
             
             total_rewards = db.session.query(func.sum(BuddyRating.reward_points).label('sum')).filter(
                 BuddyRating.rating_receiver==buddy.id).scalar()
-            user = User.query.filter_by(id=buddy_id).first()
-            user.total_reward_points = total_rewards
+            receiving_user = User.query.filter_by(id=buddy_id).first()
+            receiving_user.reward_points = total_rewards
+
+            total_survey_points = db.session.query(func.sum(BuddyRating.sender_survey_points).label('sum')).filter(
+                BuddyRating.rating_sender==user.id).scalar()
+            #user = User.query.filter_by(id=buddy_id).first()
+            user.survey_points = total_survey_points
+            
             print(avg_rating)
             si = StudyInterest.query.filter_by(user_id=buddy_id, course_id=course_id).first()
             si.buddy_star_rating = avg_rating
             db.session.add(si)
             db.session.add(user)
+            db.session.add(receiving_user)
             db.session.commit()
             return redirect(url_for('rate.rateconfirmation'))
     return render_template('rate.html', form=form, buddy=buddy, br=br)

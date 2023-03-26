@@ -5,6 +5,8 @@ instance/*
 !instance/sortedCode.csv
 !instance/sortedCourse.csv
 app/uploads/*
+StudyBuddy.egg-info/
+dist/*
 venv/*
 .vscode/*
 .idea/*
