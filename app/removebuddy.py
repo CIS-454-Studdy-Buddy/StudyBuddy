@@ -2,7 +2,6 @@ from flask import Blueprint, render_template, url_for, redirect, request, sessio
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user 
 from app.auth import *
 from app.dashboard import *
-from app.inbox import *
 import flask_login
 
 
