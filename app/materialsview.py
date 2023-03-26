@@ -6,6 +6,7 @@ from app.models.document import *
 from wtforms.fields import StringField, SelectField, RadioField
 from io import BytesIO
 from sqlalchemy.orm import joinedload
+from sqlalchemy import exists
 
 class materialsViewForm(FlaskForm):
     course_name = SelectField('Course Name', validators=[InputRequired()], choices=[])
@@ -17,9 +18,14 @@ bp = Blueprint('materialsview', __name__, url_prefix='/')
 def materialsView():
     form = materialsViewForm()
     user = User.query.filter_by(username=current_user.username).first()
+    
+    #COMMENTED CODE FIXES DEPRICATION WARNING IN TEST CASE BUT IS NOT TESTED FUNCTINONALLY
     docs_qry = db.session.query(Document.course_id).filter(Document.buddy_receiver == user.id).distinct(Document.course_id)
+    #docs_subquery = db.session.query(Document.course_id).distinct().filter_by(buddy_receiver=user.id).subquery()
     list_of_doc = []
     courses = db.session.query(Course).filter(Course.id.in_(docs_qry)).all()
+    #courses = db.session.query(Course).filter(exists().where(Course.id == docs_subquery.c.course_id)).all()
+
     print("The courses are : ", courses)
     #print(courses.statement)
     form.course_name.choices = [("", "")] + [(c.id, c.course_name) for c in courses]

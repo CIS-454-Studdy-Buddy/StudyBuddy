@@ -2,13 +2,11 @@ from flask import Blueprint, render_template, url_for, redirect, request, sessio
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user 
 from app.auth import *
 from app.dashboard import *
-from app.inbox import *
 import flask_login
 
 
 class profileForm(FlaskForm):
     homeButton = SubmitField("Home")
-    inboxButton = SubmitField("Inbox")
     logoutButton = SubmitField("Logout")
     saveButton = SubmitField("Save")
     phoneNumber = StringField(validators=[Length(
@@ -56,9 +54,6 @@ def profile():
 
         elif form.data['homeButton']:
             return redirect(url_for('dashboard.dashboard'))
-
-        elif form.data['inboxButton']:
-            return redirect(url_for('inbox.inbox'))
 
         elif form.data['logoutButton']:
             return redirect(url_for('auth.login'))

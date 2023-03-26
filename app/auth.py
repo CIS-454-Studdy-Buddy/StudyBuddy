@@ -230,14 +230,14 @@ class contactUs(FlaskForm):
     contactButton = SubmitField("Contact Us")
 
 '''
-The home function checks if the user clicks the contact us button it redirects them to the contact us page
+The home function send a contact us email if the user fills out the full form on the landing page
 '''
 @bp.route('/', methods=['GET', 'POST'])
 def home():
     form = contactUs()
     if form.validate_on_submit():
         if form.data['contactButton']:
-            return redirect(url_for('contactus.contactUs'))
+            return redirect(url_for('auth.home'))
     
     if request.method == 'POST':
         name = request.form['name']
@@ -328,7 +328,6 @@ and generates the url
 '''
 def email_content_password_reset(username, reset_password_url, token):
     url = f"{reset_password_url}?t={token}"
-    #contacturl = url_for('contactus.contactUs')
     return render_template('reset_pw_email.html', username=username, url=url)
     #html_msg = f'<b>Hey {username}</b>, sending you this email from my <a href="{url}">Study Buddy App</a>'
     #return html_msg
