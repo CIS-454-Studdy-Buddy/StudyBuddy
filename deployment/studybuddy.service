@@ -1,0 +1,12 @@
+Description=study buddy application
+After=network.target
+
+[Service]
+User=ec2-user
+WorkingDirectory=/home/ec2-user/studybuddy/app
+Environment=FLASK_APP=application.py
+ExecStart=/home/ec2-user/.local/bin/flask run --host=0.0.0.0 --port=8080
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
