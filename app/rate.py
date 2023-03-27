@@ -37,7 +37,7 @@ def reward_points_calc(form):
     return rewards_points
 
 class RateConfirmation(FlaskForm):
-    msg = "You have successfully rated your buddy" 
+    msg = "make sure to check your view ratings page to check on any updates" 
 
 class rateForm(FlaskForm):
     month = SelectField('Duration', validators=[InputRequired()], 

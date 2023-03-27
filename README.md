@@ -38,7 +38,6 @@ python3
 from app.utils import create_db, seed_data
 create_db()
 seed_data()
-
 ```
 
 

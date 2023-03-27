@@ -79,7 +79,6 @@
                             <br>
                             <br>
                             {{ form.hidden_tag() }}
-                            {{ form.comment }}
                             <div>
                                 <label style="text-align: center;">Material you are Uploading For: </label>
                                 <label class = "text_orange" style="text-align: center;">
@@ -95,19 +94,21 @@
                                     {{ br.study_interest.course.course_name}}
                                 </label>
                             </div>
+                            <br>
+                            {{ form.comment }}
                             <div>
+                            <br>
                                 <input type="file" name="file" id="file_upload_button" style = "margin-top: 10px;">
                                 {% if not upload_message %}
                                     {{ form.material_but }}
                                 {% endif %}
-                                <br>
-                                <br>
                                 <div class = "text-white" style = "text-align: center;" id = "file_upload_msg">
-                                    {{ msg }}
                                 </div>
                                 <br>
                             </div>
                             <div>Last upload : {{file_name}} </div>
+                            <br>
+                            <center>{{ msg }}</center>
                         </form>
                     </div>
                 </div>
