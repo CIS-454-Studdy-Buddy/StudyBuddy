@@ -4,3 +4,4 @@ include app/models/*
 include app/templates/*
 include instance/*
 include requirements.txt
+include deployment/*
