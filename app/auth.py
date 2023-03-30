@@ -159,6 +159,8 @@ def signup():
             token =  random.randint(10**9,10**10)
             html_msg = email_content_email_confirmation(
                 username=form.username.data, 
+                first_name = form.first_name.data,
+                last_name = form.last_name.data,
                 email_confirmation_url=url_for('auth.login', _external=True),
                 token=token 
                 )
@@ -315,8 +317,8 @@ def send_email(email_address, msg_html, subject):
                 recipients = [email_address]
                )
 
-    with current_app.open_resource("static/images/lock.png", 'rb') as lock:
-        msg.attach('lock.png', 'image/png', lock.read(), 'inline', headers=[['Content-ID','<lock>']])
+    with current_app.open_resource("static/images/logo-study-buddy.png", 'rb') as lock:
+        msg.attach('logo-study-buddy.png', 'image/png', lock.read(), 'inline', headers=[['Content-ID','<lock>']])
 
     msg.html = msg_html 
     email.send(msg)
@@ -326,9 +328,9 @@ def send_email(email_address, msg_html, subject):
 The email_content_password_reset function generates the email password reset content to the user
 and generates the url
 '''
-def email_content_password_reset(username, reset_password_url, token):
+def email_content_password_reset(username, first_name, last_name,reset_password_url, token):
     url = f"{reset_password_url}?t={token}"
-    return render_template('reset_pw_email.html', username=username, url=url)
+    return render_template('reset_pw_email.html', username=username, first_name=first_name,last_name=last_name ,url=url)
     #html_msg = f'<b>Hey {username}</b>, sending you this email from my <a href="{url}">Study Buddy App</a>'
     #return html_msg
 
@@ -336,6 +338,6 @@ def email_content_password_reset(username, reset_password_url, token):
 The email_content_email_confirmation function generates the email confirmation reset content to the user
 and generates the url
 '''
-def email_content_email_confirmation(username, email_confirmation_url, token):
+def email_content_email_confirmation(username, first_name ,last_name, email_confirmation_url, token):
     url = f"{email_confirmation_url}?t={token}"
-    return render_template('email.html', username=username, url=url)
+    return render_template('email.html', username=username, first_name=first_name,last_name=last_name,url=url)

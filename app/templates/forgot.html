@@ -72,9 +72,12 @@
                 {{ form.username }}
             </div>
             <label style="margin: 4;"> {{ form.submit }}</label>
+            <br>
             <div class="d-flex justify-content-between">
-                <a style="padding-left: 12%;" href="{{url_for('auth.login')}}">Login</a>
-                <a style="padding-right: 12%;" href="{{url_for('auth.signup')}}">Register</a>
+                <a href="{{url_for('auth.login')}}" class="btn btn-primary" style="margin-left: 12%;">Log in</a>
+                <!--<a style="padding-left: 12%;" href="{{url_for('auth.login')}}">Login</a>-->
+                <a href="{{url_for('auth.signup')}}" class="btn btn-primary" style="margin-right: 12%;">Sign Up</a>
+                <!--<a style="padding-right: 12%;" href="{{url_for('auth.signup')}}">Register</a>-->
             </div>
             <u1>
                 {% for error in form.username.errors %}
