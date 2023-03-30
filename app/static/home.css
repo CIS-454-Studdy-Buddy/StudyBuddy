@@ -229,3 +229,57 @@ form .form-control {
 .text_orange {
     color: rgb(247, 105, 0);
 }
+
+.info-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0.5rem;
+    cursor: pointer;
+}
+
+.info-icon:hover .popup {
+    display: block;
+}
+
+.info-icon2 {
+    position: sticky;
+    display: inline-block;
+    z-index: 0;
+    margin: 0.5rem;
+    left: 20px;
+    cursor: ppointer;
+}
+
+.info-icon2:hover .popup2 {
+    display: block;
+}
+  
+.popup {
+    position: absolute;
+    width: 300px;
+    top: 30px;
+    right: 0px;
+    background-color: white;
+    border: 2px solid black;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px grey;
+    display: none;
+}
+
+.popup2 {
+    position: absolute;
+    width: 300px;
+    top: 30px;
+    right: -150px;
+    z-index: 999;
+    background-color: white;
+    border: 2px solid black;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px grey;
+    display: none;
+    white-space: normal;
+    color: black;
+}
