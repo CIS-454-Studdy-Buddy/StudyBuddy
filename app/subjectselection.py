@@ -110,9 +110,9 @@ def subjectSelection():
                 form.pro_ans2.data = None
                 form.pro_ans3.data = None
             #form.proScore = (form.proAns1 + form.proAns2 + form.proAns3) / 3
-            print(request.form.get("pro_ans1"))
-            print(request.form.get("pro_ans2"))
-            print(request.form.get("pro_ans3"))
+            # print(request.form.get("pro_ans1"))
+            # print(request.form.get("pro_ans2"))
+            # print(request.form.get("pro_ans3"))
             si_all = StudyInterest.query.filter_by(user_id=user.id).options(joinedload(StudyInterest.course)).all()
             form_delete.subject_remove.choices = [(StudyInterest.course_id, f'({StudyInterest.course.subject_code}) - {StudyInterest.course.course_number} - {StudyInterest.course.course_name}') for StudyInterest in StudyInterest.query.filter_by(user_id=user.id).options(joinedload(StudyInterest.course)).all()]
     return render_template('subjectselection.html', form=form, form_delete=form_delete, course=course, si_all=si_all)

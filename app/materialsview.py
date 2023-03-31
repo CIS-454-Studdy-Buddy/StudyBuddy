@@ -26,7 +26,7 @@ def materialsView():
     courses = db.session.query(Course).filter(Course.id.in_(docs_qry)).all()
     #courses = db.session.query(Course).filter(exists().where(Course.id == docs_subquery.c.course_id)).all()
 
-    print("The courses are : ", courses)
+    #print("The courses are : ", courses)
     #print(courses.statement)
     form.course_name.choices = [("", "")] + [(c.id, c.course_name) for c in courses]
     if form.validate_on_submit:

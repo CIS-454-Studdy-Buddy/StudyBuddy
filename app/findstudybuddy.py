@@ -76,12 +76,12 @@ def findBuddy():
             for prof in form.prof_select.data:
                 prof1 = int(prof) + 1
                 prof_filters.append(and_((StudyInterest.pro_score >= int(prof)),(StudyInterest.pro_score <= int(prof1))))
-            print(prof_filters)       
+            #print(prof_filters)       
         if isinstance(form.star_select.data, list) and len(form.star_select.data) > 0:
             for star in form.star_select.data:
                 star1 = int(star) + 1
                 star_filters.append(and_((StudyInterest.buddy_star_rating >= int(star)),(StudyInterest.buddy_star_rating <= int(star1))))
-            print(star_filters) 
+            #print(star_filters) 
         if len(prof_filters) > 0 or len(star_filters) > 0:
             if prof_filters and star_filters:
                 si_query = StudyInterest.query.filter(
@@ -101,7 +101,7 @@ def findBuddy():
                     and_(*id_filters)                
                     ).options(joinedload(StudyInterest.course)).options(joinedload(StudyInterest.user))
         si_all = si_query.all()
-        print(si_query.statement)
+        #print(si_query.statement)
         si_subject_blocked = StudyInterest.query.filter(
             and_(StudyInterest.user_id == user.id,
                   StudyInterest.course_id==course_id
@@ -144,7 +144,7 @@ def findBuddy():
             send_email(email_address=br_user.username, msg_html=html_msg, subject=subjectEmailConfirmation)
             
             #render template to a new template return 
-            print(form.select_buddy.data)
+            #print(form.select_buddy.data)
             return redirect(url_for('findstudybuddy.findbuddyconfirmation'))
     return render_template('findstudybuddy.html', form=form, si_all=si_all, subject_buddy_status=subject_buddy_status)
 

@@ -46,6 +46,6 @@ def test_contact_us_email_send(mock_send, client):
         args = mock_send.call_args
         msg = args[0][0]
         assert msg.subject == "Subject"
-        assert msg.recipients == ['mjfaiola@syr.edu']
+        assert msg.recipients == ['su.study.buddy@gmail.com']
         assert msg.sender == 'su.study.buddy@gmail.com'
         assert msg.body == "Name: Matt\nEmail: testingemail@syr.edu\n\nTest message 11"

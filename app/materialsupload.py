@@ -12,7 +12,7 @@ from datetime import datetime
 
 class materialsUploadForm(FlaskForm):
     material_but = SubmitField("Upload")
-    comment = StringField(validators=[Length(min=0, max=50)], render_kw={"placeholder": "Add a comment"})
+    comment = StringField(validators=[Length(min=0, max=50)], render_kw={"placeholder": "Add a comment", "value": ""})
 
 bp = Blueprint('materialsupload', __name__, url_prefix='/')
 @bp.route('/materialsupload', methods=['GET','POST'])
@@ -31,7 +31,6 @@ def materialsUpload():
     if br.can_user_upload(current_user.username):
         if form.data['material_but']:
             try:
-                print("outside of if file clause")
                 #print("request.files1", request.files)
                 file = request.files['file']
                 
@@ -39,7 +38,6 @@ def materialsUpload():
                     os.makedirs('app/uploads')
 
                 if file:
-                    print("HELLOOO99999")
 
                     if file.content_length > 1024 * 5:
                         print("max file size")
