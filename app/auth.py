@@ -76,7 +76,7 @@ class LoginForm(FlaskForm):
 
 
 '''
-This is the form class for forgot 
+This is the form class for forgot password  
 '''
 class ForgotForm(FlaskForm):
      username = StringField(validators=[InputRequired(), Email(granular_message="invalid email address"), Length(
@@ -102,18 +102,23 @@ class EmailConfirmation(FlaskForm):
     msg = "Please check your email to confirm validity"  
 
 '''
-This is the form class for Forgot Confirmation 
+This is the form class for Forgot Password Confirmation 
 '''
 class ForgotConfirmation(FlaskForm):
     msg = "Please check your email for a link to reset password"
 
 '''
-The reset_password functioon checks if the user exists. If it doesn't exist it will throw an error.
-It will also check if the password is the same as the re_enter_password. It is does not match it will throw
-an error. Then it will check if the token exists if the token does exist that means that the user did
-not click the link in the email and it will throw an error. Then it will check if the user manipulated the
-token if the user did it will throw an error. If the user's token in the database matches the token then change
-the old password to the new password entered and store it in the database. 
+The reset_password function encapulates all the business rules needed when the user is resetting their password.
+The first rule is to check if the user exists. If the user doesn't exist it will throw an error.
+
+The second rule is to also check if the password is the same as the re_enter_password. It is does not match it will throw
+an error. 
+
+The third rule is to check if the token exists if the token does exist that means that the user did
+not click the link in the email and it will throw an error.
+
+Then it will check if the validity of the token if the token is invalid it will throw an error. 
+If the user's token in the database matches the token then change the old password to the new password entered and store it in the database. 
 '''
 @bp.route('/reset_password', methods=['GET', 'POST'])
 def reset_password():
@@ -147,8 +152,12 @@ def reset_password():
             
 
 '''
-The signup function checks if the form called the email_content_email_confirmation function which
-generates the email content that is sent to the user's email via the function call send_email.
+The signup function encapsulates all the business rules for signing up the new user.
+
+Once the business rules have passed the user will receive an confirmation email this to the eliminate any phantom signup.
+
+Once user signs up, the user will be redirected to the email confirmation page which will remind the user to check 
+their email in order to verify it.
 '''
 @bp.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -187,11 +196,17 @@ def emailconfirmation():
     return render_template('emailconfirmation.html', form=form, msg=form.msg)
 
 '''
+The login function encapulates all the business rules for logging into the system.
+
 The login function checks if the user's username exists after query the database. If it does not exist it will
-throw an error. If it does exist it will check the hashed password of the user. If it does not exist it will
-throw an error. Then it will check if the token exists if the token does exist that means that the user did
-not click the link in the email and it will throw an error. If the user's token in the database matches the
-token then we can change the is_verified flag in the database and add the new user.   
+throw an error. If it does exist it will check the hashed password of the user. 
+
+When a user login for the first time, the user must click the link in the email that contains token.
+If token is not existing the system will throw an error.
+If the token does exist that means that the user did not click the link in the email and it will throw an error.
+
+If the user's token in the database matches the token then the system marks the user as verified.
+Subsequent login does not require token, it only requires username and password.    
 '''
 @bp.route('/login', methods=['GET','POST'])
 def login():
