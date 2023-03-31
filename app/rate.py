@@ -81,10 +81,10 @@ def rate():
     buddy_id = buddy.id
     if form.validate_on_submit:
         if form.data['rate_but']:
-            print(form.month.data)
-            print(form.year.data)
-            print(form.is_score_improved.data)
-            print(form.is_gained_knowledge.data)
+            # print(form.month.data)
+            # print(form.year.data)
+            # print(form.is_score_improved.data)
+            # print(form.is_gained_knowledge.data)
             
             br_rate = BuddyRating.query.filter_by(buddy_relation_id=br_id, rating_sender=user.id,
                                                   rating_receiver=buddy.id, month=form.month.data, year=form.year.data).first()
@@ -125,7 +125,6 @@ def rate():
             #user = User.query.filter_by(id=buddy_id).first()
             user.survey_points = total_survey_points
             
-            print(avg_rating)
             si = StudyInterest.query.filter_by(user_id=buddy_id, course_id=course_id).first()
             si.buddy_star_rating = avg_rating
             db.session.add(si)

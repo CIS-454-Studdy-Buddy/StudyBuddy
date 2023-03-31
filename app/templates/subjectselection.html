@@ -80,7 +80,7 @@
     
 
     <div>
-    <section class="vh-100 gradient-custom">
+    <section class="h-100 gradient-custom">
         <div class="container">
             <div class="row ml-2 justify-content-center align-items-center">
                 <div class="col-12 col-lg-9 col-xl-7">
@@ -94,11 +94,10 @@
         
                                 {% for s in si_all %}
                                 <div>
-                                    {{s.course.subject_code}}
-                                    {{s.course.course_number}}
-                                    {{s.course.course_name}}
-                                    {{s.pro_score}}
+                                    <strong> {{s.course.subject_code}} {{s.course.course_number}} {{s.course.course_name}}</strong>
+                                     - Pro Score: {{s.pro_score}}
                                 </div>
+                                <br>
                                 {% endfor %}
                             </form>
                         </center>

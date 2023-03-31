@@ -398,7 +398,8 @@ def test_find_buddy_multi_subject_selection_and_pro_score(mock_token2, mock_emai
 
 '''
 This function tests if the second user can find select a buddy (first user)
-based on multiple subject selection, proficiency score, and star rating filters 
+based on multiple subject selection, proficiency score, and star rating filters
+Then tests if a third user can only see the first user as a potential buddy
 '''
 @mock.patch("app.extensions.email.send", return_value=True, autospec=True)
 @mock.patch("random.randint", return_value=5678, autospec=True)
@@ -636,7 +637,8 @@ def test_find_buddy_multi_subject_selection_pro_score_star_rating(mock_token2, m
         assert br_rate.reward_points == 5
         
         assert response.request.path == '/rateconfirmation'
-        assert b"You have successfully rated your buddy"  in response.data 
+        assert b"You have successfully rated your buddy!"  in response.data
+        assert b"make sure to check your view ratings page to check on any updates"  in response.data 
         
     # make sure user 3 can see the update buddy rating in the find buddy page
     #3rd USER

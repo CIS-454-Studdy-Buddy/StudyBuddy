@@ -246,7 +246,7 @@ def home():
         email_address = request.form['email']
         subject = request.form['subject']
         message = request.form['message']
-        our_email = "mjfaiola@syr.edu"
+        our_email = "su.study.buddy@gmail.com"
         msg = Message(subject=subject, sender='su.study.buddy@gmail.com', recipients=[our_email])
         msg.body = f"Name: {name}\nEmail: {email_address}\n\n{message}"
         email.send(msg)
