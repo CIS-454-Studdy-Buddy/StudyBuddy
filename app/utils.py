@@ -39,6 +39,7 @@ def create_db():
         os.remove('instance/database.db')
         with create_app().app_context():
             db.create_all()
+            print("Loading csv files")
             import_subject_code('instance/sortedCode.csv')
             import_courses('instance/sortedCourse.csv')
         print("New Database Created")

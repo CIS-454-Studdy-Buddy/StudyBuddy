@@ -2,6 +2,6 @@ include app/static/*
 include app/static/images/*
 include app/models/*
 include app/templates/*
-include instance/*
+exclude instance/database.db
 include requirements.txt
 include deployment/*
