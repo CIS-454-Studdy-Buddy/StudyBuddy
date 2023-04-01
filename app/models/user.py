@@ -23,6 +23,9 @@ class User(db.Model, UserMixin):
     reward_points = db.Column(db.Integer, nullable=False, default=0)
     survey_points = db.Column(db.Integer, nullable=False, default=0)
 
+    '''
+    This is a model property which calculates the total reward points
+    '''
     @property
     def total_reward_points(self):
         return self.reward_points + self.survey_points

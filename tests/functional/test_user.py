@@ -1,6 +1,4 @@
-'''
-Author: Aaron Alakkadan 
-'''
+# Author: Aaron Alakkadan
 from app.auth import RegisterForm
 
 '''

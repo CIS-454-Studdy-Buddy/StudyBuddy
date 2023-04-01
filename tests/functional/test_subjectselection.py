@@ -1,4 +1,4 @@
-## Author: Talal Hakki
+## Author: Aaron Alakkadan, Talal Hakki, Matt Failoa 
 from flask import url_for, request
 from app.auth import email_content_password_reset, url_for, send_email
 from unittest import mock

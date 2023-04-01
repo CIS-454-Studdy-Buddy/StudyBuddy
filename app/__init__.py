@@ -1,12 +1,15 @@
+# Author: Aaron Alakkadan, Talal Hakki, Matt Faiola 
 import os 
 from flask import Flask
-#from . import findstudybuddy
 from app.extensions import db, bcrypt, login_manager, email
 from flask_bcrypt import Bcrypt
 from flask_mail import Mail
 
 
-
+'''
+The function create_app is a factory funnction which creates a flask app
+It is  called fron flask run command when you execute in terminal 
+'''
 def create_app(test_config=None):
     app = Flask(__name__)
     if test_config:
@@ -24,7 +27,8 @@ def create_app(test_config=None):
         email = Mail(app)
         
     
-    
+    # Initialize all the blueprints using the app instance and the register blueprint method 
+    # Inline import is required here to avoid circular dependency 
     from . import auth, dashboard, findstudybuddy, subjectselection, materialsupload, materialsview, rate, viewratings, profile, removebuddy
     app.register_blueprint(auth.bp)
     app.register_blueprint(dashboard.bp)

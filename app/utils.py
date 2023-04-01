@@ -1,3 +1,4 @@
+# Author: Aaron Alakkadan, Matt Failoa 
 from app.models import *
 from app.models.user import User
 from app.models.studyinterest import StudyInterest
@@ -32,9 +33,6 @@ def import_subject_code(file_path):
 def create_db():
     from app import create_app
 
-    #tables = ['course', 'subject', 'studyinterest', 'user']
-    #tables_exist = db.engine.dialect.has_table(db.engine, tables)
-
     if os.path.isfile('instance/database.db'):
         os.remove('instance/database.db')
         with create_app().app_context():
@@ -50,6 +48,10 @@ def create_db():
         print("Database Created")
 
 
+'''
+The function seed_data functionality is to provide sample data locally therefore when
+recreating the database locally you can call this function and it will store this data locally.
+'''
 def seed_data():
    from app.extensions import db, bcrypt
    from app import create_app
@@ -106,7 +108,10 @@ def seed_data():
         #     db.session.add(br)
         # db.session.commit()
 
-
+'''
+The function seed_test_data functionality is to provide sample data locally therefore when
+recreating the database locally you can call this function and it will store this data locally.
+'''
 def seed_test_data():
     from app.extensions import db, bcrypt
     from app import create_app

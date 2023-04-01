@@ -1,3 +1,4 @@
+# Author: Aaron Alakkadan, Matt Failoa 
 from flask import Blueprint, render_template, url_for, redirect, request, session , send_file
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user 
 from app.auth import *

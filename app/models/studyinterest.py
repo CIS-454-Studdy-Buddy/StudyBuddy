@@ -1,11 +1,12 @@
-'''
-Author: Aaron Alakkadan 
-'''
+# Author: Aaron Alakkadan 
 from app.extensions import db
 from app.models.user import User
 from app.models.course import Course, Subject
 from sqlalchemy.orm import relationship
 
+'''
+This is the StudyInterest class model which we inherits from the db.Model class. This represents the StudyInterest table.  
+'''
 class StudyInterest(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))

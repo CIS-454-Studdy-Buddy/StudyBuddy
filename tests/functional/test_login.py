@@ -1,6 +1,4 @@
-'''
-Author: Aaron Alakkadan 
-'''
+# Author: Aaron Alakkadan
 from app.auth import email_content_password_reset, url_for, send_email
 from unittest import mock
 import random

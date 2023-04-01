@@ -1,3 +1,4 @@
+# Author: Aaron Alakkadan, Talal Hakki, and Matt Falioa 
 from flask import Blueprint, render_template, url_for, redirect, request, session 
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user 
 from app.auth import *
@@ -6,6 +7,9 @@ from app.models.buddyrelation import *
 from sqlalchemy.orm import joinedload
 from sqlalchemy import and_ , or_
 
+'''
+This is the form class for the Dashboard
+'''
 class DashboardForm(FlaskForm):
     findBuddyBut = SubmitField("Buddy Search")
     subjectSelBut = SubmitField("Subject Select")
@@ -14,8 +18,17 @@ class DashboardForm(FlaskForm):
     profileBut = SubmitField("Profile")
     logoutBut = SubmitField("Logout")
 
+'''
+Create the blueprint for dashboard
+'''
 bp = Blueprint('dashboard', __name__, url_prefix='/')
 
+'''
+The dashboard function encapsulates all business rules for dashboard features.
+
+The dashboard function checks if the user clicks a button on the navigation bar in the dashboard then it will redirect to
+the corresponding or respective page.
+'''
 @bp.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
