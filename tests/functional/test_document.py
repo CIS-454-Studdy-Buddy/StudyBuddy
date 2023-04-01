@@ -1,4 +1,4 @@
-## Author: Aaron Alakkadan 
+## Author: Aaron Alakkadan, Talal Hakki, Matt Failoa  
 from io import BytesIO
 import io
 from flask import url_for, request

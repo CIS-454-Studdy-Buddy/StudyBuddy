@@ -70,11 +70,7 @@ def materialsUpload():
                         msg = 'ERROR User not in buddy relation.'
 
                     db.session.commit()
-                    '''
-                    d = Document.query.filter_by(id=4).first()
-                    with open(os.path.join('uploads/', 'temp.png'), "wb") as f:
-                        f.write(d.content)
-                    '''
+
                 else:
                     msg = 'No file selected.'
                     

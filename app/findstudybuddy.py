@@ -1,3 +1,4 @@
+# Author: Aaron Alakkadan, Matt Failoa, Talal Hakki
 from flask import Blueprint, render_template, url_for, redirect, request, session 
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user 
 from app.auth import *
@@ -18,6 +19,9 @@ class SelectMultipleFieldsWithChecks(SelectMultipleField):
     widget = widgets.ListWidget(prefix_label=False)
     option_widget = widgets.CheckboxInput()
 
+'''
+This is the form class for FindBuddy Form
+'''
 class FindBuddyForm(FlaskForm):
     subject_code = SelectField('Subject Code', validators=[InputRequired()], choices=[])
 
@@ -36,10 +40,15 @@ class FindBuddyForm(FlaskForm):
         
     select_buddy_but = SubmitField("Select Buddy")
 
-
+'''
+This is form class for FindBuddyConfirmation form 
+'''
 class FindBuddyConfirmation(FlaskForm):
     msg = "Invitation has been sent, you will be notified when buddy responds" 
 
+'''
+This is the form class for Invitation form
+'''
 class Invitation(FlaskForm):
     accept_buddy_but = SubmitField("Accept Buddy")
     deny_buddy_but = SubmitField("Deny Buddy")
@@ -47,7 +56,7 @@ class Invitation(FlaskForm):
 bp = Blueprint('findstudybuddy', __name__, url_prefix='/')
 
 '''
-The findBuddy function 
+The findBuddy function encapsulates selecting a buddy based on subject selection, proficiency level, and star level.
 '''
 @bp.route('/findstudybuddy', methods=['GET', 'POST'])
 @login_required
@@ -56,6 +65,8 @@ def findBuddy():
     si_all = None
     subject_buddy_status = 'N'
     user = User.query.filter_by(id=current_user.id).first()
+    # Get data for only buddy status in N (not sent), S (sent), D(deny).
+    # If buddy status is A (accepted) the user should not be see that subject.
     form.subject_code.choices = [("", "")] + [(si.course.id, f'{si.course.subject_code} {si.course.course_number} - {si.course.course_name}') 
                                  for si in StudyInterest.query.filter_by
                                  (user_id=user.id).filter(
@@ -124,6 +135,7 @@ def findBuddy():
             buddy_receiver_si.buddy_status = 'S'
                      
             buddy_status = BuddyRelation.query.filter_by(buddy_sender=current_user.id, buddy_receiver=br_user_id, study_interest_id=buddy_receiver_si.id).first()
+            # Inviation status as Sent
             if not buddy_status:
                 buddy_status = BuddyRelation(buddy_sender=current_user.id, buddy_receiver=br_user_id, 
                                         study_interest_id=buddy_receiver_si.id,
@@ -133,7 +145,7 @@ def findBuddy():
             db.session.add(buddy_status)
             db.session.add(buddy_sender_si)
             db.session.commit()
-            #Call send invitation
+            #Send invitation email to buddy receiver
             br_user = User.query.filter_by(id=br_user_id).first()
             html_msg = email_content_buddy_invitation(
                 username=br_user.username,
@@ -148,15 +160,25 @@ def findBuddy():
             return redirect(url_for('findstudybuddy.findbuddyconfirmation'))
     return render_template('findstudybuddy.html', form=form, si_all=si_all, subject_buddy_status=subject_buddy_status)
 
+'''
+The findbuddy confirmation method initialzes the form FindBuddyComfirmation which informs 
+the buddy sender that the inviation has been sent 
+'''
 @bp.route('/findbuddyconfirmation', methods=['GET'])
 def findbuddyconfirmation():
     form = FindBuddyConfirmation()
     return render_template('findbuddyconfirmation.html', form=form, msg=form.msg)
 
+'''
+The email_content_buddy_inviation method encapsulates the inviation email content that is being sent to the buddy receiver
+'''
 def email_content_buddy_invitation(username, first_name, last_name, email_confirmation_url):
     url = f"{email_confirmation_url}"
     return render_template('buddyemail.html', username=username, first_name=first_name, last_name=last_name, url=url)
 
+'''
+The invtation method encapsulates the business rules the inviation status when the buddy receiver accepts or denies the buddy request
+'''
 @bp.route('/invitation', methods=['GET', 'POST'])
 def invitation():
     form = Invitation()
@@ -165,6 +187,7 @@ def invitation():
     if form.validate_on_submit:
         if form.data['accept_buddy_but'] or form.data['deny_buddy_but']:
             email_address = br.sender.username  #br.sender.username
+            # If user accepts buddy then send the acceptance email to the buddy who sent the request
             if form.data['accept_buddy_but']:
                 acceptance_status = 'A'
                 html_msg = email_content_buddy_acceptance(
@@ -174,7 +197,9 @@ def invitation():
                 email_confirmation_url=url_for('auth.login', _external=True)
                 ) 
                 send_email(email_address=email_address, msg_html=html_msg, subject=subjectEmailConfirmation)
+            
             else:
+                # If user denies buddy then send the denial email to the buddy who sent the request
                 acceptance_status = 'D'
                 html_msg = email_content_buddy_deny(
                 username=br.sender.username,
@@ -195,10 +220,18 @@ def invitation():
 
     return render_template('invitation.html', form=form, br=br)
 
+'''
+The email_content_buddy_acceptance method encapsulates the acceptance email content that is being sent to the buddy
+who sent the request
+'''
 def email_content_buddy_acceptance(username, first_name, last_name, email_confirmation_url):
     url = f"{email_confirmation_url}"
     return render_template('buddyacceptance.html', username=username, first_name=first_name, last_name=last_name, url=url)
 
+'''
+The email_content_buddy_deny method encapsulates the denial email content that is being sent to the buddy
+who sent the request
+'''
 def email_content_buddy_deny(username, first_name, last_name, email_confirmation_url):
     url = f"{email_confirmation_url}"
     return render_template('buddydeny.html', username=username, first_name=first_name, last_name=last_name, url=url)

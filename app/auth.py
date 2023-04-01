@@ -247,7 +247,8 @@ class contactUs(FlaskForm):
     contactButton = SubmitField("Contact Us")
 
 '''
-The home function send a contact us email if the user fills out the full form on the landing page
+The home function encapulates the contact us feature.
+It captures information from the user on the landing page and sends an email to the admin 
 '''
 @bp.route('/', methods=['GET', 'POST'])
 def home():
@@ -282,6 +283,13 @@ def logout():
     session.clear()
     return redirect(url_for('auth.login'))
 
+'''
+The forgot function encapsulates the business rules for forgot password feature
+A user must be a verified user before they can use this feature.
+
+Once the user enters their username in the forgot password page, the system sends an email. 
+It will redirect the user to the forgot confirmation page where it will remind them to check their email.  
+'''
 @bp.route('/forgot', methods=['GET', 'POST'])
 def forgot():
     form = ForgotForm() 
@@ -321,8 +329,8 @@ def forgotconfirmation():
     return render_template('forgotconfirmation.html', form=form, msg=form.msg)
 
 '''
-The send email function sends the email from the admin's official email which is su.study.buddy@gmail.com
-to the email
+The send email function is a generic function that sends the email from the admin's official email which is su.study.buddy@gmail.com
+to the email of the user.
 '''
 def send_email(email_address, msg_html, subject):
     sendSubject = subject
@@ -346,11 +354,9 @@ and generates the url
 def email_content_password_reset(username, first_name, last_name,reset_password_url, token):
     url = f"{reset_password_url}?t={token}"
     return render_template('reset_pw_email.html', username=username, first_name=first_name,last_name=last_name ,url=url)
-    #html_msg = f'<b>Hey {username}</b>, sending you this email from my <a href="{url}">Study Buddy App</a>'
-    #return html_msg
 
 '''
-The email_content_email_confirmation function generates the email confirmation reset content to the user
+The email_content_email_confirmation function generates the email confirmation content to the user for signup
 and generates the url
 '''
 def email_content_email_confirmation(username, first_name ,last_name, email_confirmation_url, token):

@@ -1,3 +1,4 @@
+# Author: Aaron Alakkadan
 from flask import Blueprint, render_template, url_for, redirect, request, session 
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user 
 from app.auth import *
@@ -8,12 +9,19 @@ from wtforms.fields import StringField, SelectField, RadioField, SelectMultipleF
 from wtforms.validators import DataRequired, NumberRange
 from sqlalchemy.sql import func
 
+'''
+The function my_bool checks if the string is equivalent to No then return false, if the string is eqivalent to "Yes" it will return true
+This is a simply helper routine used throughout this file and handles string values in the form choices.
+'''
 def my_bool(str_value):
     if str_value == "No":
         return False
     else:
         return True
 
+'''
+The reward_points_calc function encapsulates calculation the rewards points based on the two questions in the buddy rating survey.
+'''
 def reward_points_calc(form):
     rewards_points = 0
                 
@@ -22,23 +30,18 @@ def reward_points_calc(form):
                 
     if form.is_gained_knowledge.data == 1:
         rewards_points += 5
-    '''
-    if form.is_score_improved.data == 1 and form.is_gained_knowledge.data == 1:
-        rewards_points += 10
-    
-                
-    elif form.is_score_improved.data == 1:
-        rewards_points += 5
-                
-    elif form.is_gained_knowledge.data == 1:
-        rewards_points += 5
-    '''
     
     return rewards_points
 
+'''
+This is the form for Rate Confirmation class
+'''
 class RateConfirmation(FlaskForm):
     msg = "make sure to check your view ratings page to check on any updates" 
 
+'''
+This is the form class for the rate class
+'''
 class rateForm(FlaskForm):
     month = SelectField('Duration', validators=[InputRequired()], 
                         choices=[("", ""), (1, 'January'), (2, 'February'), (3, 'March'), (4, 'April'), 
@@ -80,12 +83,7 @@ def rate():
     buddy = br.get_buddy(current_user.username)
     buddy_id = buddy.id
     if form.validate_on_submit:
-        if form.data['rate_but']:
-            # print(form.month.data)
-            # print(form.year.data)
-            # print(form.is_score_improved.data)
-            # print(form.is_gained_knowledge.data)
-            
+        if form.data['rate_but']:       
             br_rate = BuddyRating.query.filter_by(buddy_relation_id=br_id, rating_sender=user.id,
                                                   rating_receiver=buddy.id, month=form.month.data, year=form.year.data).first()
             if br_rate:
@@ -105,11 +103,7 @@ def rate():
                                     sender_survey_points=5)
             db.session.add(br_rate)
             db.session.commit()
-            #br.study_interest.course.course_name
-            '''
-            BuddyRating.query.filter_by(buddy_relation_id=br_id, rating_sender=current_user.username,
-                                        rating_receiver=buddy.username)
-            '''
+
             avg_rating = db.session.query(func.avg(BuddyRating.buddy_rate).label('average')).filter(
                 BuddyRating.buddy_relation_id==br_id, 
                 BuddyRating.rating_sender==user.id,
