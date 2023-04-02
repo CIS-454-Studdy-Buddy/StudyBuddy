@@ -1,4 +1,4 @@
-# Author: Aaron Alakkadan, Talal Hakki, Matt Failoa 
+# Author: Aaron Alakkadan, Talal Hakki, Matt Faiola 
 from io import BytesIO
 from flask import Blueprint, render_template, url_for, redirect, request, session, current_app, Flask, send_file
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user 
