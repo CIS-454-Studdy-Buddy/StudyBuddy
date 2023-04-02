@@ -49,7 +49,6 @@ bp = Blueprint('subjectselection', __name__, url_prefix='/')
 
 '''
 The subjectSelection function ensacpautes a user selecting and deleting subjects
-
 '''
 @bp.route('/subjectselection', methods=['GET', 'POST'])
 @login_required

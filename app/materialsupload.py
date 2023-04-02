@@ -1,3 +1,4 @@
+# Author: Aaron Alakkadan, Talal Hakki, Matt Faiola 
 from io import BytesIO
 from flask import Blueprint, render_template, url_for, redirect, request, session, current_app, Flask, send_file
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user 
@@ -9,7 +10,9 @@ from werkzeug.exceptions import RequestEntityTooLarge
 import os
 from datetime import datetime
 
-
+'''
+This is the form class for material upload 
+'''
 class materialsUploadForm(FlaskForm):
     material_but = SubmitField("Upload")
     comment = StringField(validators=[Length(min=0, max=50)], render_kw={"placeholder": "Add a comment", "value": ""})
