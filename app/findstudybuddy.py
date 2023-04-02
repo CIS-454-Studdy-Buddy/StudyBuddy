@@ -100,7 +100,7 @@ def findBuddy():
 
         # if the proficiency filters are not empty, query the user's study iterest based on the selected course
         # using the filter.
-        # if the star filters are not empty, query the user's study iterest based on the selected course using
+        # if the star filters are not empty, query the user's study interest based on the selected course using
         # the filter.
         if len(prof_filters) > 0 or len(star_filters) > 0:
             if prof_filters and star_filters:

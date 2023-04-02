@@ -17,6 +17,10 @@ class RemoveBuddyForm(FlaskForm):
 
 bp = Blueprint('removebuddy', __name__, url_prefix='/')
 
+'''
+The removeBuddy method encapsulates all business rules for removing a buddy if and only if there is an existing buddy 
+connection between the two buddies.
+'''
 @bp.route('/removebuddy', methods=['GET', 'POST'])
 @login_required
 def removeBuddy():

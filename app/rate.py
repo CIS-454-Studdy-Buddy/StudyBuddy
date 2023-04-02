@@ -68,6 +68,11 @@ class rateForm(FlaskForm):
     rate_but = SubmitField("Rate")
 
 bp = Blueprint('rate', __name__, url_prefix='/')
+
+'''
+The rate method allows buddies to rate each other if they have an established connection.
+A user can rate their buddy on a 1-5 scale and if they complete the rating survey the buddy sender annd receiver will earn points.
+'''
 @bp.route('/rate', methods=['GET', 'POST'])
 @login_required
 def rate():
@@ -137,6 +142,10 @@ def rate():
             return redirect(url_for('rate.rateconfirmation'))
     return render_template('rate.html', form=form, buddy=buddy, br=br)
 
+'''
+This is the rate confirmation method which initialzies the RateConfirmation form which displays a message to the user once
+the user rates their buddy.
+'''
 @bp.route('/rateconfirmation', methods=['GET'])
 def rateconfirmation():
     form = RateConfirmation()
