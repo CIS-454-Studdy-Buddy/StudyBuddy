@@ -12,7 +12,7 @@ import pytest
 
 
 '''
-This function tests if buddy rating is sucessfully completed with rewards points are displayed to the dashboard as well as the star rating
+This function tests if buddy rating is successfully completed with rewards points are displayed to the dashboard as well as the star rating
 '''
 @mock.patch("app.extensions.email.send", return_value=True, autospec=True)
 @mock.patch("random.randint", return_value=5678, autospec=True)

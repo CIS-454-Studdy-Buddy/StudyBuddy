@@ -1,3 +1,4 @@
+# Author: Aaron Alakkadan
 import datetime
 from app.extensions import db
 from app.models.user import User
@@ -6,6 +7,9 @@ from app.models.studyinterest import StudyInterest
 from app.models.buddyrelation import BuddyRelation
 from sqlalchemy.orm import relationship
 
+'''
+This is the BuddyRating class model which inherits from the db.Model class. This represents the BuddyRating table. 
+'''
 class BuddyRating(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     buddy_relation_id = db.Column(db.Integer, db.ForeignKey("buddy_relation.id"))

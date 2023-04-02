@@ -1,4 +1,4 @@
-# Author: Aaron Alakkadan, Matt Failoa 
+# Author: Aaron Alakkadan, Matt Faiola, Talal Hakki 
 from flask import Blueprint, render_template, url_for, redirect, request, session , send_file
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user 
 from app.auth import *
@@ -9,10 +9,16 @@ from io import BytesIO
 from sqlalchemy.orm import joinedload
 from sqlalchemy import exists
 
+
+'''
+This is the form class for materials view 
+'''
 class materialsViewForm(FlaskForm):
     course_name = SelectField('Course Name', validators=[InputRequired()], choices=[])
     material_view_but = SubmitField("View")
 
+
+# This function allows a user to view and download documents shared by Buddies.
 bp = Blueprint('materialsview', __name__, url_prefix='/')
 @bp.route('/materialsview', methods=['GET', 'POST'])
 @login_required
@@ -35,6 +41,8 @@ def materialsView():
             list_of_doc = Document.query.filter_by(buddy_receiver=user.id, course_id=form.course_name.data).all()
     return render_template('materialsview.html', form=form, list_of_doc=list_of_doc)
 
+
+# This function query's the database for the user and the associated incoming document.
 @bp.route('/docView', methods=['GET'])
 @login_required
 def docView():

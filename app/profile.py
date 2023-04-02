@@ -33,7 +33,7 @@ def profile():
         if request.method == 'GET':
             form.phoneNumber.data = user.phone_number
             form.aboutMe.data = user.about_me
-        #print((len(form.phoneNumber.data) > 15) or (not form.phoneNumber.data.isnumeric()))
+        
         if form.data['saveButton']:
             # phoneNumber and aboutMe are optional fields
            
@@ -59,10 +59,11 @@ def profile():
             db.session.commit()
             return redirect(url_for('profile.profile'))
                      
-
+        # if the home button is clicked, redirect the user to the dashboard.
         elif form.data['homeButton']:
             return redirect(url_for('dashboard.dashboard'))
 
+        # if the logout button is clicked, redirect the user to the login page.
         elif form.data['logoutButton']:
             return redirect(url_for('auth.login'))
 

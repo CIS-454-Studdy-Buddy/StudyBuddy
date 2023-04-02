@@ -1,3 +1,4 @@
+# Author: Aaron Alakkadan, Matt Failoa 
 from app.extensions import db
 from app.models.user import User
 from app.models.course import Course, Subject
@@ -5,8 +6,11 @@ from app.models.studyinterest import StudyInterest
 from sqlalchemy.orm import relationship
 from datetime import datetime
 
-MAX_UPLOADS_PER_DAY = 20
+MAX_UPLOADS_PER_DAY = 20 # the maxuimim number of files that a user can upload in a day
 
+'''
+This is the BuddyRelation class model which inherits from the db.Model class. This represents the BuddyRelation table. 
+'''
 class BuddyRelation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     buddy_sender = db.Column(db.Integer, db.ForeignKey("user.id"))
@@ -22,6 +26,10 @@ class BuddyRelation(db.Model):
     receiver = relationship("User", foreign_keys=[buddy_receiver])
     study_interest = relationship("StudyInterest")
     
+    '''
+    The get_buddy function gets the buddy sender or the buddy receiver based off of the current_user_if. If the current_user_id
+    id equal to the sender then return the receiver, otherwise return the sender.
+    '''
     def get_buddy(self, current_user_id):
         if current_user_id == self.sender.username:
             return self.receiver

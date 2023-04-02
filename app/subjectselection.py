@@ -61,7 +61,8 @@ def subjectSelection():
     course = None
     si_all = None
     si = None
-        
+    # if the user decides to delete a subject and confirms via button click, query the selected subject and remove the
+    # entry from the database. Commit changes to database.
     if form_delete.validate_on_submit:
         if user:
             if form_delete.data['delbut']:
@@ -78,7 +79,8 @@ def subjectSelection():
                 si_all = StudyInterest.query.filter_by(user_id=user.id).options(joinedload(StudyInterest.course)).all()
                 form_delete.subject_remove.choices = [(StudyInterest.course_id, f'({StudyInterest.course.subject_code}) - {StudyInterest.course.course_number} - {StudyInterest.course.course_name}') for StudyInterest in StudyInterest.query.filter_by(user_id=user.id).options(joinedload(StudyInterest.course)).all()]
 
-    
+    # if the user decides to add a subject and confirms via button click, query the selected subject and add an
+    # entry to the database. Commit changes to database.
     if form.validate_on_submit:
         if user:
             si_all = StudyInterest.query.filter_by(user_id=user.id).options(joinedload(StudyInterest.course)).all()
@@ -88,11 +90,13 @@ def subjectSelection():
                 course = Course.query.filter_by(id=course_id).first()
                 total_si = StudyInterest.query.filter_by(user_id=user.id).count()
                 
+                # if the user has hit the subject limit of 5, display an error message.
                 if total_si >= 5:
                     msg = "Maximum number of subjects selected"
                     return render_template('subjectselection.html', form=form, form_delete=form_delete, course=course, si_all=si_all, msg=msg)
                 
                 si = StudyInterest.query.filter_by(user_id=user.id).filter_by(course_id=course.id).first()
+                # update the proficiency score answers using the form data and calculate the average.
                 if si:
                     si.pro_ans1 = form.pro_ans1.data
                     si.pro_ans2 = form.pro_ans2.data
@@ -119,7 +123,7 @@ def subjectSelection():
 The codesortcourse function is used to populate the course title dropdown list based on the subject code selected
 This code handles requests to "/subjectselection/<get_code>" which isnt shown to the user.
 It queries the database for all courses that match the given subject code, creates an array of those courses, 
-    and returns the array in JSON format
+and returns the array in JSON format
 '''
 
 @bp.route('/subjectselection/<get_code>', methods=['GET', 'POST'])

@@ -18,7 +18,7 @@ def test_forgot_email_not_registered_user(client):
     assert b"Your email is not registered" in response.data
 
 '''
-The function test_forgot_email_not_verified tests if they try to input data into the forgot page
+The function test_forgot_email_not_verified tests if the user tries to input data into the forgot page
 when the user has not verified their email which is used to redirect them to the login page to 
 have the user officially verified in the database
 '''
@@ -120,7 +120,7 @@ def test_forgot_email_is_registered_user_invalid_email(mock_token, mock_email, c
 
 '''
 The function test_reset_password_not_registered_user tests if a non registered user tries to
-tp to the reset password page and tries to reset their password
+go to the reset password page and tries to reset their password
 '''
 def test_reset_password_not_registered_user(client):
     # The user is not registered in the system, 
@@ -179,7 +179,7 @@ def test_reset_password_re_enter_password_not_match(mock_token, mock_email, clie
 
 
 '''
-The function test_reset_password_invalid_token tests if the user registed in the system manipulated
+The function test_reset_password_invalid_token tests if the user registered in the system manipulated
 the token and tried to reset their password 
 '''
 @mock.patch("app.extensions.email.send", return_value=True, autospec=True)
@@ -225,7 +225,7 @@ def test_reset_password_invalid_token(mock_token, mock_email, client):
 
 '''
 The function test_reset_password_empty_token tests if they are a user that is registered in the system
-but they did not click the link for password reset therfore if the user tries to reset their password
+but they did not click the link for password reset therefore if the user tries to reset their password
 it will fail 
 '''
 @mock.patch("app.extensions.email.send", return_value=True, autospec=True)
@@ -268,8 +268,8 @@ def test_reset_password_empty_token(mock_token, mock_email, client):
         assert b"Empty token" in response.data
 
 '''
-The function test_reset_password_success shows when a user is registered enetered a valid email
-in the forgot form, clicked the verify reset password link and successfully filled out the rest_password
+The function test_reset_password_success shows when a user is registered entered a valid email
+in the forgot form, clicked the verify reset password link and successfully filled out the reset_password
 form. When the user logs in with their new password which is saved to the database they will be
 redirected to the dahsboard page.
 '''

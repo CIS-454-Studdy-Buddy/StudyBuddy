@@ -1,4 +1,4 @@
-# Author: Aaron Alakkadan, Talal Hakki, and Matt Falioa 
+# Author: Aaron Alakkadan, Talal Hakki, and Matt Failoa 
 from flask import Blueprint, render_template, url_for, redirect, request, session 
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user 
 from app.auth import *
@@ -52,6 +52,8 @@ def dashboard():
         elif form.data['logoutBut']:
             return redirect(url_for('auth.login'))
 
+    # query the user table to find the current user to retrieve all subjects from their subject list
+    # and buddy connections to display on the dashboard.
     si_all = None
     user = User.query.filter_by(username=current_user.username).first()
     if user:

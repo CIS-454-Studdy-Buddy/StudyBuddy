@@ -75,6 +75,7 @@ def findBuddy():
                                 StudyInterest.buddy_status=='S',
                                 StudyInterest.buddy_status=='D')).all()]
     
+    # if the submit button is clicked, update the database with the form data inputted from the user.
     if form.validate_on_submit:
         br_user_id = form.select_buddy.data
         course_id = form.subject_code.data
@@ -83,16 +84,24 @@ def findBuddy():
                         StudyInterest.course_id==form.subject_code.data]
         prof_filters = []
         star_filters = []
+        # if the proficiency form data is of valid type (list) and is not empty, populate the proficiency filters 
+        # list from the form data.
         if isinstance(form.prof_select.data, list) and len(form.prof_select.data) > 0:
             for prof in form.prof_select.data:
                 prof1 = int(prof) + 1
                 prof_filters.append(and_((StudyInterest.pro_score >= int(prof)),(StudyInterest.pro_score <= int(prof1))))
-            #print(prof_filters)       
+
+        # if the star selection form data is of valid type (list) and is not empty, populate the star rating filters 
+        # list from the form data.        
         if isinstance(form.star_select.data, list) and len(form.star_select.data) > 0:
             for star in form.star_select.data:
                 star1 = int(star) + 1
                 star_filters.append(and_((StudyInterest.buddy_star_rating >= int(star)),(StudyInterest.buddy_star_rating <= int(star1))))
-            #print(star_filters) 
+
+        # if the proficiency filters are not empty, query the user's study iterest based on the selected course
+        # using the filter.
+        # if the star filters are not empty, query the user's study interest based on the selected course using
+        # the filter.
         if len(prof_filters) > 0 or len(star_filters) > 0:
             if prof_filters and star_filters:
                 si_query = StudyInterest.query.filter(
@@ -112,16 +121,17 @@ def findBuddy():
                     and_(*id_filters)                
                     ).options(joinedload(StudyInterest.course)).options(joinedload(StudyInterest.user))
         si_all = si_query.all()
-        #print(si_query.statement)
+        
         si_subject_blocked = StudyInterest.query.filter(
             and_(StudyInterest.user_id == user.id,
                   StudyInterest.course_id==course_id
                   )                  
                   ).first()
+        # if the subject is blocked, then update the buddy status accordingly.
         if si_subject_blocked:
             subject_buddy_status = si_subject_blocked.buddy_status
             
-       
+       # if the select buddy button is clicked, query the database to find the Buddy Receiver's selected subject.
         if form.data['select_buddy_but']:
             buddy_receiver_si = StudyInterest.query.filter(
             and_(StudyInterest.user_id == br_user_id, 
@@ -156,7 +166,6 @@ def findBuddy():
             send_email(email_address=br_user.username, msg_html=html_msg, subject=subjectEmailConfirmation)
             
             #render template to a new template return 
-            #print(form.select_buddy.data)
             return redirect(url_for('findstudybuddy.findbuddyconfirmation'))
     return render_template('findstudybuddy.html', form=form, si_all=si_all, subject_buddy_status=subject_buddy_status)
 
@@ -209,7 +218,8 @@ def invitation():
                 ) 
                 send_email(email_address=email_address, msg_html=html_msg, subject=subjectEmailConfirmation)
 
-
+            # Query the database to retreive the buddy sender's selected subject. Update the Buddy status, and
+            # invitation status and add an entry to the database.
             sender_si = StudyInterest.query.filter_by(user_id=br.buddy_sender, course_id=br.study_interest.course_id).first()
             sender_si.buddy_status = acceptance_status
             br.invitation_status = acceptance_status
