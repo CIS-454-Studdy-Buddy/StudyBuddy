@@ -7,20 +7,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+     <!--The following lines define the character set, compatibility, and viewport of the page-->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--The following line sets the title of the page-->
     <title>Pending Invitation Status</title>
+    <!--The following lines import Bootstrap CSS-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     
     <link rel="stylesheet" href="css/bootstrap.css">
+    <!--The following line imports Bootstrap JavaScript-->
     <script src="js/bootstrap.js"></script>
-    
+    <!--The following line imports a custom CSS file-->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    
+    <!--The following line imports another custom CSS file-->
     <link rel="stylesheet" href="/static/home.css">
-    
+    <!--The following lines define a custom style-->
     <style>
         body {
             background: linear-gradient(to right, rgb(255, 106, 0), rgb(249, 170, 90));
@@ -52,7 +56,7 @@
         {{ form.deny_buddy_but}}
         {% endif %}
         -->
-
+<!--The following lines create a centered card with information about a pending buddy connection-->
     <center>
         <div class="card bg-dark" style="width: 70%; margin-top: 15%; width: 50%;">
             <form method="POST" action="">
