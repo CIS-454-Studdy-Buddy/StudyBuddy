@@ -1,4 +1,4 @@
-## Author: Aaron Alakkadan, Talal Hakki, Matt Failoa  
+## Author: Aaron Alakkadan, Talal Hakki, Matt Faiola  
 from io import BytesIO
 import io
 from flask import url_for, request
@@ -236,7 +236,8 @@ def test_upload_document_and_view_document_on_success(mock_token2, mock_email, c
 
 
 '''
-This function tests if you can upload a maximum of 20 documents in a day and if the uploaded content file size is less than 5MB
+This function tests if you can upload a maximum of 20 documents in a day per buddy relation 
+and if the uploaded content file size is less than 5MB
 '''
 @freeze_time ("2023-03-25")
 @mock.patch("app.extensions.email.send", return_value=True, autospec=True)
@@ -427,7 +428,7 @@ def test_upload_document_max_size_and_daily_file_limit(mock_token2, mock_email, 
             assert br.upload_count_sender == x
 
         document_name = f"fake-document10.pdf"
-        #6MB file size
+        #6MB file size throws error
         file_size = 6 * 1024 * 1024
         #data = {"file": (io.BytesIO(b"".join([bytes([random.randint(0, 255)]) for _ in range(file_size)])), document_name), "material_but": 1}
         file_data = io.BytesIO(os.urandom(file_size))
@@ -443,6 +444,7 @@ def test_upload_document_max_size_and_daily_file_limit(mock_token2, mock_email, 
         assert buddy.first_name in response.text
         assert buddy.last_name in response.text
         assert b"material_but" in response.data
+        #upload 10 more documents
         for x in range(10, 20):
             document_name = f"fake-document{x}.pdf"
             data = {"file": (io.BytesIO(b"some random data"), document_name),  "material_but": 1} 
@@ -454,7 +456,7 @@ def test_upload_document_max_size_and_daily_file_limit(mock_token2, mock_email, 
             assert not b"You have reached the maximum number of uploads for today." in response.data
             br = BuddyRelation.query.filter_by(id=br_id).first()
             assert br.upload_count_sender == x
-
+        # the 20th document uploaded removes the upload button and displays a message
         document_name = f"fake-document20.pdf"
         data = {"file": (io.BytesIO(b"some random data"), document_name),  "material_but": 1} 
         response = client.post(f"/materialsupload?id={br.id}", data=data, content_type='multipart/form-data')
@@ -466,6 +468,7 @@ def test_upload_document_max_size_and_daily_file_limit(mock_token2, mock_email, 
         br = BuddyRelation.query.filter_by(id=br_id).first()
         assert br.upload_count_sender == 20
 
+        # the 21st document uploaded does not change the upload count and does not upload the document
         document_name = f"fake-document21.pdf"
         data = {"file": (io.BytesIO(b"data for file 21"), document_name),  "material_but": 1} 
         response = client.post(f"/materialsupload?id={br.id}", data=data, content_type='multipart/form-data')
@@ -516,7 +519,7 @@ def test_upload_document_max_size_and_daily_file_limit(mock_token2, mock_email, 
             assert br.upload_count_receiver == x
 
         document_name = f"fake-document10.pdf"
-        #6MB file size
+        #6MB file size throws error
         file_size = 6 * 1024 * 1024
         #data = {"file": (io.BytesIO(b"".join([bytes([random.randint(0, 255)]) for _ in range(file_size)])), document_name), "material_but": 1}
         file_data = io.BytesIO(os.urandom(file_size))
@@ -532,6 +535,7 @@ def test_upload_document_max_size_and_daily_file_limit(mock_token2, mock_email, 
         assert buddy.first_name in response.text
         assert buddy.last_name in response.text
         assert b"material_but" in response.data
+        #upload 10 more documents
         for x in range(10, 20):
             document_name = f"fake-document{x}.pdf"
             data = {"file": (io.BytesIO(b"some random data"), document_name),  "material_but": 1} 
@@ -543,7 +547,7 @@ def test_upload_document_max_size_and_daily_file_limit(mock_token2, mock_email, 
             assert not b"You have reached the maximum number of uploads for today." in response.data
             br = BuddyRelation.query.filter_by(id=br_id).first()
             assert br.upload_count_receiver == x
-
+        # the 20th document uploaded removes the upload button and displays a message
         document_name = f"fake-document20.pdf"
         data = {"file": (io.BytesIO(b"some random data"), document_name),  "material_but": 1} 
         response = client.post(f"/materialsupload?id={br.id}", data=data, content_type='multipart/form-data')
@@ -554,7 +558,7 @@ def test_upload_document_max_size_and_daily_file_limit(mock_token2, mock_email, 
         assert b"You have reached the maximum number of uploads for today." in response.data
         br = BuddyRelation.query.filter_by(id=br_id).first()
         assert br.upload_count_receiver == 20
-
+        # the 21st document uploaded does not change the upload count and does not upload the document
         document_name = f"fake-document21.pdf"
         data = {"file": (io.BytesIO(b"data for file 21"), document_name),  "material_but": 1} 
         response = client.post(f"/materialsupload?id={br.id}", data=data, content_type='multipart/form-data')
@@ -564,10 +568,7 @@ def test_upload_document_max_size_and_daily_file_limit(mock_token2, mock_email, 
         document_id = Document.query.filter_by(buddy_sender=user_sender.id, buddy_receiver=user_receiver.id, course_id = course_id).order_by(Document.id.desc()).first().id
         assert document_id == 20
 
-        # br.reset_upload_date_sender = datetime.datetime.now() + datetime.timedelta(days=2)
-        # br.reset_upload_date_receiver = datetime.datetime.now() + datetime.timedelta(days=2)
-        #print (datetime.datetime.now())
-        # DATE CHANGE
+        # DATE CHANGE ****
         with freeze_time("2023-03-27"):
             #print (datetime.datetime.now())
             # Upload 20 documents for your buddy via post data 
@@ -596,7 +597,7 @@ def test_upload_document_max_size_and_daily_file_limit(mock_token2, mock_email, 
                 assert br.upload_count_receiver == x
 
             document_name = f"fake-document10.pdf"
-            #6MB file size
+            #6MB file size throws error
             file_size = 6 * 1024 * 1024
             #data = {"file": (io.BytesIO(b"".join([bytes([random.randint(0, 255)]) for _ in range(file_size)])), document_name), "material_but": 1}
             file_data = io.BytesIO(os.urandom(file_size))
@@ -612,6 +613,7 @@ def test_upload_document_max_size_and_daily_file_limit(mock_token2, mock_email, 
             assert buddy.first_name in response.text
             assert buddy.last_name in response.text
             assert b"material_but" in response.data
+            # upload 10 more documents
             for x in range(10, 20):
                 document_name = f"fake-document{x}.pdf"
                 data = {"file": (io.BytesIO(b"some random data"), document_name),  "material_but": 1} 
@@ -623,7 +625,7 @@ def test_upload_document_max_size_and_daily_file_limit(mock_token2, mock_email, 
                 assert not b"You have reached the maximum number of uploads for today." in response.data
                 br = BuddyRelation.query.filter_by(id=br_id).first()
                 assert br.upload_count_receiver == x
-
+            # the 20th document uploaded removes the upload button and displays a message
             document_name = f"fake-document20.pdf"
             data = {"file": (io.BytesIO(b"some random data"), document_name),  "material_but": 1} 
             response = client.post(f"/materialsupload?id={br.id}", data=data, content_type='multipart/form-data')
@@ -634,7 +636,7 @@ def test_upload_document_max_size_and_daily_file_limit(mock_token2, mock_email, 
             assert b"You have reached the maximum number of uploads for today." in response.data
             br = BuddyRelation.query.filter_by(id=br_id).first()
             assert br.upload_count_receiver == 20
-
+            # the 21st document uploaded does not change the upload count and does not upload the document
             document_name = f"fake-document21.pdf"
             data = {"file": (io.BytesIO(b"data for file 21"), document_name),  "material_but": 1} 
             response = client.post(f"/materialsupload?id={br.id}", data=data, content_type='multipart/form-data')

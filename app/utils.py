@@ -1,4 +1,4 @@
-# Author: Aaron Alakkadan, Matt Failoa 
+# Author: Aaron Alakkadan, Matt Faiola 
 from app.models import *
 from app.models.user import User
 from app.models.studyinterest import StudyInterest

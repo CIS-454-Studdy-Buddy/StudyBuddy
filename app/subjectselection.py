@@ -116,6 +116,12 @@ def subjectSelection():
             form_delete.subject_remove.choices = [(StudyInterest.course_id, f'({StudyInterest.course.subject_code}) - {StudyInterest.course.course_number} - {StudyInterest.course.course_name}') for StudyInterest in StudyInterest.query.filter_by(user_id=user.id).options(joinedload(StudyInterest.course)).all()]
     return render_template('subjectselection.html', form=form, form_delete=form_delete, course=course, si_all=si_all)
  
+'''
+The codesortcourse function is used to populate the course title dropdown list based on the subject code selected
+This code handles requests to "/subjectselection/<get_code>" which isnt shown to the user.
+It queries the database for all courses that match the given subject code, creates an array of those courses, 
+    and returns the array in JSON format
+'''
 
 @bp.route('/subjectselection/<get_code>', methods=['GET', 'POST'])
 @login_required

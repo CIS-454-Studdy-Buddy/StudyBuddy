@@ -304,7 +304,9 @@ def forgot():
                 db.session.commit()
 
                 html_msg = email_content_password_reset(
-                    username=form.username.data, 
+                    username=form.username.data,
+                    first_name = user.first_name,
+                    last_name = user.last_name,
                     reset_password_url=url_for('auth.reset_password', _external=True),
                     token=token)
         
@@ -351,9 +353,9 @@ def send_email(email_address, msg_html, subject):
 The email_content_password_reset function generates the email password reset content to the user
 and generates the url
 '''
-def email_content_password_reset(username, first_name, last_name,reset_password_url, token):
+def email_content_password_reset(username, first_name, last_name, reset_password_url, token):
     url = f"{reset_password_url}?t={token}"
-    return render_template('reset_pw_email.html', username=username, first_name=first_name,last_name=last_name ,url=url)
+    return render_template('reset_pw_email.html', username=username, first_name=first_name, last_name=last_name, url=url)
 
 '''
 The email_content_email_confirmation function generates the email confirmation content to the user for signup
@@ -361,4 +363,4 @@ and generates the url
 '''
 def email_content_email_confirmation(username, first_name ,last_name, email_confirmation_url, token):
     url = f"{email_confirmation_url}?t={token}"
-    return render_template('email.html', username=username, first_name=first_name,last_name=last_name,url=url)
+    return render_template('email.html', username=username, first_name=first_name, last_name=last_name, url=url)
