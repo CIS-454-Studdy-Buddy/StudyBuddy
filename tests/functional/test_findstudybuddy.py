@@ -543,7 +543,7 @@ def test_find_buddy_multi_subject_selection_pro_score_star_rating(mock_token2, m
             si_receiver2 = StudyInterest.query.filter_by(user_id=user_receiver.id).filter_by(course_id=course_id).first()
 
             output_string = "Star Rating: " + str(si_receiver2.buddy_star_rating)
-
+            #receiver buddy status still not sent
             assert si_receiver2.buddy_status == 'N'
             assert si_receiver2.user.first_name in response2.text
             assert si_receiver2.user.last_name in response2.text
@@ -710,19 +710,9 @@ def test_find_buddy_multi_subject_selection_pro_score_star_rating(mock_token2, m
 
             output_string = "Star Rating: " + str(si_receiver2.buddy_star_rating)
             # user 1 status is A
+            # user 1 not shown in buddy list
             assert si_receiver2.buddy_status == 'A'
-            assert si_receiver2.user.first_name in response3.text
-            assert si_receiver2.user.last_name in response3.text
-            assert str(si_receiver2.pro_score) in response3.text
-            assert output_string in response3.text
-
-        
-            response3 = client.post('/findstudybuddy', 
-                               data={"subject_code": course_id, "select_buddy": user_receiver.id, "select_buddy_but" : "1"}, follow_redirects=True)
-        
-            br = BuddyRelation.query.filter_by(buddy_sender=user_sender.id, buddy_receiver=user_receiver.id, study_interest_id=si_receiver2.id).first()
-            
-            assert br.invitation_status == 'S'
-            assert response3.request.path == '/findbuddyconfirmation'
-            assert b"Pending Buddy Relation Status" in response3.data
-            assert b"Invitation has been sent, you will be notified when buddy responds" in response3.data
+            assert not si_receiver2.user.first_name in response3.text
+            assert not si_receiver2.user.last_name in response3.text
+            assert not str(si_receiver2.pro_score) in response3.text
+            assert not output_string in response3.text
