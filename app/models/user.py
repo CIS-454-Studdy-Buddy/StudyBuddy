@@ -1,13 +1,10 @@
-'''
-Author: Aaron Alakkadan, Matt Faiola, Talal Hakki
-'''
-
+# Author: Aaron Alakkadan, Matt Failoa, Talal Hakki
 from app.extensions import db
 from flask_login import UserMixin
 from datetime import datetime
 
 '''
-This is the user class model which we inherits from the db.Model class. This represents the user table.    
+This is the user class model which inherits from the db.Model class. This represents the user table.    
 '''
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
