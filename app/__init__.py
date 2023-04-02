@@ -8,7 +8,7 @@ from flask_mail import Mail
 
 '''
 The function create_app is a factory funnction which creates a flask app
-It is  called fron flask run command when you execute in terminal 
+It is called fron flask run command when you execute in terminal 
 '''
 def create_app(test_config=None):
     app = Flask(__name__)

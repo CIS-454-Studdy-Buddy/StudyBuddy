@@ -1,4 +1,4 @@
-# Author: Aaron Alakkadan, Talal Hakki, and Matt Falioa 
+# Author: Aaron Alakkadan, Talal Hakki, and Matt Failoa 
 from flask import Blueprint, render_template, url_for, redirect, request, session 
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user 
 from app.auth import *

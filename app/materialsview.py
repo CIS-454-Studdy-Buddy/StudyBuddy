@@ -42,7 +42,7 @@ def materialsView():
     return render_template('materialsview.html', form=form, list_of_doc=list_of_doc)
 
 
-# This function querys the database for the user and the associated incoming document.
+# This function query's the database for the user and the associated incoming document.
 @bp.route('/docView', methods=['GET'])
 @login_required
 def docView():

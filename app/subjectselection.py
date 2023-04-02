@@ -123,7 +123,7 @@ def subjectSelection():
 The codesortcourse function is used to populate the course title dropdown list based on the subject code selected
 This code handles requests to "/subjectselection/<get_code>" which isnt shown to the user.
 It queries the database for all courses that match the given subject code, creates an array of those courses, 
-    and returns the array in JSON format
+and returns the array in JSON format
 '''
 
 @bp.route('/subjectselection/<get_code>', methods=['GET', 'POST'])

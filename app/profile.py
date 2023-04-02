@@ -33,7 +33,7 @@ def profile():
         if request.method == 'GET':
             form.phoneNumber.data = user.phone_number
             form.aboutMe.data = user.about_me
-        #print((len(form.phoneNumber.data) > 15) or (not form.phoneNumber.data.isnumeric()))
+        
         if form.data['saveButton']:
             # phoneNumber and aboutMe are optional fields
            
