@@ -177,7 +177,7 @@ def email_content_buddy_invitation(username, first_name, last_name, email_confir
     return render_template('buddyemail.html', username=username, first_name=first_name, last_name=last_name, url=url)
 
 '''
-The invtation method encapsulates the business rules the inviation status when the buddy receiver accepts or denies the buddy request
+The invitation method encapsulates the business rules the inviation status when the buddy receiver accepts or denies the buddy request
 '''
 @bp.route('/invitation', methods=['GET', 'POST'])
 def invitation():
