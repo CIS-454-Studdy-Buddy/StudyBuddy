@@ -1,4 +1,4 @@
-# Author: Aaron Alakkadan, Matt Failoa, Talal Hakki
+# Author: Aaron Alakkadan, Matt Faiola, Talal Hakki
 from flask import Blueprint, render_template, url_for, redirect, request, session 
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user 
 from app.auth import *
@@ -145,7 +145,7 @@ def findBuddy():
             buddy_receiver_si.buddy_status = 'S'
                      
             buddy_status = BuddyRelation.query.filter_by(buddy_sender=current_user.id, buddy_receiver=br_user_id, study_interest_id=buddy_receiver_si.id).first()
-            # Inviation status as Sent
+            # Create Buddy relation with invitation status as Sent
             if not buddy_status:
                 buddy_status = BuddyRelation(buddy_sender=current_user.id, buddy_receiver=br_user_id, 
                                         study_interest_id=buddy_receiver_si.id,

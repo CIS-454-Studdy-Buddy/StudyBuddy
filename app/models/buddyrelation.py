@@ -1,4 +1,4 @@
-# Author: Aaron Alakkadan, Matt Failoa 
+# Author: Aaron Alakkadan, Matt Faiola 
 from app.extensions import db
 from app.models.user import User
 from app.models.course import Course, Subject
@@ -35,7 +35,13 @@ class BuddyRelation(db.Model):
             return self.receiver
         else:
             return self.sender
-        
+
+    '''
+    The can_user_upload function checks if the current user can upload a file. 
+    If the current user is the sender or the reciever of a buddy relation, they can upload MAX_UPLOADS_PER_DAY files per day.
+    The upload count will reset if the current date is greater than the reset_upload_date_sender or reset_upload_date_receiver.
+    This returns True if the current user can upload a file, and False if they cannot.
+    '''
     def can_user_upload(self, current_user_id):
         if current_user_id == self.sender.username:
             if self.reset_upload_date_sender is not None:
