@@ -2,30 +2,33 @@
 ## STEP BY STEP INSTRUCTIONS
 
 ### HOW TO RUN LOCALLY ON YOUR COMPUTER
+
+**Visit [sustudybuddy.com](https://sustudybuddy.com) to see the website**
+
 INSTALLS:
 
-Visiting sustudybuddy.com might be easier to test
-
 Install python 3.9 or higher and make sure to install pip
+
 
 **Install for linux:**
 1. `sudo apt-get update`
 2. `sudo apt install python3.10 python3-pip python3.10-venv`
 3. Installing sqlite3 `sudo apt install sqlite3`
 
+
 **Install for mac:**
 Use package manager or download the python package from
 https://www.python.org/downloads/
 
-Insure python is installed by running `python3 –version` in terminal
-Insure pip is installed by running `pip3 –version` in terminal
+Insure python is installed by running `python3 –-version` in terminal
+Insure pip is installed by running `pip3 –-version` in terminal
 
 Open up the terminal and change your directory to a place you would like to save the project.
 Using Git clone the repository
 `git clone https://github.com/CIS-454-Studdy-Buddy/StudyBuddy.git`
 Use the ls command to verify the newly made StudyBuddy project folder is in the directory
 
-cd into the directory
+`cd` into the StudyBuddy directory
 
 type in terminal `python3 -m venv “venv”` to create the new environment name
 
@@ -39,6 +42,8 @@ Next, to create a database type in the terminal
 Then `from app.utils import create_db, seed_data`
 Then `create_db()`
 Then `seed_data()`
+
+
 
 ### OPTIONAL:
 For creating testing seed data the function seed_data() in the file StudyBuddy/app/utils.py will create 5 existing users in the database to test from.
@@ -55,6 +60,8 @@ thakki@syr.edu
 
 
 
+
+
 ### TO RUN THE APP FROM TERMINAL
 
 In terminal `flask run` or `flask run –port 5001`
@@ -62,6 +69,7 @@ Copy the output address into your web browser and the website should be running 
 
 
 If you want to go into the database used in the local testing you can run `sqlite3 database.db` in the terminal from the StudyBuddy main folder.
+
 
 
 
@@ -76,10 +84,7 @@ Then add ssh public key in github by following this link: https://docs.github.co
 ### Build project for distribution
 Run the build command below and it will create tar file in dist folder
 
-```
-python -m build
-
-```
+`python -m build`
 
 Upload the tar file to s3 bucket
 
