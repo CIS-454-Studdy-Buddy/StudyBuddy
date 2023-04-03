@@ -1,77 +1,61 @@
 <!-- Author: Jonathan Fuhrman -->
 <!-- Page: home.html -->
-<!-- Objective:
-     - 
+<!-- Objective: The landing page, here the user can learn about the website, 
+    the members of the team are displayed, the contact form is displayed 
+    and, the user can access the login and sign up pages 
 -->
 
+<!-- Start of HTML document with language set to English -->
 <!DOCTYPE html>
 <html lang="en">
 
+<!-- Head section with metadata -->
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <form method="POST" action="">
-        {{ form.hidden_tag() }}
-            
-    </form>
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <script src="js/bootstrap.js"></script>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-<body class="bg">
-    <div class="container-fluid">
-        <div class="col">
-            <div class="logo">
-                <img src="{{url_for('static', filename='logo-study-buddy.png')}}", width="200" ,height="200">
-            </div>
-                 <p></p>
-                <center><a href="{{url_for('auth.signup')}}">Register Here</a></center>
-                <p></p>
-                <center><a href="{{url_for('auth.login')}}">Log In Here</a></center>
-            <div class="borderLeft"></div>
-        </div>
-    </div>
-  
-    <link rel="stylesheet" href="/static/style.css"> -->
-    
-    
-    <title>Study Buddy</title>
+    <title>Study Buddy</title> <!-- title of the page -->
+    <!--links the Bootstrap CSS stylesheet from a CDN-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-
+    <!--links custom CSS stylesheet called "home.css" located in a subdirectory named "static".-->
     <link rel="stylesheet" href="static/home.css">
-
+    <!-- Links icon box  -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
-
-    <style>
-        /* Modify the background color */
-        /*    .navbar-custom {
-                background-color: rgb(250, 104, 0);
-            } */
-    
+    <!--css style, makes the navbar content white and adjust the size and font-->
+    <style>    
         nav .navbar-nav li a {
             color: white !important;
             font-size: 18px;
             font-weight: 700;
         }
     </style>
+    <!--end of style-->
 
 </head>
+<!--end of head-->
 
+<!-- start of Body -->
 <body>
+
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+    </form>
+
+    <!-- Nav Bar Section. Nav Bar will stay visable if you scroll down and it has a dark background-->
     <nav class="navbar navbar-expand-lg py-3 sticky-top bg-dark">
         <div class="container">
+            <!-- Nav Bar Study Buddy Logo-->
             <a class="navbar-brand" href="{{url_for('auth.home')}}">
                 <img src="{{url_for('static', filename='logo-study-buddy.png')}}", width="230" height="65">
             </a>
+            <!-- Navbar toggler for small screens -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+            <!-- Navbar items -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
@@ -100,6 +84,7 @@
         </div>
     </nav>
     <!--Nav Bar End-->
+
 
     <!--Hero-->
     <div class="hero vh-100 d-flex align-items-center" id="home">
@@ -369,5 +354,4 @@
     <!--Contact Ends here-->
 
 </body>
-
 </html>

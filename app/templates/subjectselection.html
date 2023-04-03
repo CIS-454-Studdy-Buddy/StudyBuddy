@@ -1,7 +1,7 @@
-<!-- Author: Jonathan Fuhrman, Matt Failoa -->
+<!-- Author: Jonathan Fuhrman, Matt Faiola, Aaron Alakkadan -->
 <!-- Page: subjectselection.html -->
-<!-- Objective:
-     - 
+<!-- Objective: the design and structure of subject select, where the user selects the courses
+     in which he is interested. 
 -->
 
 <!DOCTYPE html>
@@ -79,22 +79,10 @@
             </div>
         </div>
     </nav>
-      
-        <!--
-        <div>
-            <label for="subject_code">Subject Code:</label>
-            {{ form.subject_code }}
-        </div>
-        <div>
-            <label for="course_title">Course Title:</label>
-            {{ form.course_title }}
-        </div>
-        -->
-        </form>
     
 
     <div>
-    <section class="h-100 gradient-custom">
+    <section class="h-100 gradient-custom"> <!-- sets background to gradient custom -->
         <div class="container">
             <div class="row ml-2 justify-content-center align-items-center">
                 <div class="col-12 col-lg-9 col-xl-7">
@@ -105,8 +93,8 @@
                         <center>
                             <form method="POST" action="" style="color: white;">
                                 {{ form.hidden_tag() }}
-        
-                                {% for s in si_all %}
+                                <!-- displaying subject code, course name, course number.  -->
+                                {% for s in si_all %} 
                                 <div>
                                     <strong> {{s.course.subject_code}} {{s.course.course_number}} {{s.course.course_name}}</strong>
                                      - Pro Score: {{s.pro_score}}
@@ -127,11 +115,11 @@
                             {{ form.hidden_tag() }}
                             <div>
                                 <label style="margin-left: 100px; margin-top: 50px; color: white;" for="subject_code"> <strong> Subject Code: </strong></label>
-                                {{ form.subject_code }}
+                                {{ form.subject_code }} <!-- the subject code -->
                             </div>
                             <div>
                                 <label style="margin-left: 100px; color: white;" for="course_title"> <strong> Course Title: </strong></label>
-                                {{ form.course_title }}
+                                {{ form.course_title }} <!-- course title dropdown -->
                             </div>
                             <div>
                                 <p>
@@ -139,9 +127,10 @@
                                 <p style="margin-left: 100px; color: white;"> <strong> Class: </strong><span id="course_title_display">{{ form.course_title.data }}</span></p>
                                 </p>
                             </div>
-                            <br>
-                            {{ course.name }}
-                            <br>
+                            <br> <!-- blank space -->
+                            {{ course.name }} <!-- course name dropdown-->
+                            <br> <!-- blank space -->
+                            <!-- displaying the proficiency assessment  -->
                             <div style="margin-left: 100px; color: white;"> <strong> Proficiency Assessment </strong></div>
                             <div style="margin-left: 100px; color: white;">
                                 {{ form.pro_ans1.label }}
@@ -150,7 +139,7 @@
                                     {{ subfield.label }}        
                                     {% endfor %}
                             </div>
-                            <br>
+                            <br> <!-- blank space -->
                             <div style="margin-left: 100px; color: white;">
                             {{ form.pro_ans2.label }}
                             {% for subfield in form.pro_ans2 %}       
@@ -158,7 +147,7 @@
                                 {{ subfield.label }}        
                                 {% endfor %}
                             </div>
-                            <br>
+                            <br> <!-- blank space -->
                             <div style="margin-left: 100px; color: white;">
                             {{ form.pro_ans3.label }}
                             {% for subfield in form.pro_ans3 %}       
@@ -166,27 +155,28 @@
                                 {{ subfield.label }}        
                                 {% endfor %}
                             </div>
-                            <br>
+                            <br> <!-- blank space -->
                             <center>{{ form.but }}</center>
                             </form>
-                            <br>
+                            <br> <!-- blank space -->
+                            <!-- remove subject  form -->
                             <form method="POST" action="">
                             {{form_delete.hidden_tag()}}
-                            <center>{{form_delete.subject_remove.label}}</center>
+                            <center>{{form_delete.subject_remove.label}}</center> 
                             
                             <center>{{form_delete.subject_remove}}</center>
-                            <br>
+                            <br> <!-- blank space -->
                             <center>{{form_delete.delbut}}</center>
                             {{msg_delete}}
                             <span id="subject_delete_display">{{form_delete.subject_remove.data}}</span>
-                            <br>
-                            <br>
+                            <br> <!-- blank space -->
+                            <br> <!-- blank space -->
                         </form>
                     </div>
                            
                             
-                            <br>
-                            {{msg}}
+                            <br> <!-- blank space -->
+                            {{msg}} <!-- error message for subject selection -->
                         </form>
                     </div>
                 </div>
@@ -196,6 +186,7 @@
 
 
 <script>
+    // javascript code which aids in gathering the data for dropdown menus
     function updateCurrentValue() {
         var current_subject_code = document.getElementById("subject_code").value;
         var current_course_title = document.getElementById("course_title").value
@@ -211,6 +202,7 @@
 </script>
 
 <script>
+// updating data on the dropdown // javascript code
 var subject_code_select = document.getElementById("subject_code");
 var course_title_select = document.getElementById("course_title");
 
@@ -230,6 +222,7 @@ subject_code_select.onchange = function() {
         }
     )
 }
+// updating the subject course & course title dropdown menus. 
 course_title.onchange = function() {
     var e = subject_code_select;
     var e1 = document.getElementById("subject_code_display");
@@ -239,7 +232,7 @@ course_title.onchange = function() {
     var e3 = document.getElementById("course_title_display");
     e3.innerHTML = e2.options[e2.selectedIndex].text;
 }
-
+// updating the subject deletion dropdown 
 subject_remove.onchange = function(){
     var e = subject_remove;
     var e1 = document.getElementById("subject_delete_display");

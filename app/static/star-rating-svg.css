@@ -1,7 +1,18 @@
+/*
+ *  jQuery StarRatingSvg v1.2.0
+ *
+ *  http://github.com/nashio/star-rating-svg
+ *  Author: Ignacio Chavez
+ *  hello@ignaciochavez.com
+ *  Licensed under MIT
+ */
+
+ /* Defines styles for the star rating widget */
 .jq-stars {
     display: inline-block;
   }
   
+
   .jq-rating-label {
     font-size: 22px;
     display: inline-block;
@@ -23,6 +34,7 @@
     height: 100% ;
   }
   
+    /* Defines styles for when the user hovers over a star */
   .jq-star:hover .fs-star-svg path {
   }
   

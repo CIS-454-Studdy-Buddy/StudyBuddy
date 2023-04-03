@@ -1,13 +1,15 @@
 <!-- Author: Jonathan Fuhrman, Aaron Alakkadan, Matt Failoa -->
 <!-- Page: invitation.html -->
-<!-- Objective:
-     - 
+<!-- Objective: the structue and design of invitation.html. After a user clicks on a pending 
+    invitation, the user is redirected to this page, where he can accept or deny the inviation request.
 -->
 
+<!-- Start of HTML document with language set to English -->
 <!DOCTYPE html>
 <html lang="en">
+
+<!-- Head section with metadata -->
 <head>
-     <!--The following lines define the character set, compatibility, and viewport of the page-->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,29 +36,17 @@
             background: linear-gradient(to right, rgb(255, 106, 0), rgb(249, 170, 90));
         }
     </style>
+    <!-- end of style -->
 </head>
-<body>
-<!--
-    <form method="POST" action="">
-        {{ form.hidden_tag() }}
-        {% if br %}
-        <div>
-            {{br.sender.first_name}}
-            {{br.sender.last_name}}
-        </div>
+<!-- end of head -->
 
-            <div>
-                {{br.study_interest.course.subject_code}}
-                {{br.study_interest.course.course_number}}
-                {{br.study_interest.course.course_name}}
-            </div>
-        <br>
-        <br>
-        {{ form.accept_buddy_but }}
-        {{ form.deny_buddy_but}}
-        {% endif %}
-        -->
-<!--The following lines create a centered card with information about a pending buddy connection-->
+<!-- start of body -->
+<body>
+
+<!--
+    The following lines create a centered card that contains a form which allows the user to 
+    accept or deny an invitation request
+-->
     <center>
         <div class="card bg-dark" style="width: 70%; margin-top: 15%; width: 50%;">
             <form method="POST" action="">
@@ -81,4 +71,3 @@
 </html>
 
 
-<!--pending invitation redirects u to this page-->
