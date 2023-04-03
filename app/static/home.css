@@ -1,5 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;700&display=swap');
+/* Author: Jonathan Fuhrman */
+/* this stylesheet css is used across many html pages in our website */
 
+/* imports the Google font Sora with two font weights (400 and 700) and specifies that it should be used as a replacement for the default font in the page */
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;700&display=swap'); 
+
+/* sets the default values for some CSS variables that can be used later in the code. */
 :root {
     --primary: rgb(247, 105, 0);
     --dark: #21252f;
@@ -7,6 +12,7 @@
     --box-shadow: 0 8px 22px rgb(0, 0, 0, 0.1);
 }
 
+/* defines a class for an element with a gradient background that goes from one color to another. */
 .gradient-custom {
     /* fallback for old browsers */
     background: rgb(247, 105, 0);
@@ -18,12 +24,14 @@
     background: linear-gradient(to bottom right, rgb(248, 175, 115), rgb(255, 106, 0))
 }
 
+/* sets the font family,line height,and color of the body text. */
 .body {
     font-family: "Sora", sans-serif;
     line-height: 1.7;
     color: var(--body);
 }
 
+/* sets the font color and weight for all heading elements and a class called "display-4" . */
 h1,
 h2,
 h3,
@@ -34,29 +42,44 @@ h6 .display-4 {
     font-weight: 700;
 }
 
+/* sets the color and text decoration for all links. */
 a {
     color: var(--dark);
     text-decoration: none;
 }
 
+/* 
+These lines define the link styles for links with a class "loginlinks" 
+when they are in different states: link,hover,and active. 
+*/
 a.loginlinks:link {
 text-decoration: underline;
 }
 
+/* 
+These lines define the link styles for links with a class "loginlinks" 
+when they are in different states: link,hover,and active. 
+*/
 a.loginlinks:hover {
 color: rgb(255, 125, 0);
 text-decoration: underline;
 }
 
+/* 
+These lines define the link styles for links with a class "loginlinks" 
+when they are in different states: link,hover,and active. 
+*/
 a.loginlinks:active {
 color: blue;
 text-decoration: underline;
 }
 
+/* defines the box-shadow for a navigation bar. */
 .navbar {
     box-shadow: var(--box-shadow);
 }
 
+/* sets the style for a button element,including background color,border width,radius,and color on hover. */
 .btn {
     background-color: rgb(247, 105, 0);
     padding: 14px 18px;
@@ -74,6 +97,7 @@ text-decoration: underline;
 
 }
 
+/* sets the background image and some styles for a hero section of the page. */
 .hero {
     background-image: url('/static/background.png');
     background-position: center;
@@ -94,11 +118,13 @@ text-decoration: underline;
     z-index: -1;
 }
 
+/* sets the padding for all section elements. */
 section {
     padding-top: 110px;
     padding-bottom: 100px;
 }
 
+/* sets the style for a card element,including box-shadow and background color on hover. */
 .card-effect {
     box-shadow: var(--box-shadow);
     background-color: white;
@@ -111,6 +137,7 @@ section {
     transform: translateY(5px);
 }
 
+/* sets the style for an icon box element. */
 .iconbox {
     width: 54px;
     height: 54px;
@@ -124,6 +151,7 @@ section {
     flex: none;
 }
 
+/* sets the style for a service element,including a hover effect. */
 .service {
     position: relative;
     z-index: 2;
@@ -158,6 +186,7 @@ section {
     top: 0;
 }
 
+/* These classes set the background image and some styles for two columns of the page. */
 .col-img {
     background-image: url('/static/student.png');
     background-position: center;
@@ -165,6 +194,7 @@ section {
     min-height: 500px;
 }
 
+/* These classes set the background image and some styles for two columns of the page. */
 .col-img1 {
     background-image: url('/static/student1.png');
     background-position: center;
@@ -172,12 +202,14 @@ section {
     min-height: 500px;
 }
 
+/* sets the style for an image element. */
 .team-member img {
     width: 120px;
     height: auto;
     border-radius: 100px;
 }
 
+/* sets the style for a group of social media icons. */
 .social-icons {
     display: flex;
     justify-content: center;
@@ -198,6 +230,7 @@ section {
     border: 2px solid var(--primary);
 }
 
+/* These lines set the style for form input elements. */
 .social-icons a:hover {
     color: var(--primary);
     background-color: transparent;
@@ -214,6 +247,8 @@ form .form-control {
     border-radius: 0;
     background-color: rgba(0, 0, 0, 0.04)
 }
+
+/* sets the display property for an element with an ID of "prof_filter" to inline. */
 #prof_filter {
     display:inline-block;}
 #star_filter {
@@ -226,10 +261,12 @@ form .form-control {
     list-style: none;
 }
 
+/* Sets the text color to orange using an RGB value for the element with class "text_orange" */
 .text_orange {
     color: rgb(247, 105, 0);
 }
 
+/* Defines position, margin, and cursor for the first info icon. */
 .info-icon {
     position: absolute;
     top: 0;
@@ -238,10 +275,12 @@ form .form-control {
     cursor: pointer;
 }
 
+/* Shows the popup for the first info icon when hovered over. */
 .info-icon:hover .popup {
     display: block;
 }
 
+/* Defines position,display,and cursor for the second info icon. */
 .info-icon2 {
     position: sticky;
     display: inline-block;
@@ -251,10 +290,12 @@ form .form-control {
     cursor: ppointer;
 }
 
+/* Shows the popup for the second info icon when hovered over. */
 .info-icon2:hover .popup2 {
     display: block;
 }
-  
+
+/* Defines properties for the popup that shows up with the first info icon. */
 .popup {
     position: absolute;
     width: 300px;
@@ -268,6 +309,7 @@ form .form-control {
     display: none;
 }
 
+/* Defines properties for the popup that shows up with the second info icon. */
 .popup2 {
     position: absolute;
     width: 300px;
