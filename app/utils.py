@@ -12,6 +12,9 @@ import csv
 import random
 from statistics import mean
 
+'''
+The function import_courses functionality is to import the sortedCours csv file into the database.
+'''
 def import_courses(file_path):
     with open(file_path, 'r') as csv_file:
         csv_reader = csv.reader(csv_file)
@@ -21,6 +24,9 @@ def import_courses(file_path):
             db.session.add(model_instance)
         db.session.commit()
 
+'''
+The function import_subject_code functionality is to import the sortedCode csv file into the database.
+'''
 def import_subject_code(file_path):
     with open(file_path, 'r') as csv_file:
         csv_reader = csv.reader(csv_file)
@@ -30,6 +36,10 @@ def import_subject_code(file_path):
             db.session.add(model_instance)
         db.session.commit()
 
+'''
+The function create_db functionality is to create the database locally.
+If the database already exists, it will delete the database and create a new one.
+'''
 def create_db():
     from app import create_app
 
@@ -79,6 +89,8 @@ def seed_data():
         db.session.add(new_user4)
         db.session.add(new_user5)
         db.session.commit()
+        # adds 5 study interests for each user
+        # with random profiency scores
         users = [new_user, new_user2, new_user3, new_user4, new_user5]
         courses = [44, 500, 411, 28, 3400]
         for user in users:

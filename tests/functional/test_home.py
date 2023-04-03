@@ -1,4 +1,4 @@
-# Author: Aaron Alakkadan
+# Author: Aaron Alakkadan, Matt Faiola
 from flask import url_for, request
 from app.auth import home
 from unittest import mock

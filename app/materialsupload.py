@@ -34,7 +34,7 @@ def materialsUpload():
     msg = ''
     upload_message = ''
     file_name = ""
-    # if the user is eligable to upload a document, allow for document sharing. The user must have less than 20
+    # if the user is eligible to upload a document, allow for document sharing. The user must have less than 20
     # daily files shared to be able to share a file.
     if br.can_user_upload(current_user.username):
         if form.data['material_but']:
@@ -88,7 +88,7 @@ def materialsUpload():
                 # display a message if the user does not select a file to upload.
                 else:
                     msg = 'No file selected.'
-                    
+            # exception thrown if the file size is greater than 5MB.        
             except RequestEntityTooLarge:
                 msg = 'File is larger than the 5MB limit.'
                 
