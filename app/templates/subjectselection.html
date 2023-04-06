@@ -157,21 +157,22 @@
                             </div>
                             <br> <!-- blank space -->
                             <center>{{ form.but }}</center>
-                            </form>
+                        </form>
                             <br> <!-- blank space -->
                             <!-- remove subject  form -->
-                            <form method="POST" action="">
-                            {{form_delete.hidden_tag()}}
-                            <center>{{form_delete.subject_remove.label}}</center> 
-                            
-                            <center>{{form_delete.subject_remove}}</center>
-                            <br> <!-- blank space -->
-                            <center>{{form_delete.delbut}}</center>
-                            {{msg_delete}}
-                            <span id="subject_delete_display">{{form_delete.subject_remove.data}}</span>
-                            <br> <!-- blank space -->
-                            <br> <!-- blank space -->
-                        </form>
+                            <div style = "text-align: center;">
+                                <form method="POST" action="">
+                                {{form_delete.hidden_tag()}}
+                                
+                                <span> {{form_delete.subject_remove(style="width: 100%; white-space: normal;")}} </span>
+                                <br> <!-- blank space -->
+                                {{form_delete.delbut}}
+                                <br> <!-- blank space -->
+                                <a style="text-align: center;" class="text-white"> {{msg_delete}} </a>
+                                <span id="subject_delete_display">{{form_delete.subject_remove.data}}</span>
+                                <br> <!-- blank space -->
+                                </form>
+                            </div>
                     </div>
                            
                             

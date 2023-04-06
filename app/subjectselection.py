@@ -8,6 +8,7 @@ from app.models.course import *
 from app.models.studyinterest import *
 from statistics import mean
 from sqlalchemy.orm import joinedload
+from sqlalchemy import exists
 
 '''
 This is the form class for subject selection
@@ -57,27 +58,43 @@ def subjectSelection():
     form_delete = SubjectDeleteForm()
     form.subject_code.choices = [(Subject.subject_code, f'{Subject.subject_code} - {Subject.subject_name}') for Subject in Subject.query.all()]
     user = User.query.filter_by(username=current_user.username).first()
-    form_delete.subject_remove.choices = [(StudyInterest.course_id, f'({StudyInterest.course.subject_code}) - {StudyInterest.course.course_number} - {StudyInterest.course.course_name}') for StudyInterest in StudyInterest.query.filter_by(user_id=user.id).options(joinedload(StudyInterest.course)).all()]
+    form_delete.subject_remove.choices = [(StudyInterest.course_id, f'({StudyInterest.course.subject_code}) - {StudyInterest.course.course_number} - {StudyInterest.course.course_name}') for StudyInterest in StudyInterest.query.filter_by(user_id=user.id).filter(StudyInterest.buddy_status != 'A').options(joinedload(StudyInterest.course)).all()]
     course = None
     si_all = None
     si = None
+    msg_delete = ''
     # if the user decides to delete a subject and confirms via button click, query the selected subject and remove the
     # entry from the database. Commit changes to database.
+    # before you remove a course if there is a pending invitation or BuddyRelation with 'S' status then delete the BR
     if form_delete.validate_on_submit:
         if user:
             if form_delete.data['delbut']:
                 course_id  = form_delete.subject_remove.data
 
-                total_si = StudyInterest.query.filter_by(user_id=user.id).count()
+                total_si = StudyInterest.query.filter_by(user_id=user.id).filter(StudyInterest.buddy_status != 'A').count()
                 if total_si <= 0:
                     msg_delete = "No subjects to remove"
                     return render_template('subjectselection.html', form=form, form_delete=form_delete, course=course, si_all=si_all, msg_delete=msg_delete)
                 si = StudyInterest.query.filter_by(user_id=user.id).filter_by(course_id=form_delete.subject_remove.data).first()
+                # find BR that have the current user as a buddy_sender or buddy_receiver and have a status of 'S' and the course_id matches the course_id of the BR StudyInterest
+                buddy_relation_exists_with_sent = (BuddyRelation.query.options(joinedload(BuddyRelation.study_interest)).join(BuddyRelation.study_interest).filter(or_(BuddyRelation.buddy_receiver==user.id, BuddyRelation.buddy_sender==user.id))
+                    .filter(BuddyRelation.invitation_status=='S').filter(StudyInterest.course_id==course_id).first())
+                # if it exists then delete the BR and set the buddy_status of the connected StudyInterests to 'N'
+                if buddy_relation_exists_with_sent:
+                    si_sender = StudyInterest.query.filter_by(user_id=buddy_relation_exists_with_sent.buddy_sender).filter_by(course_id=course_id).first()
+                    si_receiver = StudyInterest.query.filter_by(user_id=buddy_relation_exists_with_sent.buddy_receiver).filter_by(course_id=course_id).first()
+                    si_sender.buddy_status = 'N'
+                    si_receiver.buddy_status = 'N'
+                    db.session.delete(buddy_relation_exists_with_sent)
+                else:
+                    print("list is empty")
+
                 db.session.query(StudyInterest).filter(StudyInterest.id == si.id).delete()
                 db.session.commit()
                 form_delete.subject_remove.data = None
                 si_all = StudyInterest.query.filter_by(user_id=user.id).options(joinedload(StudyInterest.course)).all()
-                form_delete.subject_remove.choices = [(StudyInterest.course_id, f'({StudyInterest.course.subject_code}) - {StudyInterest.course.course_number} - {StudyInterest.course.course_name}') for StudyInterest in StudyInterest.query.filter_by(user_id=user.id).options(joinedload(StudyInterest.course)).all()]
+                #choices only include BRs that are not accepted
+                form_delete.subject_remove.choices = [(StudyInterest.course_id, f'({StudyInterest.course.subject_code}) - {StudyInterest.course.course_number} - {StudyInterest.course.course_name}') for StudyInterest in StudyInterest.query.filter_by(user_id=user.id).filter(StudyInterest.buddy_status != 'A').options(joinedload(StudyInterest.course)).all()]
 
     # if the user decides to add a subject and confirms via button click, query the selected subject and add an
     # entry to the database. Commit changes to database.
@@ -116,7 +133,7 @@ def subjectSelection():
                 form.pro_ans2.data = None
                 form.pro_ans3.data = None
             si_all = StudyInterest.query.filter_by(user_id=user.id).options(joinedload(StudyInterest.course)).all()
-            form_delete.subject_remove.choices = [(StudyInterest.course_id, f'({StudyInterest.course.subject_code}) - {StudyInterest.course.course_number} - {StudyInterest.course.course_name}') for StudyInterest in StudyInterest.query.filter_by(user_id=user.id).options(joinedload(StudyInterest.course)).all()]
+            form_delete.subject_remove.choices = [(StudyInterest.course_id, f'({StudyInterest.course.subject_code}) - {StudyInterest.course.course_number} - {StudyInterest.course.course_name}') for StudyInterest in StudyInterest.query.filter_by(user_id=user.id).filter(StudyInterest.buddy_status != 'A').options(joinedload(StudyInterest.course)).all()]
     return render_template('subjectselection.html', form=form, form_delete=form_delete, course=course, si_all=si_all)
  
 '''
