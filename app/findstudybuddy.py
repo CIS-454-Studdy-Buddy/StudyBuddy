@@ -228,6 +228,8 @@ def invitation():
             db.session.add(sender_si)
             db.session.commit()
 
+            return redirect(url_for('dashboard.dashboard'))
+
     return render_template('invitation.html', form=form, br=br)
 
 '''

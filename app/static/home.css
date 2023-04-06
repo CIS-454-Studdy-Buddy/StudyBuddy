@@ -82,12 +82,12 @@ text-decoration: underline;
 /* sets the style for a button element,including background color,border width,radius,and color on hover. */
 .btn {
     background-color: rgb(247, 105, 0);
-    padding: 14px 18px;
     border-width: 2px;
     border-radius: 0;
     border: 1px solid rgb(247, 105, 0);
     padding: 10px 14px;
     transition: border-color 0.3s ease-in-out;
+    margin-left: 0.85rem;
 }
 
 .btn:hover {
@@ -120,7 +120,7 @@ text-decoration: underline;
 
 /* sets the padding for all section elements. */
 section {
-    padding-top: 110px;
+    padding-top: 100px;
     padding-bottom: 100px;
 }
 
@@ -324,4 +324,34 @@ form .form-control {
     display: none;
     white-space: normal;
     color: black;
+}
+
+.navbar-collapse {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.navbar-collapse.show {
+    background-color: rgb(247, 105, 0);
+    justify-content: center;
+    margin-bottom: 5px;
+}
+
+.navbar-nav {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-toggler {
+    display: none;
+}
+
+@media (max-width: 1020px) {
+    .navbar-toggler {
+        display: block;
+    }
+    .navbar-collapse {
+        justify-content: center;
+    }
 }

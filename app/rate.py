@@ -134,7 +134,8 @@ def rate():
             
             # query the selected subject and update the buddy star rating. Update the database entry.
             si = StudyInterest.query.filter_by(user_id=buddy_id, course_id=course_id).first()
-            si.buddy_star_rating = avg_rating
+            # round rating to 3 decimal places
+            si.buddy_star_rating = round(avg_rating, 3)
             db.session.add(si)
             db.session.add(user)
             db.session.add(receiving_user)
