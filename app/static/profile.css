@@ -13,7 +13,6 @@
 /* Defines properties for the button. */
 .btn {
     background-color: rgb(247, 105, 0);
-    padding: 14px 18px;
     border-width: 2px;
     border-radius: 0;
     border: 1px solid rgb(247, 105, 0);

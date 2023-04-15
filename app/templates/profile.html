@@ -41,7 +41,8 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    
+    <!-- Load custom stylesheet -->
+    <link rel="stylesheet" href="static/home.css">
     <link rel="stylesheet" href="/static/profile.css">
     
 </head>
@@ -60,22 +61,22 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav" style="padding-left: 20%;">
                 <button class="btn ms-4">
-                    <a href="{{url_for('findstudybuddy.findBuddy')}}" style="color: white; text-decoration: none;">Buddy Search</a>
+                    <a href="{{url_for('findstudybuddy.findBuddy')}}">Buddy Search</a>
                 </button>
                 <button class="btn ms-4">
-                    <a href="{{url_for('subjectselection.subjectSelection')}}" style="color: white; text-decoration: none;">Subject Select</a>
+                    <a href="{{url_for('subjectselection.subjectSelection')}}">Subject Select</a>
                 </button>
                 <button class="btn ms-4">
-                    <a href="{{url_for('materialsview.materialsView')}}" style="color: white; text-decoration: none;">View Materials</a>
+                    <a href="{{url_for('materialsview.materialsView')}}">View Materials</a>
                 </button>
                 <button class="btn ms-4">
-                    <a href="{{url_for('viewratings.viewRatings')}}" style="color: white; text-decoration: none;">View Ratings</a>
+                    <a href="{{url_for('viewratings.viewRatings')}}">View Ratings</a>
                 </button>
                 <button class="btn ms-4">
-                    <a href="{{url_for('profile.profile')}}" style="color: white; text-decoration: none;">Profile</a>
+                    <a href="{{url_for('profile.profile')}}">Profile</a>
                 </button>
-                <button class="btn ms-4 btn-danger">
-                    <a href="{{url_for('auth.login')}}" style="color: white; text-decoration: none;">Logout</a>
+                <button class="btn ms-4">
+                    <a href="{{url_for('auth.login')}}">Logout</a>
                 </button>
             </div>
         </div>
