@@ -326,6 +326,7 @@ form .form-control {
     color: black;
 }
 
+/* Properties for drop down menu on narrow screens. */
 .navbar-collapse {
     display: flex;
     flex-wrap: wrap;
