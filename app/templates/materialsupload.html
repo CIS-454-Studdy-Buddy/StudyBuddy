@@ -32,40 +32,47 @@
 </head>
 <!-- Head End -->
 
-<body>
+<body class="bg">
 <!-- start of Body -->
 
-    <!-- Nav Bar Section. Nav Bar will stay visable if you scroll down and it has a dark background-->
-    <nav class="navbar navbar-expand-lg py-3 sticky-top bg-dark">
+     <!-- Nav Bar Section. Nav Bar will stay visable if you scroll down and it has a dark background-->
+     <nav class="navbar navbar-expand-lg sticky-top bg-dark">
         <div class="container-fluid">
             <!-- Nav Bar Study Buddy Logo-->
-            <a class="navbar-brand" href="{{url_for('dashboard.dashboard')}}">
+            <a class="navbar-brand me-auto" href="{{url_for('dashboard.dashboard')}}">
                 <img src="{{url_for('static', filename='logo-study-buddy.png')}}" , width="220" height="65">
             </a>
-
+            
             <!-- Navbar toggler for small screens -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            <button class="navbar-toggler bg-light"  type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
-            </button>
+            </button> 
             <!-- Navbar items -->
-            <div class="collapse navbar-collapse" id="navbarNav" style="padding-left: 20%;">
-                <button class="btn ms-4">
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <button class="btn ms-0">
                     <a href="{{url_for('findstudybuddy.findBuddy')}}">Buddy Search</a>
                 </button>
-                <button class="btn ms-4">
+                <style>
+                    @media (max-width: 1100px) {
+                        .btn {
+                            margin-left: 0.35rem;
+                        }
+                    }
+                </style>
+                <button class="btn">
                     <a href="{{url_for('subjectselection.subjectSelection')}}">Subject Select</a>
                 </button>
-                <button class="btn ms-4">
+                <button class="btn">
                     <a href="{{url_for('materialsview.materialsView')}}">View Materials</a>
                 </button>
-                <button class="btn ms-4">
+                <button class="btn">
                     <a href="{{url_for('viewratings.viewRatings')}}">View Ratings</a>
                 </button>
-                <button class="btn ms-4">
+                <button class="btn">
                     <a href="{{url_for('profile.profile')}}">Profile</a>
                 </button>
-                <button class="btn ms-4">
+                <button class="btn me-5">
                     <a href="{{url_for('auth.login')}}">Logout</a>
                 </button>
             </div>
@@ -133,6 +140,22 @@
             </div>
         </div>
     </section>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script>
+        // get the navbar collapse
+        var navbarCollapse = document.querySelector('#navbarNav');
+      
+        // add a listener to the window resize event for collapsing the navbar
+        window.addEventListener('resize', function() {
+          // if the screen size is larger than the large breakpoint collapse the navbar
+          if (window.innerWidth >= 992) {
+            navbarCollapse.classList.remove('show');
+          }
+        });
+    </script>
 </body>
 </html>
 
