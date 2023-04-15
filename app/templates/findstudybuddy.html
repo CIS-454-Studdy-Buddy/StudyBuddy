@@ -158,14 +158,17 @@
                             {% endfor %}
                             
                             <div style="margin-left: 75px; margin-top: 10px; margin-bottom: 30px;" class="text-white">
-                            {% if subject_buddy_status == 'N' %}
-                            {{form.select_buddy_but}}
-                            {% elif subject_buddy_status == 'D' %}
-                            {{form.select_buddy_but}}
+                            <!-- if a dropdown option has not been selected do not show the select buddy button -->
+                            {% if form.subject_code.data %}
+                                {% if subject_buddy_status == 'N' %}
+                                    {{form.select_buddy_but}}
+                                {% elif subject_buddy_status == 'D' %}
+                                    {{form.select_buddy_but}}
+                                {% endif %}
                             {% endif %}
                         
                             {% if subject_buddy_status == 'S' %}
-                            <div>Invitation has already been sent!</div>
+                            <div>Invitation has already been sent for this Subject!</div>
                         
                             {% elif subject_buddy_status == 'A' %}
                             <div>Invitation has been accepted!</div>

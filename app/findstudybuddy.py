@@ -120,7 +120,9 @@ def findBuddy():
             si_query = StudyInterest.query.filter(
                     and_(*id_filters)                
                     ).options(joinedload(StudyInterest.course)).options(joinedload(StudyInterest.user))
+        #only get buddies that are not already in buddy relations
         si_all = si_query.all()
+        si_all = [si_filter for si_filter in si_all if si_filter.buddy_status not in ['A','S']]
         
         si_subject_blocked = StudyInterest.query.filter(
             and_(StudyInterest.user_id == user.id,
@@ -141,6 +143,7 @@ def findBuddy():
             buddy_sender_si = StudyInterest.query.filter(
             and_(StudyInterest.user_id == user.id, 
                   StudyInterest.course_id==course_id)).first()
+            # Update buddy status to S (sent) for both the sender and receiver.
             buddy_sender_si.buddy_status = 'S'
             buddy_receiver_si.buddy_status = 'S'
                      
@@ -191,8 +194,10 @@ The invitation method encapsulates the business rules the inviation status when 
 @bp.route('/invitation', methods=['GET', 'POST'])
 def invitation():
     form = Invitation()
-    br_id = request.args.get("id")
-    br = BuddyRelation.query.filter_by(id=int(br_id), buddy_receiver=current_user.id).first()
+    br_id = int(request.args.get("id"))
+    br = BuddyRelation.query.filter_by(id=br_id, buddy_receiver=current_user.id).first()
+    if br is None:
+        return redirect(url_for('dashboard.dashboard'))
     if form.validate_on_submit:
         if form.data['accept_buddy_but'] or form.data['deny_buddy_but']:
             email_address = br.sender.username  #br.sender.username
