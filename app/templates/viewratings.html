@@ -119,7 +119,7 @@
                             {% for br in buddy_rating %}
                             <tr> <!-- row -->
                                 <td>{{ br.month }}/{{ br.year }}</td> <!-- date for the date -->
-                                <td> {{br.buddy_relation.study_interest.course.course_name}}</td> <!-- data for the course name-->
+                                <td> {{br.course.course_name}}</td> <!-- data for the course name-->
                                 <td>{{ br.buddy_rate }}</td> <!-- data for the rate given -->
                                 <td>{{ br.sender.first_name }} {{br.sender.last_name}}</td> <!-- data for the first name & last name -->
                                 <td>{{ br.comment }}</td> <!-- short description of document -->

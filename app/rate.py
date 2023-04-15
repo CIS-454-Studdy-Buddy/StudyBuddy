@@ -87,13 +87,14 @@ def rate():
     user = User.query.filter_by(username=current_user.username).first()
     buddy = br.get_buddy(current_user.username)
     buddy_id = buddy.id
+    course_id = br.study_interest.course.id
 
     
     if form.validate_on_submit:
         # if the user inputs valid form information and clicks the rate button, retrieve the buddy rating from the database
         # and updated the field as per user input.
         if form.data['rate_but']:       
-            br_rate = BuddyRating.query.filter_by(buddy_relation_id=br_id, rating_sender=user.id,
+            br_rate = BuddyRating.query.filter_by(course_id = course_id, rating_sender=user.id,
                                                   rating_receiver=buddy.id, month=form.month.data, year=form.year.data).first()
             if br_rate:
                 br_rate.is_score_improved = form.is_score_improved.data
@@ -105,7 +106,7 @@ def rate():
             # otherwise, if the buddy rating does not exist, create a buddy rating using the form information and create
             # a new entry to the BuddyRating database table.        
             else:
-                br_rate = BuddyRating(buddy_relation_id=br_id, rating_sender=user.id,
+                br_rate = BuddyRating(course_id = course_id, rating_sender=user.id,
                                     rating_receiver=buddy.id, month=form.month.data, year=form.year.data,
                                     is_score_improved=form.is_score_improved.data, is_gained_knowledge=form.is_gained_knowledge.data,
                                     buddy_rate=form.buddy_rate.data, comment=form.comment.data, 
@@ -116,7 +117,7 @@ def rate():
 
             # retrieve average rating of the user based on the form data.
             avg_rating = db.session.query(func.avg(BuddyRating.buddy_rate).label('average')).filter(
-                BuddyRating.buddy_relation_id==br_id, 
+                BuddyRating.course_id == course_id, 
                 BuddyRating.rating_sender==user.id,
                 BuddyRating.rating_receiver==buddy.id).scalar()
             
