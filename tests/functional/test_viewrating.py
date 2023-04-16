@@ -187,7 +187,6 @@ def test_view_rating_success(mock_token2, mock_email, client):
         user = User.query.filter_by(username=current_user.username).first()
         buddy = br.get_buddy(current_user.username)
         buddy_id = buddy.id
-        course_id = br.study_interest.course.id
         assert b"Buddy you are Rating:" in response.data
         assert buddy.first_name in response.text
         assert buddy.last_name in response.text
@@ -201,7 +200,7 @@ def test_view_rating_success(mock_token2, mock_email, client):
                                                         "comment": "I gained some knowledge",
                                                         "rate_but": 1}, follow_redirects=True)
         
-        br_rate = BuddyRating.query.filter_by(course_id = course_id, rating_sender=user.id,
+        br_rate = BuddyRating.query.filter_by(buddy_relation_id=br_id, rating_sender=user.id,
                                                   rating_receiver=buddy.id, month=3, year=2023).first()
         assert br_rate.is_survey_completed == True
         assert br_rate.buddy_rate == 2
@@ -234,7 +233,7 @@ def test_view_rating_success(mock_token2, mock_email, client):
         assert str(buddy_rating.month) in response.text
         assert str(buddy_rating.year) in response.text
         assert b"Course" in response.data
-        assert buddy_rating.course.course_name in response.text
+        assert buddy_rating.buddy_relation.study_interest.course.course_name in response.text
         assert b"Rating" in response.data
         assert str(buddy_rating.buddy_rate) in response.text
         assert b"Given By" in response.data
