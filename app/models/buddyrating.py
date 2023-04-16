@@ -12,7 +12,7 @@ This is the BuddyRating class model which inherits from the db.Model class. This
 '''
 class BuddyRating(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    course_id = db.Column(db.Integer, db.ForeignKey("course.id"))
+    buddy_relation_id = db.Column(db.Integer, db.ForeignKey("buddy_relation.id"))
     rating_sender = db.Column(db.Integer, db.ForeignKey("user.id"))
     rating_receiver = db.Column(db.Integer, db.ForeignKey("user.id"))
     rating_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
@@ -28,5 +28,5 @@ class BuddyRating(db.Model):
 
     sender = relationship("User", foreign_keys=[rating_sender])
     receiver = relationship("User", foreign_keys=[rating_receiver])
-    course = relationship("Course")
+    buddy_relation = relationship("BuddyRelation")
 
